@@ -13,31 +13,41 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('todos', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Board',
+            name='Commentary',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created', models.DateTimeField(auto_now_add=True)),
-                ('title', models.CharField(max_length=100)),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('text', models.TextField()),
             ],
             options={
                 'ordering': ('created',),
             },
         ),
         migrations.CreateModel(
-            name='BoardPermission',
+            name='Post',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('writeble', models.BooleanField(default=False)),
-                ('board', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='boards.Board')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('created', models.DateTimeField(auto_now_add=True)),
+                ('text', models.TextField()),
+                ('board', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='todos.List')),
             ],
             options={
-                'ordering': ('id',),
+                'ordering': ('created',),
             },
+        ),
+        migrations.AddField(
+            model_name='commentary',
+            name='post',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='posts.Post'),
+        ),
+        migrations.AddField(
+            model_name='commentary',
+            name='username',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
     ]

@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
+from todos.models import List
 from boards.models import Board, BoardPermission
 
 class UserSerializer(serializers.ModelSerializer):
@@ -14,11 +15,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class BoardSerializer(serializers.ModelSerializer):
-    #owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
         model = Board
-        fields = ('id', 'title', 'owner')
+        fields = ('id', 'title', 'owner',)
 
 
 class BoardPermissionSerializer(serializers.ModelSerializer):
@@ -26,3 +26,5 @@ class BoardPermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = BoardPermission
         fields = ('user', 'writeble', 'board')
+
+
