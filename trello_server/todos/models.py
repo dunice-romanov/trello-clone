@@ -1,7 +1,7 @@
 from django.db import models
 
 from boards.models import Board
-# Create your models here.
+
 
 class List(models.Model):
     created = models.DateTimeField(auto_now_add=True)

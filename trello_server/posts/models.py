@@ -17,7 +17,7 @@ class Commentary(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
     username = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, related_name='tracks', on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name='commentary', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('created',)

@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api-boards/', include('boards.urls')),
     url(r'^api-auth/', include('register.urls')),
-    url(r'^list/', include('todos.urls')),
+    url(r'^api-lists/', include('todos.urls')),
+    url(r'^api-posts/', include('posts.urls')),
 ]

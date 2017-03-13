@@ -16,6 +16,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 class BoardSerializer(serializers.ModelSerializer):
 
+    owner = serializers.ReadOnlyField(source='owner.username')
+
     class Meta:
         model = Board
         fields = ('id', 'title', 'owner',)
