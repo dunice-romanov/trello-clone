@@ -77,9 +77,13 @@ WSGI_APPLICATION = 'trello_server.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'trellodb',
+    'USER': 'trello_admin',
+    'PASSWORD': '123qweasd',
+    'HOST': 'localhost',
+    'PORT': '',
+ }
 }
 
 
