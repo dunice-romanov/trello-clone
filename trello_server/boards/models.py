@@ -11,9 +11,13 @@ class Board(models.Model):
         ordering = ('created',)
 
 class BoardPermission(models.Model):
+    """
+    access_levels: read, write, owner
+    """
     board = models.ForeignKey('Board')
-    writeble = models.BooleanField(default=False)
+    access_level = models.CharField(max_length=10, default='read')
     user = models.ForeignKey('auth.User')
 
     class Meta:
         ordering = ('id',)
+        unique_together = ('board', 'user',)

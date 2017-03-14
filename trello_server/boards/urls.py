@@ -3,8 +3,8 @@ from django.conf.urls import url, include
 from boards import views
 
 urlpatterns = [
-	url(r'^$', views.BoardsList.as_view()),
-	url(r'^(?P<pk>[0-9]+)/$', views.BoardItem.as_view()),
-	url(r'^get-shares/$', views.BoardPermissionList.as_view()),
-	url(r'^get-shares/(?P<pk>[0-9]+)$', views.BoardPermissionDelete.as_view())
+	url(r'^$', views.BoardList.as_view()),
+	url(r'^create/$', views.BoardCreate.as_view()),
+	url(r'^(?P<pk>[0-9]+)$', views.BoardItem.as_view()),
+	url(r'^add-permission', views.BoardPermissionCreate.as_view())
 ]

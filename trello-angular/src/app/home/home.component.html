@@ -1,0 +1,26 @@
+<div class="container">
+	<h1>Hello, <b>{{username}}</b></h1>
+	<button (click)='onClickGetBoards()'>{{TEXT_UPDATE_BOARD}}</button>
+	<button (click)='onClickCreateBoard()'>{{TEXT_CREATE_BOARD}}</button>
+
+	<input type="text" [(ngModel)]="boardTitle">
+
+	<div *ngIf="boardList.length">
+
+		<div *ngFor="let board of boardList" class="alert alert-success">
+			<ul class="list-group">
+				<li class="list-group-item list-group-item-success">board id: {{board.id}}</li>
+				<li class="list-group-item list-group-item-success">owner: {{board.boardOwner}}</li>
+				<li class="list-group-item list-group-item-success">title: {{board.title}}</li>
+				<li class="list-group-item list-group-item-success">accessLevel: {{board.accessLevel}}</li>
+			</ul>
+			<button (click)='onClickShareBoard(board.id, "keaton")'>{{TEXT_SHARE_BOARD}}</button>
+			<button *ngIf="board.accessLevel == 'owner'" (click)="onClickDeleteBoard(board.id)">{{TEXT_DELETE_BOARD}}</button>
+		</div>
+
+	</div>
+
+
+</div>
+
+

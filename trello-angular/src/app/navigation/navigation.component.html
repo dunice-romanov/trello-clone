@@ -1,0 +1,28 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    
+    <div class='navbar-header'>
+      <a href='/home' class="navbar-brand">{{TEXT_BRAND}}</a>  
+    </div>
+
+    <div>
+      
+      <ul class="nav navbar-nav navbar-right" *ngIf='!loginService.isAuthenticated()'>
+        <li class="nav-item">
+  	      <a routerLink="login"><div>{{TEXT_LOGIN}}</div></a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="register"><div>{{TEXT_REGISTER}}</div></a>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right" *ngIf='loginService.isAuthenticated()'>
+        <li class="nav-item">
+          <a (click)="onClickLogout()">{{TEXT_LOGOUT}}</a>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+</nav>
