@@ -16,6 +16,7 @@ import { HomeComponent } from './home/home.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { RegisterComponent } from './register/register.component'
 import { SharingComponent } from './sharing/sharing.component';
+import { IntroductionComponent } from './introduction/introduction.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SharingComponent } from './sharing/sharing.component';
     NavigationComponent,
     RegisterComponent,
     SharingComponent,
-    ListsComponent
+    ListsComponent,
+    IntroductionComponent
   ],
   imports: [
     BrowserModule,

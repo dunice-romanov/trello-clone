@@ -43,7 +43,7 @@ export class ListsComponent implements OnInit {
 	}
 
 	onClickAddPost(listId: Number) {
-		this.listService.createPost(listId, 'Hello world!').subscribe(
+		this.listService.createPost(listId, 'Hello world!', 'some description').subscribe(
 				(data) => {this.updateLists(this.boardId)},
 				(error) => {debugger;}
 			);

@@ -69,13 +69,14 @@ export class ListsService{
     creates post on a server
     returns Object if ok, else throws error
   */
-  createPost(listId: Number, text: string) {
+  createPost(listId: Number, title: string, text: string) {
     let url: string = this.URL_POST_API;
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
     let body = {
       'board': listId,
-      'text': text
+      'text': text,
+      'title': title
     }
     return this.http.post(url, body, {headers: headers})
       .map((response: Response) => { 
@@ -99,10 +100,11 @@ export class ListsService{
     parse one object and returns list
   */
   private parseList(response: Object): List {
+    debugger;
     let list = new List(response['title'], response['id']);
 
     for (let post of response['posts']) {
-      let newPost = new Post(post['text'], post['id'])
+      let newPost = new Post(post['id'], post['title'], post['text'])
 
       list['posts'].push(newPost);
       

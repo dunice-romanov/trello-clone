@@ -1,5 +1,4 @@
 div.list {
-	border: 2px solid black;
 	margin-bottom: 10px;
 }
 
@@ -10,3 +9,9 @@ div.list-title {
 div.post-list .post {
 	border: 1px solid black;
 }
+
+div.card-block-low-padding {
+	padding: 0.1rem;
+	margin: 0.1rem;
+}
+

@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
 
   readonly TEXT_USERNAME = 'Username';
 	readonly TEXT_UPDATE_BOARD = 'Update boards';
-  readonly TEXT_CREATE_BOARD = 'Create boards';
+  readonly TEXT_CREATE_BOARD = 'Create board';
   readonly TEXT_DELETE_BOARD = 'Delete board';
   readonly TEXT_SHARE_BOARD = 'Share board';
   readonly TEXT_ERROR_SERVER_PROBLEM = 'Server is unavailable';

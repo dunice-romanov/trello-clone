@@ -11,11 +11,12 @@ export class List {
 }
 
 export class Post {
-	title: string;
 	id: Number;
-
-	constructor(title, id) {
+	title: string;
+	text: string;
+	constructor(id: Number, title: string, text: string) {
 		this.title = title;
 		this.id = id;
+		this.text = text;
 	}
 }

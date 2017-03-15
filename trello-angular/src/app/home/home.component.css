@@ -6,6 +6,10 @@ a.link-none {
 	text-decoration: none;
 }
 
+div.hellower button {
+	margin-right: 1rem;
+}
+
 div.hellower,
 div.card,
 div.card-block ul {

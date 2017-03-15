@@ -137,7 +137,7 @@ export class LoginService implements OnInit {
   logout(){
     localStorage.removeItem(this.KEY);
     this.setIsLoggedIn(false, 'logout');
-    this.router.navigate(['login']);
+    this.router.navigate(['']);
   }
 
   /*

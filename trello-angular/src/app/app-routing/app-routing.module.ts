@@ -8,12 +8,12 @@ import { NavigationComponent } from '../navigation/navigation.component';
 import { RegisterComponent } from '../register/register.component'
 import { HomeComponent } from '../home/home.component';
 import { ListsComponent } from '../lists/lists.component';
-
+import { IntroductionComponent } from '../introduction/introduction.component';
 const routes: Routes = [
 	{
 		path: '',
-		redirectTo: 'home',
-		pathMatch: 'full'
+		component: IntroductionComponent,
+		canActivate: [LoginGuard]
 	},
 	{
 		path: 'home',
