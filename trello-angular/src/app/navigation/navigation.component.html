@@ -1,28 +1,52 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
+<!---
+
+<div class="container-fluid">
+  
+  <div class='navbar-header'>
+    <a href='/home' class="navbar-brand">{{TEXT_BRAND}}</a>  
+  </div>
+
+  <div>
     
-    <div class='navbar-header'>
-      <a href='/home' class="navbar-brand">{{TEXT_BRAND}}</a>  
-    </div>
+    <ul class="nav" *ngIf='!loginService.isAuthenticated()'>
+      <li class="nav-item">
+	      <a routerLink="login"><div>{{TEXT_LOGIN}}</div></a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="register"><div>{{TEXT_REGISTER}}</div></a>
+      </li>
+    </ul>
 
-    <div>
-      
-      <ul class="nav navbar-nav navbar-right" *ngIf='!loginService.isAuthenticated()'>
-        <li class="nav-item">
-  	      <a routerLink="login"><div>{{TEXT_LOGIN}}</div></a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="register"><div>{{TEXT_REGISTER}}</div></a>
-        </li>
-      </ul>
-
-      <ul class="nav navbar-nav navbar-right" *ngIf='loginService.isAuthenticated()'>
-        <li class="nav-item">
-          <a (click)="onClickLogout()">{{TEXT_LOGOUT}}</a>
-        </li>
-      </ul>
-
-    </div>
+    <ul class="nav" *ngIf='loginService.isAuthenticated()'>
+      <li class="nav-item">
+        <a (click)="onClickLogout()">{{TEXT_LOGOUT}}</a>
+      </li>
+    </ul>
 
   </div>
+
+</div>
+---->
+<nav class="nav justify-content-end">
+<!--   <nav class="nav">
+    <a class="nav-link active " href="#">Active</a>
+  </nav> -->
+
 </nav>
+
+<div class="row no-gutters justify-content-between">
+    <nav class="nav">
+      <a class="nav-link active navbar-brand" routerLink="home">{{TEXT_BRAND}}</a>
+    </nav>
+
+
+
+    <nav class="nav" *ngIf='!loginService.isAuthenticated()'>
+        <a class="nav-link" routerLink="login">{{TEXT_LOGIN}}</a>
+        <a class="nav-link" routerLink="register">{{TEXT_REGISTER}}</a>
+    </nav>
+
+    <nav class="nav" *ngIf='loginService.isAuthenticated()'>
+        <a class="nav-link" (click)="onClickLogout()">{{TEXT_LOGOUT}}</a>
+    </nav>
+</div>
