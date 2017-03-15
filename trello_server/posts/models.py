@@ -20,4 +20,4 @@ class Commentary(models.Model):
     post = models.ForeignKey(Post, related_name='commentary', on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ('created',)
+        ordering = ('id',)

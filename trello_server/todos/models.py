@@ -9,4 +9,4 @@ class List(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ('created',)
+        ordering = ('id',)

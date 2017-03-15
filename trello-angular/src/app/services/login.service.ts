@@ -104,7 +104,6 @@ export class LoginService implements OnInit {
 
     let body: string = this.createBodyWithUsernamePassword(username, password)
     let headers: Headers = new Headers ({'Content-Type':  'application/json;charset=utf-8'});
-    debugger;
     return this.createToken(username, password, url, body, headers);                          
   }
 

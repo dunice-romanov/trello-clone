@@ -55,19 +55,30 @@ export class HomeComponent implements OnInit {
       (error) => {debugger});
   }
 
-  onClickDeleteBoard(id: Number) {
-    this.boardsService.deleteBoard(id)
+  /*
+    makes DELETE request on a server with board id,
+    returns false for stop propogation
+  */
+  onClickDeleteBoard(boardId: Number) {
+    event.stopPropagation();
+    this.boardsService.deleteBoard(boardId)
          .subscribe( (data) => {this.setBoardList()},
-                     (error) => {debugger;} )
+                     (error) => {debugger;} );
+    return false;
   }
 
+
+  /*
+    Calls bootstrap's modal window for SharingComponent,
+    returns false for stop propogations
+  */
   onClickShareBoard(boardId: number) {
-    debugger;
+    
+    event.stopPropagation();
     const modalRef = this.modalService.open(SharingComponent);
     modalRef.componentInstance.boardId = boardId; 
-    // this.boardsService.shareBoard(boardId, username)
-    //         .subscribe( (data) => {},
-    //                      (error)=>{debugger;} )
+
+    return false;
   }
 
   /*

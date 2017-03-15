@@ -16,8 +16,8 @@
 					<li class="list-group-item list-group-item-success">title: {{board.title}}</li>
 					<li class="list-group-item list-group-item-success">accessLevel: {{board.accessLevel}}</li>
 				</ul>
-				<button (click)='onClickShareBoard(board.id)' class='btn btn-info'>{{TEXT_SHARE_BOARD}}</button>
-				<button *ngIf="board.accessLevel == 'owner'" (click)="onClickDeleteBoard(board.id)" class='btn btn-info'>{{TEXT_DELETE_BOARD}}</button>
+				<button (click)='onClickShareBoard(board.id, $event)' class='btn btn-info'>{{TEXT_SHARE_BOARD}}</button>
+				<button *ngIf="board.accessLevel == 'owner'" (click)="onClickDeleteBoard(board.id, $event)" class='btn btn-info'>{{TEXT_DELETE_BOARD}}</button>
 			</div>
 		</a>
 
