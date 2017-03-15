@@ -7,6 +7,7 @@ from todos.models import List
 class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
+    title = models.CharField(max_length=100, default='')
     board = models.ForeignKey(List, related_name='posts', on_delete=models.CASCADE)
 
     class Meta:

@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status
 
-from boards.permissions.is_owner import IsOwner
+from boards.permissions.is_owner import IsOwner, IsOwnerOfBoard
 from boards.models import Board, BoardPermission
 from boards.serializers import UserSerializer, BoardSerializer, BoardPermissionSerializer
 
@@ -52,7 +52,9 @@ class BoardList(generics.ListAPIView):
         user = self.request.user
         return BoardPermission.objects.filter(user=user)
 
+
 class BoardPermissionCreate(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOfBoard,)
     serializer_class = BoardPermissionSerializer
 
     def create(self, request, *args, **kwargs):

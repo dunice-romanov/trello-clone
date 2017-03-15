@@ -4,6 +4,7 @@ from rest_framework import generics, permissions, status
 
 from todos.serializer import ListSerializer
 from todos.models import List
+from todos.permissions.isWriteble import IsWritebleOrReadOnly
 
 class ListObject(generics.ListAPIView):
     """
@@ -16,6 +17,7 @@ class ListObject(generics.ListAPIView):
         return List.objects.filter(board=board_id)
 
 class ListObjectCreate(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated, IsWritebleOrReadOnly)
     queryset = List.objects.all()
     serializer_class = ListSerializer
 

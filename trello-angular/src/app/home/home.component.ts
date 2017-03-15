@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit {
     makes DELETE request on a server with board id,
     returns false for stop propogation
   */
-  onClickDeleteBoard(boardId: Number) {
+  onClickDeleteBoard(boardId: Number, event) {
     event.stopPropagation();
     this.boardsService.deleteBoard(boardId)
          .subscribe( (data) => {this.setBoardList()},
@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit {
     Calls bootstrap's modal window for SharingComponent,
     returns false for stop propogations
   */
-  onClickShareBoard(boardId: number) {
+  onClickShareBoard(boardId: number, event) {
     
     event.stopPropagation();
     const modalRef = this.modalService.open(SharingComponent);
