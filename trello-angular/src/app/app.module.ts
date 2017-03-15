@@ -3,15 +3,19 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { AppRoutingModule } from './app-routing/app-routing.module'
+import { LoginService } from './services/login.service'
+
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { ListsComponent } from './lists/lists.component';
 import { HomeComponent } from './home/home.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { RegisterComponent } from './register/register.component'
-
-import { LoginService } from './services/login.service'
-
-import { AppRoutingModule } from './app-routing/app-routing.module'
+import { SharingComponent } from './sharing/sharing.component';
 
 @NgModule({
   declarations: [
@@ -19,15 +23,20 @@ import { AppRoutingModule } from './app-routing/app-routing.module'
     LoginComponent,
     HomeComponent,
     NavigationComponent,
-    RegisterComponent
+    RegisterComponent,
+    SharingComponent,
+    ListsComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule.forRoot(),
   ],
-  providers: [LoginService],
-  bootstrap: [AppComponent]
+  providers: [LoginService,
+              NgbActiveModal],
+  bootstrap: [AppComponent],
+  entryComponents: [SharingComponent],
 })
 export class AppModule { }

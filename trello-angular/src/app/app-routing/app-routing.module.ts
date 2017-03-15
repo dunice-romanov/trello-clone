@@ -7,6 +7,7 @@ import { LoginComponent } from '../login/login.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { RegisterComponent } from '../register/register.component'
 import { HomeComponent } from '../home/home.component';
+import { ListsComponent } from '../lists/lists.component';
 
 const routes: Routes = [
 	{
@@ -28,6 +29,11 @@ const routes: Routes = [
 		path: 'register',
 		component: RegisterComponent,
 		canActivate: [LoginGuard]
+	},
+	{
+		path: 'boards/:id',
+		component: ListsComponent,
+		canActivate: [AuthGuard]
 	}
 ];
 

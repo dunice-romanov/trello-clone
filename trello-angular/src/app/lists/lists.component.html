@@ -1,0 +1,15 @@
+<input type='text' [(ngModel)]="inputListTitle" placeholder="Enter list title">
+<button (click)="onClickAddList()">{{TEXT_ADD_NEW_LIST}}</button>
+<div class='list' *ngFor="let list of lists">
+	<div class='list-title'>title: {{list.title}}</div>
+
+	<div class='post-list'>
+		<div *ngFor="let post of list.posts" class=post>
+			<ul>
+				<li>post title: {{post.title}}</li>
+				<li>post id: {{post.id}}</li>
+			</ul>
+		</div>
+		<button (click)="onClickAddPost(list.id)">{{TEXT_ADD_NEW_POST}}</button>
+	</div>
+</div>

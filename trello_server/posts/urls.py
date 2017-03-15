@@ -4,5 +4,6 @@ from posts import views
 
 urlpatterns = [
 	url(r'(?P<pk>[0-9]+)$', views.PostView.as_view()),
-	url(r'^$', views.CommentaryPost.as_view()),
+	url(r'^$', views.CreatePost.as_view()),
+	url(r'^create-commentary/$', views.CommentaryPost.as_view()),
 ]

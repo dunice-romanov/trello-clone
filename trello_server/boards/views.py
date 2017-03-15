@@ -75,3 +75,11 @@ class BoardPermissionCreate(generics.CreateAPIView):
             raise ValidationError('User doesnt exists')
         except Board.DoesNotExist:
             raise ValidationError('Board doesnt exists')
+
+
+class BoardUnshare(generics.DestroyAPIView):
+    serializer_class = BoardPermissionSerializer
+
+    # def get_queryset(self):
+    #     return BoardPermission.objects.filter(user=self.request.data['username'], board.pk=self.request)
+    #                                     .filter()

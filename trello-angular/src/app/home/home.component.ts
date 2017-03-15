@@ -3,6 +3,8 @@ import { LoginService } from '../services/login.service';
 import { Response} from '@angular/http';
 import { BoardsService } from '../services/boards.service';
 import { Board } from '../classes/board';
+import { SharingComponent } from '../sharing/sharing.component';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +26,8 @@ export class HomeComponent implements OnInit {
   private boardList: Board[];
 
   constructor(private loginService: LoginService,
-              private boardsService: BoardsService) { 
+              private boardsService: BoardsService,
+              private modalService: NgbModal) { 
   	this.username = '';
     this.boardList = [];
     this.boardTitle = '';
@@ -39,9 +42,9 @@ export class HomeComponent implements OnInit {
     Updates this.boardList from server's data
     If reject - handles error by errorHandler()
   */
-  onClickGetBoards() {
+   onClickGetBoards() {
     this.setBoardList();
-  }
+   }
 
 
   onClickCreateBoard() {
@@ -58,12 +61,14 @@ export class HomeComponent implements OnInit {
                      (error) => {debugger;} )
   }
 
-  onClickShareBoard(boardId: Number, username: string) {
-    this.boardsService.shareBoard(boardId, username)
-            .subscribe( (data) => {},
-                         (error)=>{debugger;})
+  onClickShareBoard(boardId: number) {
+    debugger;
+    const modalRef = this.modalService.open(SharingComponent);
+    modalRef.componentInstance.boardId = boardId; 
+    // this.boardsService.shareBoard(boardId, username)
+    //         .subscribe( (data) => {},
+    //                      (error)=>{debugger;} )
   }
-
 
   /*
     Requests server's boardlist and sets to this.boardList

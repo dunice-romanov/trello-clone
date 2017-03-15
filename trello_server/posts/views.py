@@ -10,6 +10,13 @@ class PostView(generics.RetrieveAPIView):
     serializer_class = PostObjectSerializer
     queryset = Post.objects.all()
 
+class CreatePost(generics.CreateAPIView):
+    """
+    Serialize Post with commentaries by GET{'id': post_id}
+    """
+    serializer_class = PostObjectSerializer
+    queryset = Post.objects.all()
+
 class CommentaryPost(generics.CreateAPIView):
     serializer_class = CommentarySerializer
 
