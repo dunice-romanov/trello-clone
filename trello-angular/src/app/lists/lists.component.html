@@ -1,30 +1,43 @@
-<div class="container ">
- <template ngbModalContainer></template>
+<template ngbModalContainer></template>
+<div class='header'>
 	<div>
-		<input type='text' [(ngModel)]="inputListTitle" placeholder="Enter list title">
-		<button (click)="onClickAddList()">{{TEXT_ADD_NEW_LIST}}</button>
-	</div>
-	<div class='card-list'> 
-		<div class='card style-list' *ngFor="let list of lists; let i=index;">
-			<h4 class='сard-title'>title: {{list.title}}</h4>
 
+	</div>
+
+	<div class='card-list'> 
+		<div class='card style-list' *ngFor="let list of lists;let i=index;" >
+			<h4 class='сard-title'>{{list.title}}</h4>
+			
 			<div class='card-text'>
+				
 				<div *ngFor="let post of list.posts" class='card-block card-success card-block-low-padding' (click)="onClickOpenPost(post.id, $event)">
-					<div>post id: {{post.id}}</div>
-					<div class='title'>post title: {{post.title}}</div>
+					<div class='title'>{{post.title}}</div>
 				</div>
 
-				<button type="button" class="btn btn-outline-primary" (click)="isCollapsedArray[i] = !isCollapsedArray[i]"[attr.aria-expanded]="!isCollapsedArray[i]" aria-controls="collapseExample">
-					Toggle
-				</button>
+				<div class="collapse-text" *ngIf="!isCollapsedArray[i]" (click)="onClickOpenAddPostCollapse(i);"[attr.aria-expanded]="!isCollapsedArray[i]" aria-controls="collapse">
+						{{TEXT_ADD_NEW_POST_COLLAPSE}}
+				</div>
 
+				<!-- Collapse code -->
 				<div [ngbCollapse]="!isCollapsedArray[i]">
-					<input type='text' [(ngModel)]="listInput[i]">
-					<br>
-					<button class="btn btn-primary" (click)="onClickAddPost(i, list.id)">{{TEXT_ADD_NEW_POST}}</button>
+					<textarea class="form-control" [(ngModel)]="listInput[i]"></textarea>
+					
+					<button class="btn btn-success" (click)="onClickAddPost(i, list.id)">{{TEXT_ADD_NEW_POST}}</button>
+					<button class="btn btn-danger" (click)="onClickAddPostClose(i)">{{TEXT_ADD_CLOSE}}</button>
 				</div> 
+				<!-- Collapse end -->
 
 			</div>
+		</div>
+
+		<div class='card style-list create-list' *ngIf="!isCreateButtonCollapsed" (click)="onClickOpenAddListCollapse()">
+			title create list
+		</div>
+
+		<div *ngIf="isCreateButtonCollapsed" class='card style-list create-list'>
+			<input type='text' class='form-control' [(ngModel)]="inputListTitle" placeholder="Enter list title">
+			<button class="btn btn-success" (click)="onClickAddList()">{{TEXT_ADD_NEW_LIST}}</button>
+			<button class="btn btn-danger" (click)="onClickAddListClose()">{{TEXT_ADD_CLOSE}}</button>
 		</div>
 	</div>
 </div>

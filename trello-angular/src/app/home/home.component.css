@@ -3,8 +3,7 @@ a.link-none:hover {
 }
 
 a.link-none {
-	float: left;
-	margin: 1rem;
+
 	text-decoration: none;
 }
 
@@ -17,11 +16,56 @@ div.card,
 div.card-block ul {
 	margin-bottom: 1rem;
 }
-	
 
-div.card a {
+div.card {	
+	display: inline-block;
+	margin: 1rem;
+	width: 240px;
+	height: 100px;
+	background-color: rgb(0, 121, 191);
+	vertical-align: top;
 	color: white;
-	width: 200px;
-	height: 200px;
+	cursor: pointer;
 }
 
+div.card:hover {
+	background-color: rgb(0, 121, 150);
+}
+
+div.card-create {
+	background-color: #D6DADC;
+	color: #4d4d4d;
+}
+div.card-create:hover {
+	background-color: #959DA1;
+}
+
+div.card-menu  {
+	padding: 10px;
+	display: inline-block;
+}
+
+.card-title-span {
+	font-size: 1pc;
+	font-weight: 700;
+}
+
+button.btn {
+	font-size: 10px;
+}
+
+div.card-menu-header {
+	padding: 10px;
+	display: flex;
+    justify-content: space-between;
+}
+
+div.card-menu-header.create{
+	display: block;
+}
+
+div.card-title.card-menu {
+	margin-bottom: 0;
+}
+div.card-buttons {
+}

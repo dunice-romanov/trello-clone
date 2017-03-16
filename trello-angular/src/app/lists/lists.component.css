@@ -1,31 +1,57 @@
+.header {
+	background-color: #0079BF;
+	padding-top: 10px;
+}
 .card-list {
 	overflow: auto;
 	overflow-y: hidden;
  	white-space: nowrap;
  	height: 100%;
+ 	font-size: 14px;
+ 	margin: 10px;
 
 }
 
-.title {
-	color: red;
+.card {
+	padding: 8px 10px;
+	background-color: #E2E4E6;
+	min-width: 270px;
+	max-width: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-height: 100%;
+}
+
+.card-block {
+	background-color: #fff;
+	cursor: pointer;
+	border-radius: 3px;
+	margin: 5px 0px;
+	padding: 6px 6px 2px 8px;
+	border-bottom: 1px solid #ccc;
 }
 
 .card-block > div {
-	min-width: 270px;
 	max-width: 270px;
 	white-space: initial;
 	word-wrap: break-word;
 }
 
-.card {
-	min-width: 270px;
-	max-width: 300px;
+.collapse-text {
+	 padding: 8px 10px;
+	 color: #8c8c8c;
+	 cursor: pointer;
+}
+
+.collapse-text:hover {
+	background-color: #CDD2D4;
+	color: #4d4d4d;
+	text-decoration: underline;
 }
 
 div.style-list {
 	display: inline-block;
 	margin-right: 1rem;
-	margin-bottom: 10px;
 	vertical-align: top;
 }
 
@@ -34,12 +60,28 @@ div.list-title {
 	border: 1px solid black;
 }
 
+.сard-title {
+	font-size: 14px;
+	line-height: 18px;
+}
+
+
 div.post-list .post {
 	border: 1px solid black;
 }
 
-div.card-block-low-padding {
-	padding: 0.1rem;
-	margin: 0.1rem;
+.create-list {
+	background: rgba(0,0,0,.12);
+	padding: 7px;
+	border: none;
+	color: #A7D0D6;
+}
+.create-list:hover {
+	cursor: pointer;
+	color: #fff;
+	background: rgba(0,0,0,.20);
 }
 
+.form-control {
+	margin-bottom: 10px;
+}

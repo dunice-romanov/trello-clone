@@ -14,12 +14,16 @@ import { CardWindowComponent } from '../card-window/card-window.component'
 })
 export class ListsComponent implements OnInit {
 
-	readonly TEXT_ADD_NEW_POST = "Add new post, honey";
-	readonly TEXT_ADD_NEW_LIST = 'Add new list!';
+	readonly TEXT_ADD_NEW_POST = "Add";
+	readonly TEXT_ADD_NEW_LIST = 'Save';
+	readonly TEXT_ADD_NEW_POST_COLLAPSE = "Create new card";
+	readonly TEXT_ADD_CLOSE = 'X';
+
 	private boardId: Number;
 	private sub: any;
 	private inputListTitle;
-	private isCollapsedArray: Boolean[];
+	private isCollapsedArray: boolean[];
+	private isCreateButtonCollapsed: boolean;
 
 	private lists: List[];
 	private listInput: string[];
@@ -32,6 +36,7 @@ export class ListsComponent implements OnInit {
 		this.inputListTitle = '';
 		this.listInput = [];
 		this.isCollapsedArray = [];
+		this.isCreateButtonCollapsed = false;
 	}
 
 	ngOnInit() {
@@ -52,7 +57,11 @@ export class ListsComponent implements OnInit {
 		if (title == '') {return;}
 		this.listService.createList(this.boardId, title)
 						.subscribe(
-							(data) => {this.updateLists(this.boardId)},
+							(data) => {
+								this.updateLists(this.boardId);
+								this.inputListTitle = '';
+								this.isCreateButtonCollapsed = false;
+							},
 							(error) => {debugger;} 
 						);
 	}
@@ -63,6 +72,7 @@ export class ListsComponent implements OnInit {
 		If error occured - handles
 	*/
 	onClickAddPost(inputId: number, listId: number) {
+		if (this.listInput[inputId] === undefined) { return; }
 		let text = this.listInput[inputId].trim();
 
 		if (text == '') {
@@ -79,9 +89,41 @@ export class ListsComponent implements OnInit {
 				},
 				(error) => {debugger;}
 			);
-
 	}
 
+	/*
+		Closes add post collapse
+	*/
+	onClickAddPostClose(inputId: number) {
+		this.isCollapsedArray[inputId] = false;
+		this.listInput[inputId] = '';
+	}
+
+	/*
+		Opens collapse with add post
+	*/
+	onClickOpenAddPostCollapse(inputId: number) {
+		this.closeEveryCollapse();
+		this.isCollapsedArray[inputId] = !this.isCollapsedArray[inputId];
+	}
+
+	onClickOpenAddListCollapse() {
+		this.closeEveryCollapse();
+		this.isCreateButtonCollapsed = true;
+	}
+
+	/*
+		Handler for 'Close' of AddList button 
+	*/
+	onClickAddListClose() {
+		this.isCreateButtonCollapsed = false;
+		this.inputListTitle = '';
+	}
+
+	/*
+		Opens modal window with CardWindowComponent, 
+		after - updates lists
+	*/
 	onClickOpenPost(postId: number, event) {
 	    event.stopPropagation();
 	    const modalRef = this.modalService.open(CardWindowComponent);
@@ -103,6 +145,16 @@ export class ListsComponent implements OnInit {
 	       			(data) => {this.lists = data;},
 	       			(error) => {debugger}
 	       		);
+	}
+
+	/*
+		Sets every boolean isCollapsed... to false
+	*/
+	private closeEveryCollapse() {
+		for (let i = 0; i < this.isCollapsedArray.length; i++) {
+			this.isCollapsedArray[i] = false;
+		}
+		this.isCreateButtonCollapsed = false;
 	}
 
 }

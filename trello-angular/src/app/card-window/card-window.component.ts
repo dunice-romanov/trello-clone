@@ -17,7 +17,12 @@ export class CardWindowComponent implements OnInit {
   readonly TEXT_ADD_COMMENT = 'Add a commentary, honey';
   readonly TEXT_UPDATE_DESCRIPTION = 'Update me, honey';
   readonly TEXT_PLACEHOLDER_DESCRIPTION = 'Add description';
+
   postId: number;
+
+  private isTitleCollapsed: boolean;
+  private isTextCollapsed: boolean;
+
   private post: FullPost;
   private title: string;
   private description: string;
@@ -26,6 +31,8 @@ export class CardWindowComponent implements OnInit {
               private postSevice: PostService) {
     this.description = '';
     this.title = '';
+    this.isTextCollapsed = false;
+    this.isTitleCollapsed = false;
   }
 
   ngOnInit() {
@@ -39,6 +46,9 @@ export class CardWindowComponent implements OnInit {
   		);
   }
 
+  /*
+    Updates post text on blur, handles errors
+  */
   onBlurUpdateText(text: string) {
     let oldTitle = this.post.text.trim();
     let newTitle = text.trim();
@@ -52,15 +62,23 @@ export class CardWindowComponent implements OnInit {
     );
   }
 
+  /*
+    Updates post title on blur, handles errors
+  */
   onBlurUpdateTitle(title: string) {
     let oldTitle = this.post.title.trim();
     let newTitle = title.trim();
     if (newTitle == oldTitle) { 
+      this.isTitleCollapsed = false;
       return; 
     }
 
     this.postSevice.patchTitle(this.postId, newTitle).subscribe(
-      (data) => {this.post = data},
+      (data) => 
+        {
+          this.post = data;
+          this.isTitleCollapsed = false;
+        },
       (error) => {debugger;}
     );
   }
