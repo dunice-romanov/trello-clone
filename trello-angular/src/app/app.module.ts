@@ -17,6 +17,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { RegisterComponent } from './register/register.component'
 import { SharingComponent } from './sharing/sharing.component';
 import { IntroductionComponent } from './introduction/introduction.component';
+import { CardWindowComponent } from './card-window/card-window.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { IntroductionComponent } from './introduction/introduction.component';
     RegisterComponent,
     SharingComponent,
     ListsComponent,
-    IntroductionComponent
+    IntroductionComponent,
+    CardWindowComponent
   ],
   imports: [
     BrowserModule,

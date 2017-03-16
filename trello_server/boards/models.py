@@ -2,6 +2,14 @@ from django.contrib.auth.models import User
 
 from django.db import models
 
+class AccessLevel: 
+    """
+    Permission access levels
+    """
+    ACCESS_LEVEL_OWNER = 'owner'
+    ACCESS_LEVEL_READONLY = 'read'
+    ACCESS_LEVEL_WRITEBLE = 'write'
+
 class Board(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100)

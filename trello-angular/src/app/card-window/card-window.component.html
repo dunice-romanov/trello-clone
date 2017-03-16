@@ -1,0 +1,20 @@
+<div *ngIf="post">
+	<div class="modal-header">
+		<input (blur)='onBlurUpdateTitle(title)' class="form-control"[(ngModel)]="title">
+		<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<div class="modal-body">
+		<textarea (blur)='onBlurUpdateText(description)' class="form-control"[(ngModel)]="description"></textarea>
+		<div>
+			<div>{{TEXT_ADD_COMMENT}}</div>
+			<div *ngFor="let comma of post.commentaries">
+				<div>{{comma.username}}</div>
+				<div>{{comma.text}}</div>
+				<div>{{comma.created}}</div>
+			</div>
+		</div>
+	</div>
+<div>

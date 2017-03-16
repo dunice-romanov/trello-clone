@@ -1,16 +1,31 @@
-<input type='text' [(ngModel)]="inputListTitle" placeholder="Enter list title">
-<button (click)="onClickAddList()">{{TEXT_ADD_NEW_LIST}}</button>
-<div class='card style=list' *ngFor="let list of lists">
-	<h4 class='сard-title'>title: {{list.title}}</h4>
+<div class="container ">
+ <template ngbModalContainer></template>
+	<div>
+		<input type='text' [(ngModel)]="inputListTitle" placeholder="Enter list title">
+		<button (click)="onClickAddList()">{{TEXT_ADD_NEW_LIST}}</button>
+	</div>
+	<div class='card-list'> 
+		<div class='card style-list' *ngFor="let list of lists; let i=index;">
+			<h4 class='сard-title'>title: {{list.title}}</h4>
 
-	<div class='card-text'>
-		<div *ngFor="let post of list.posts" class='card-block card-success card-block-low-padding'>
-			<ul class='list-group'>
-				<li class="list-group-item">post id: {{post.id}}</li>
-				<li class="list-group-item">post title: {{post.title}}</li>
-				<li class="list-group-item">post text: {{post.text}}</li>
-			</ul>
+			<div class='card-text'>
+				<div *ngFor="let post of list.posts" class='card-block card-success card-block-low-padding' (click)="onClickOpenPost(post.id, $event)">
+					<div>post id: {{post.id}}</div>
+					<div class='title'>post title: {{post.title}}</div>
+					<div>post text: {{post.text}}</div>
+				</div>
+
+				<button type="button" class="btn btn-outline-primary" (click)="isCollapsedArray[i] = !isCollapsedArray[i]"[attr.aria-expanded]="!isCollapsedArray[i]" aria-controls="collapseExample">
+					Toggle
+				</button>
+
+				<div [ngbCollapse]="!isCollapsedArray[i]">
+					<input type='text' [(ngModel)]="listInput[i]">
+					<br>
+					<button class="btn btn-primary" (click)="onClickAddPost(i, list.id)">{{TEXT_ADD_NEW_POST}}</button>
+				</div> 
+
+			</div>
 		</div>
-		<button class="btn btn-primary" (click)="onClickAddPost(list.id)">{{TEXT_ADD_NEW_POST}}</button>
 	</div>
 </div>

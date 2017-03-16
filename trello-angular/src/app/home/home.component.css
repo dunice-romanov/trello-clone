@@ -3,6 +3,8 @@ a.link-none:hover {
 }
 
 a.link-none {
+	float: left;
+	margin: 1rem;
 	text-decoration: none;
 }
 

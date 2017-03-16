@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import generics, permissions, status
 
 from boards.permissions.is_owner import IsOwner, IsOwnerOfBoard
-from boards.models import Board, BoardPermission
+from boards.models import AccessLevel, Board, BoardPermission
 from boards.serializers import UserSerializer, BoardSerializer, BoardPermissionSerializer
 
 
@@ -28,9 +28,13 @@ class BoardCreate(generics.CreateAPIView):
         board_object = serializer.save(owner=user)
         BoardPermission.objects.create(board=board_object,
                                         user=user,
-                                        access_level='owner')
+                                        access_level=AccessLevel.ACCESS_LEVEL_OWNER)
 
 class BoardItem(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieves, Destroys, Updates board by REST request
+    """
+
     permissions_classes = (permissions.IsAuthenticated, IsOwner,)
     serializer_class = BoardSerializer
     
@@ -39,12 +43,13 @@ class BoardItem(generics.RetrieveUpdateDestroyAPIView):
         return Board.objects.filter(owner=user)
     
     def perform_destroy(self, instance):
-        print('im in')
-        share_boards = BoardPermission.objects.filter(board=instance).delete()
         instance.delete()
 
 
 class BoardList(generics.ListAPIView):
+    """
+    Returns authenticated user's board list
+    """
     permissions_classes = (permissions.IsAuthenticated,)
     serializer_class = BoardPermissionSerializer
     
@@ -54,6 +59,9 @@ class BoardList(generics.ListAPIView):
 
 
 class BoardPermissionCreate(generics.CreateAPIView):
+    """
+    Creates permission with POST[username, board_id]
+    """
     permission_classes = (permissions.IsAuthenticated, IsOwnerOfBoard,)
     serializer_class = BoardPermissionSerializer
 
@@ -68,15 +76,9 @@ class BoardPermissionCreate(generics.CreateAPIView):
             return Response({'data': 'user not found'}, status=status.HTTP_404_NOT_FOUND)  
 
     def perform_create(self, serializer):
-        print('\n\nperform', self.request.data['username'], '\n\n')
-        try:
-            user = User.objects.get(username=self.request.data['username'])
-            board = Board.objects.get(pk=self.request.data['board_id'])
-            serializer.save(user=user, board=board)
-        except User.DoesNotExist:
-            raise ValidationError('User doesnt exists')
-        except Board.DoesNotExist:
-            raise ValidationError('Board doesnt exists')
+        user = get_object_or_404(User, username=self.request.data['username'])
+        board = get_object_or_404(Board, pk=self.request.data['board_id'])
+        serializer.save(user=user, board=board)
 
 
 class BoardUnshare(generics.DestroyAPIView):

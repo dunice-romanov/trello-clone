@@ -29,10 +29,13 @@ export class SharingComponent {
 	private shareWith(username: string, boardId: Number){
 
 		this.boardService.shareBoard(boardId, username)
-						.subscribe((data) => {
+						.subscribe(
+							(data) => {
 							console.log('shared button pressed'); 
 							this.activeModal.close('Close click');
-						}, (error)=>{ debugger; });
+							}, 
+							(error)=>{ debugger; }
+						);
 		
 	}
 

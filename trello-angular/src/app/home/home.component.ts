@@ -4,7 +4,7 @@ import { Response} from '@angular/http';
 import { BoardsService } from '../services/boards.service';
 import { Board } from '../classes/board';
 import { SharingComponent } from '../sharing/sharing.component';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home',

@@ -100,7 +100,7 @@ export class ListsService{
     parse one object and returns list
   */
   private parseList(response: Object): List {
-    debugger;
+
     let list = new List(response['title'], response['id']);
 
     for (let post of response['posts']) {
