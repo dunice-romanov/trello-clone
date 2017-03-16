@@ -7,7 +7,7 @@
 	</div>
 
 	<div class="modal-body">
-		<textarea (blur)='onBlurUpdateText(description)' class="form-control"[(ngModel)]="description"></textarea>
+		<textarea (blur)='onBlurUpdateText(description)' class="form-control"[(ngModel)]="description" placeholder={{TEXT_PLACEHOLDER_DESCRIPTION}}></textarea>
 		<div>
 			<div>{{TEXT_ADD_COMMENT}}</div>
 			<div *ngFor="let comma of post.commentaries">

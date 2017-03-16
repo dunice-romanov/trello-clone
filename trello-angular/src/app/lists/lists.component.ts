@@ -70,7 +70,7 @@ export class ListsComponent implements OnInit {
 			return; 
 		}
 
-		this.listService.createPost(listId, text, 'some description')
+		this.listService.createPost(listId, text)
 			.subscribe(
 				(data) => {
 					this.updateLists(this.boardId);

@@ -69,13 +69,12 @@ export class ListsService{
     creates post on a server
     returns Object if ok, else throws error
   */
-  createPost(listId: Number, title: string, text: string) {
+  createPost(listId: Number, title: string) {
     let url: string = this.URL_POST_API;
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
     let body = {
       'board': listId,
-      'text': text,
       'title': title
     }
     return this.http.post(url, body, {headers: headers})

@@ -16,6 +16,7 @@ export class CardWindowComponent implements OnInit {
 
   readonly TEXT_ADD_COMMENT = 'Add a commentary, honey';
   readonly TEXT_UPDATE_DESCRIPTION = 'Update me, honey';
+  readonly TEXT_PLACEHOLDER_DESCRIPTION = 'Add description';
   postId: number;
   private post: FullPost;
   private title: string;

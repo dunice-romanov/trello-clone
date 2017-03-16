@@ -58,6 +58,7 @@ export class PostService {
     else - returns error
   */
   patchText(postId: number, text: string) {
+    debugger;
     let textObject = {'text': text}
     return this.patchPost(postId, textObject);
   }

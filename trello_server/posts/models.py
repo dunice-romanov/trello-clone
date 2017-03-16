@@ -6,7 +6,7 @@ from todos.models import List
 # Create your models here.
 class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    text = models.TextField(default='')
+    text = models.TextField(default='', null=True, blank=True)
     title = models.CharField(max_length=100, default='')
     board = models.ForeignKey(List, related_name='posts', on_delete=models.CASCADE)
 
@@ -21,4 +21,4 @@ class Commentary(models.Model):
     post = models.ForeignKey(Post, related_name='commentary', on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ('id',)
+        ordering = ('created',)

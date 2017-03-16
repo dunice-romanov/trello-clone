@@ -12,7 +12,6 @@
 				<div *ngFor="let post of list.posts" class='card-block card-success card-block-low-padding' (click)="onClickOpenPost(post.id, $event)">
 					<div>post id: {{post.id}}</div>
 					<div class='title'>post title: {{post.title}}</div>
-					<div>post text: {{post.text}}</div>
 				</div>
 
 				<button type="button" class="btn btn-outline-primary" (click)="isCollapsedArray[i] = !isCollapsedArray[i]"[attr.aria-expanded]="!isCollapsedArray[i]" aria-controls="collapseExample">
