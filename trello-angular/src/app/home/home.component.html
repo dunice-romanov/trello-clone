@@ -6,20 +6,19 @@
 
 	<input type="text" [(ngModel)]="boardTitle">
 	<template ngbModalContainer></template>
-	<div *ngIf="boardList.length">
-		
+	
+	<div *ngIf="boardList.length">	
 		<a class='link-none' *ngFor="let board of boardList"  [routerLink]="['/boards', board.id]">
-			<div class="alert alert-success">
-				<ul class="list-group">
-					<li class="list-group-item list-group-item-success">board id: {{board.id}}</li>
-					<li class="list-group-item list-group-item-success">owner: {{board.boardOwner}}</li>
-					<li class="list-group-item list-group-item-success">title: {{board.title}}</li>
-					<li class="list-group-item list-group-item-success">accessLevel: {{board.accessLevel}}</li>
-				</ul>
+			<div class="card">
+				<div class="card-title"><h5>{{board.title}}</h5></div>
 				<button (click)='onClickShareBoard(board.id, $event)' class='btn btn-info'>{{TEXT_SHARE_BOARD}}</button>
 				<button *ngIf="board.accessLevel == 'owner'" (click)="onClickDeleteBoard(board.id, $event)" class='btn btn-info'>{{TEXT_DELETE_BOARD}}</button>
 			</div>
 		</a>
-
 	</div>
+
+	<div class="card">
+		<div class="card-title">Create new</div>
+	</div>
+
 </div>

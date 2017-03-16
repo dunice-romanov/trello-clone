@@ -12,36 +12,36 @@ import { ListsComponent } from '../lists/lists.component';
 import { IntroductionComponent } from '../introduction/introduction.component';
 import { CardWindowComponent } from '../card-window/card-window.component';
 const routes: Routes = [
-	{
-		path: '',
-		component: IntroductionComponent,
-		canActivate: [LoginGuard]
-	},
-	{
-		path: 'home',
-		component: HomeComponent,
-		canActivate: [AuthGuard]
-	},
-	{
-		path: 'login',
-		component: LoginComponent,
-		canActivate: [LoginGuard]
-	},
-	{
-		path: 'register',
-		component: RegisterComponent,
-		canActivate: [LoginGuard]
-	},
-	{
-		path: 'boards/:id',
-		component: ListsComponent,
-		canActivate: [AuthGuard]
-	},
-	{
-		path: 'card',
-		component: CardWindowComponent,
-		canActivate: [AuthGuard]
-	}
+    {
+        path: '',
+        component: IntroductionComponent,
+        canActivate: [LoginGuard]
+    },
+    {
+        path: 'home',
+        component: HomeComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'login',
+        component: LoginComponent,
+        canActivate: [LoginGuard]
+    },
+    {
+        path: 'register',
+        component: RegisterComponent,
+        canActivate: [LoginGuard]
+    },
+    {   
+        path: 'boards',
+        redirectTo: '/home',
+        pathMatch: 'full'
+    },
+    {
+        path: 'boards/:id',
+        component: ListsComponent,
+        canActivate: [AuthGuard]
+    }
 ];
 
 @NgModule({

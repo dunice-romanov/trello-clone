@@ -41,6 +41,7 @@ import { CardWindowComponent } from './card-window/card-window.component';
   providers: [LoginService,
               NgbActiveModal],
   bootstrap: [AppComponent],
-  entryComponents: [SharingComponent],
+  entryComponents: [SharingComponent,
+                     CardWindowComponent],
 })
 export class AppModule { }
