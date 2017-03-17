@@ -2,10 +2,12 @@ from rest_framework import generics, permissions, status
 
 from posts.models import Post, Commentary
 from posts.serializers import PostObjectSerializer, CommentarySerializer
-from posts.permissions.isWriteble import IsWritebleOrReadOnly  
+from posts.permissions.isWriteble import IsWritebleOrReadOnly, IsWritebleOrReadOnlyRetrieve  
 
 
 class PostView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsWritebleOrReadOnlyRetrieve,)
+
     serializer_class = PostObjectSerializer
     queryset = Post.objects.all()
 
