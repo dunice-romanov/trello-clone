@@ -1,6 +1,7 @@
 .header {
 	background-color: #0079BF;
 	padding-top: 10px;
+	height: 100%;
 }
 .card-list {
 	overflow: auto;
@@ -8,11 +9,10 @@
  	white-space: nowrap;
  	height: 100%;
  	font-size: 14px;
- 	margin: 10px;
-
 }
 
 .card {
+	margin: 0 5px;
 	padding: 8px 10px;
 	background-color: #E2E4E6;
 	min-width: 270px;
@@ -30,6 +30,11 @@
 	padding: 6px 6px 2px 8px;
 	border-bottom: 1px solid #ccc;
 }
+
+.card-block:hover {
+	background-color: #ccf;
+}
+
 
 .card-block > div {
 	max-width: 270px;

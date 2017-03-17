@@ -17,7 +17,8 @@ export class CardWindowComponent implements OnInit {
   readonly TEXT_ADD_COMMENT = 'Add a commentary, honey';
   readonly TEXT_UPDATE_DESCRIPTION = 'Update me, honey';
   readonly TEXT_PLACEHOLDER_DESCRIPTION = 'Add description';
-
+  readonly TEXT_ERROR_BLACK_FIELD = 'This field can not be blank'
+  readonly TEXT_ERROR_SERVER_PROBLEM = 'Server is anavailable';
   postId: number;
 
   private isTitleCollapsed: boolean;
@@ -42,7 +43,7 @@ export class CardWindowComponent implements OnInit {
           this.description = this.post.text; 
           this.title = this.post.title;
         },
-  			(error) => { debugger; }
+  			(error) => { this.errorHandler(error); }
   		);
   }
 
@@ -57,29 +58,64 @@ export class CardWindowComponent implements OnInit {
     }
 
     this.postSevice.patchText(this.postId, newTitle).subscribe(
-      (data) => {this.post = data},
-      (error) => {debugger;}
+      (data) => { this.post = data },
+      (error) => { this.errorHandler(error); }
     );
   }
+
 
   /*
     Updates post title on blur, handles errors
   */
   onBlurUpdateTitle(title: string) {
-    let oldTitle = this.post.title.trim();
-    let newTitle = title.trim();
-    if (newTitle == oldTitle) { 
+    let oldTitle = this.post.title;
+    let newTitle = title;
+
+    this.updateTitle(newTitle, oldTitle);
+  }
+
+  /*
+    Updates title on server, returns FullPost in subscribe
+  */
+  private updateTitle(newTitle: string, oldTitle: string) {
+    if (newTitle === undefined) { return; }
+
+    let oldTitleTrimmed = oldTitle.trim();
+    let newTitleTrimmed = newTitle.trim();
+    if (oldTitleTrimmed == newTitleTrimmed) { 
       this.isTitleCollapsed = false;
       return; 
     }
 
-    this.postSevice.patchTitle(this.postId, newTitle).subscribe(
-      (data) => 
-        {
-          this.post = data;
-          this.isTitleCollapsed = false;
-        },
-      (error) => {debugger;}
-    );
+    this.postSevice.patchTitle(this.postId, newTitleTrimmed).subscribe(
+        (data) => {
+            this.post = data;
+            this.isTitleCollapsed = false;
+          },
+        (error) => { this.errorHandler(error); }
+      );
   }
+
+  /*
+    Opens collapsed title
+  */
+  onClickOpenCollapse(event) {
+    this.isTitleCollapsed = true;
+  }
+
+  /*
+    Handles postService errors
+  */
+  private errorHandler(error) {
+    switch (error['_body']) {
+      case this.postSevice.ERROR_BLANK_TITLE:
+        alert(this.TEXT_ERROR_BLACK_FIELD)
+        break;
+
+      default:
+        alert(this.TEXT_ERROR_SERVER_PROBLEM);
+        break;
+    }
+  }
+
 }

@@ -9,7 +9,11 @@ import { BoardsService } from '../services/boards.service';
   providers: [BoardsService]
 })
 export class SharingComponent {
+	readonly TEXT_SHARE_OK = "Complete!";
+	readonly TEXT_ERROR_USER_DOESNT_EXISTS = "User doesn't exists";
+	readonly TEXT_ERROR_SERVER_PROBLEM = "Server is anavailable";
 	private username: string;
+
 
 	@Input() boardId;
 	constructor(public activeModal: NgbActiveModal, 
@@ -26,17 +30,37 @@ export class SharingComponent {
 		
 	}
 
+	/*
+		Shares board with username, 
+			if ok -> shows alert and closes self
+			else -> handles error
+	*/
 	private shareWith(username: string, boardId: Number){
 
 		this.boardService.shareBoard(boardId, username)
 						.subscribe(
 							(data) => {
-							console.log('shared button pressed'); 
-							this.activeModal.close('Close click');
+								alert(this.TEXT_SHARE_OK);
+								this.activeModal.close('Close click');
 							}, 
-							(error)=>{ debugger; }
+							(error)=>{ this.errorHandler(error); }
 						);
 		
+	}
+
+	/*
+		Handles boardService errors
+	*/
+	private errorHandler(error) {
+		switch (error['_body']) {
+		case this.boardService.ERROR_USER_DOES_NOT_EXISTS:
+			alert(this.TEXT_ERROR_USER_DOESNT_EXISTS);
+			this.username = '';
+			break;
+		default:
+			alert(this.TEXT_ERROR_SERVER_PROBLEM);
+			break;
+		}
 	}
 
 }

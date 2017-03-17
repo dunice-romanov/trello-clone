@@ -17,6 +17,7 @@ export class PostService {
   readonly HEADER_AUTHORIZATION = 'Authorization';
   readonly HEADER_JWT = 'JWT';
 
+  readonly ERROR_BLANK_TITLE = JSON.stringify({"title":["This field may not be blank."]});
 
   constructor(private http: Http,
           private loginService: LoginService) { }
@@ -58,7 +59,6 @@ export class PostService {
     else - returns error
   */
   patchText(postId: number, text: string) {
-    debugger;
     let textObject = {'text': text}
     return this.patchPost(postId, textObject);
   }

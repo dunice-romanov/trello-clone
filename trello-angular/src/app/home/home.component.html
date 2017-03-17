@@ -1,27 +1,28 @@
-<div>
-	<h1>Hello, <b>{{username}}</b></h1>
-	<template ngbModalContainer></template>
-</div>
-<div>
-	<a class='link-none' *ngFor="let board of boardList"  [routerLink]="['/boards', board.id]">
-		<div class="card">
-			<div class="card-menu-header">
-				<div class="card-title"><span class='card-title-span'>{{board.title}}</span></div>
-				<div class="card-buttons">
-					<button (click)='onClickShareBoard(board.id, $event)' class='btn btn-info'>{{TEXT_SHARE_BOARD}}</button>
-					<button *ngIf="board.accessLevel == 'owner'" (click)="onClickDeleteBoard(board.id, $event)" class='btn btn-danger'>{{TEXT_DELETE_BOARD}}</button>
+<template ngbModalContainer></template>
+<div class='header'>
+	<div>
+		<h1>Hello, <b>{{username}}</b></h1>
+	</div>
+	<div>
+		<a class='link-none' *ngFor="let board of boardList"  [routerLink]="['/boards', board.id]">
+			<div class="card">
+				<div class="card-menu-header">
+					<div class="card-title"><span class='card-title-span'>{{board.title}}</span></div>
+					<div class="card-buttons">
+						<button (click)='onClickShareBoard(board.id, $event)' class='btn btn-info'>{{TEXT_SHARE_BOARD}}</button>
+						<button *ngIf="board.accessLevel == 'owner'" (click)="onClickDeleteBoard(board.id, $event)" class='btn btn-danger'>{{TEXT_DELETE_BOARD}}</button>
+					</div>
 				</div>
 			</div>
-		</div>
-	</a>
+		</a>
 
-	<div class="card card-create" (click)="onClickCollapseForm()">
-		<div class="card-menu-header create">
-			<div class="card-title"><span class='card-title-span'>Create new</span></div>
-			<div class="card-input" id="collapseCreateForm" [ngbCollapse]="isCollapsed">
-				<input type="text" class="form-control" (click)="stopPropagation($event)" [(ngModel)]="boardTitle" (keyup.enter)="onEnterCreateBoard()" placeholder="{{TEXT_CREATE_BOARD}}">
+		<div class="card card-create" (click)="onClickCollapseForm()">
+			<div class="card-menu-header create">
+				<div class="card-title"><span class='card-title-span'>Create new</span></div>
+				<div class="card-input" id="collapseCreateForm" [ngbCollapse]="isCollapsed">
+					<input type="text" class="form-control" (click)="stopPropagation($event)" [(ngModel)]="boardTitle" (keyup.enter)="onEnterCreateBoard()" placeholder="{{TEXT_CREATE_BOARD}}">
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
-

@@ -22,7 +22,9 @@ export class BoardsService {
   readonly ACCESS_LEVEL_READONLY = 'read';
   readonly ACCESS_LEVEL_WRITE = 'write';
 
-
+  readonly ERROR_TITLE_MAX_LENGTH = JSON.stringify({"title":["Ensure this field has no more than 100 characters."]})
+  readonly ERROR_USER_DOES_NOT_EXISTS = JSON.stringify({"detail":"Not found."});
+  
   constructor(private http: Http,
   			  private loginService: LoginService) { }
 
@@ -46,7 +48,11 @@ export class BoardsService {
   			 
   }
 
-
+/*
+  Creates board with Post[title],
+    if ok - return response.json() in data,
+    else - returns error
+*/
   createBoard(title: string) {
     let url: string = this.URL + this.URL_CREATE;
     let token: string = this.loginService.getTokenString();
@@ -57,7 +63,11 @@ export class BoardsService {
             .catch((error: any) => Observable.throw(error));
   }
 
-
+/*
+  Delete board with Post[title],
+    if ok - return Response in data,
+    else - returns error
+*/
   deleteBoard(id: Number) {
     let url = this.URL + +id;
     let token: string = this.loginService.getTokenString();
@@ -75,7 +85,6 @@ export class BoardsService {
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
     let body = {'username': username, 'board_id': boardId};
-    debugger;
     return this.http.post(url, body, {headers: headers})
                     .map((response: Response) => {return response.json()})
                     .catch((error: any) => {return Observable.throw(error)})

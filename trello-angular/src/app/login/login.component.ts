@@ -62,7 +62,6 @@ export class LoginComponent implements OnInit {
     cases with blank field errors should'n have breaks
   */
   private errorHandler(error) {
-    debugger;
     switch (error['_body']) {
       case this.loginService.ERROR_USERNAME_PASS_INVALID:
         alert(this.TEXT_ERROR_INVALID_USERNAME_PASSWORD)

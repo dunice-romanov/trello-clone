@@ -5,7 +5,7 @@
 	</div>
 
 	<div class='card-list'> 
-		<div class='card style-list' *ngFor="let list of lists;let i=index;" >
+		<div class='card style-list' *ngFor="let list of lists;let i=index;">
 			<h4 class='сard-title'>{{list.title}}</h4>
 			
 			<div class='card-text'>
@@ -14,13 +14,13 @@
 					<div class='title'>{{post.title}}</div>
 				</div>
 
-				<div class="collapse-text" *ngIf="!isCollapsedArray[i]" (click)="onClickOpenAddPostCollapse(i);"[attr.aria-expanded]="!isCollapsedArray[i]" aria-controls="collapse">
+				<div class="collapse-text" *ngIf="!isCollapsedArray[i] && isListOwner(list.owner)" (click)="onClickOpenAddPostCollapse(i);" [attr.aria-expanded]="!isCollapsedArray[i]" aria-controls="collapse">
 						{{TEXT_ADD_NEW_POST_COLLAPSE}}
 				</div>
 
 				<!-- Collapse code -->
 				<div [ngbCollapse]="!isCollapsedArray[i]">
-					<textarea class="form-control" [(ngModel)]="listInput[i]"></textarea>
+					<textarea class="form-control" placeholder='{{TEXT_MAX_LENGTH_TITLE}}' [(ngModel)]="listInput[i]"></textarea>
 					
 					<button class="btn btn-success" (click)="onClickAddPost(i, list.id)">{{TEXT_ADD_NEW_POST}}</button>
 					<button class="btn btn-danger" (click)="onClickAddPostClose(i)">{{TEXT_ADD_CLOSE}}</button>
@@ -28,10 +28,11 @@
 				<!-- Collapse end -->
 
 			</div>
+			
 		</div>
 
 		<div class='card style-list create-list' *ngIf="!isCreateButtonCollapsed" (click)="onClickOpenAddListCollapse()">
-			title create list
+			{{TEXT_CREATE_LIST}}
 		</div>
 
 		<div *ngIf="isCreateButtonCollapsed" class='card style-list create-list'>
@@ -39,5 +40,6 @@
 			<button class="btn btn-success" (click)="onClickAddList()">{{TEXT_ADD_NEW_LIST}}</button>
 			<button class="btn btn-danger" (click)="onClickAddListClose()">{{TEXT_ADD_CLOSE}}</button>
 		</div>
+	<div class="tmp"></div>
 	</div>
 </div>

@@ -20,7 +20,8 @@ export class HomeComponent implements OnInit {
   readonly TEXT_DELETE_BOARD = 'x';
   readonly TEXT_SHARE_BOARD = 'Share';
   readonly TEXT_ERROR_SERVER_PROBLEM = 'Server is unavailable';
-  
+  readonly TEXT_ERROR_MAX_LENGTH = "Title can't be more than 100 symbols"; 
+
   private username: string;
   private boardTitle: string;
   private boardList: Board[];
@@ -60,7 +61,7 @@ export class HomeComponent implements OnInit {
             this.boardTitle = '';
             this.setBoardList();
               }, 
-          (error) => {debugger});
+          (error) => {this.errorHandler(error);});
   }
 
   /*
@@ -71,7 +72,7 @@ export class HomeComponent implements OnInit {
     event.stopPropagation();
     this.boardsService.deleteBoard(boardId)
          .subscribe( (data) => {this.setBoardList()},
-                     (error) => {debugger;} );
+                     (error) => {this.errorHandler(error);} );
     return false;
   }
 
@@ -100,19 +101,28 @@ export class HomeComponent implements OnInit {
   private setBoardList() {
     this.boardsService.getUserList().subscribe(
         (data) => { this.boardList = data },
-        (error) => { debugger; }
+        (error) => { 
+          this.errorHandler(error);
+         }
       );
   }
 
   private stopPropagation(event) {
     event.stopPropagation();
   }
+
   /*
     Handles server's errors
   */
-  errorHandler(error) {
-    debugger;
-    alert(this.TEXT_ERROR_SERVER_PROBLEM);
-    this.loginService.logout();
+  private errorHandler(error) {
+    switch (error['_body']) {
+      case this.boardsService.ERROR_TITLE_MAX_LENGTH:
+        alert(this.TEXT_ERROR_MAX_LENGTH);
+        this.boardTitle = '';
+        break;
+      default:
+        alert(this.TEXT_ERROR_SERVER_PROBLEM);
+        break;
+    }
   }
 }

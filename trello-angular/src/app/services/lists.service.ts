@@ -20,7 +20,8 @@ export class ListsService{
   readonly HEADER_AUTHORIZATION = 'Authorization';
   readonly HEADER_JWT = 'JWT';
 
-
+  readonly ERROR_LIST_TITLE_MAX_LENGHT = JSON.stringify({"title":["Ensure this field has no more than 100 characters."]});
+  
   constructor(private http: Http,
   			  private loginService: LoginService) { }
 
@@ -100,7 +101,7 @@ export class ListsService{
   */
   private parseList(response: Object): List {
 
-    let list = new List(response['title'], response['id']);
+    let list = new List(response['title'], response['id'], response['owner']);
 
     for (let post of response['posts']) {
       let newPost = new Post(post['id'], post['title'], post['text'])

@@ -13,7 +13,7 @@ export class NavigationComponent implements OnInit {
 	readonly TEXT_LOGIN = 'Login';
 	readonly TEXT_REGISTER = 'Register';
 	readonly TEXT_LOGOUT = 'Logout';
-	readonly TEXT_BRAND = 'My own homepage';
+	readonly TEXT_BRAND = 'Shmrello';
 	
 	constructor(private loginService: LoginService) { }
 
