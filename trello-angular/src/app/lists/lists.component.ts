@@ -5,6 +5,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 import { ListsService } from '../services/lists.service';
 import { LoginService } from '../services/login.service';
+import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
 import { List } from '../classes/list';
 import { CardWindowComponent } from '../card-window/card-window.component'
@@ -38,7 +39,16 @@ export class ListsComponent implements OnInit {
 	constructor(private route: ActivatedRoute, 
 				private listService: ListsService,
 				private modalService: NgbModal,
-				private loginService: LoginService) {
+				private loginService: LoginService,
+				private dragulaService: DragulaService) {
+		
+		dragulaService.setOptions('bag-one', {
+      		removeOnSpill: true
+    	});
+		dragulaService.drop.subscribe((value) => {
+      		console.log(`drop: ${value[0]}`);
+     		 this.dropModel(value.slice(1));    
+		});
 		this.boardId = 0;
 		this.lists = [];
 		this.inputListTitle = '';
@@ -147,6 +157,12 @@ export class ListsComponent implements OnInit {
 	    	.then((result) => { this.updateLists(this.boardId); })
 	    	.catch((reason)=> { this.updateLists(this.boardId); });
 	    return false;
+	}
+
+	private dropModel(args) {
+		
+		debugger;
+		// do something
 	}
 
 	/*
