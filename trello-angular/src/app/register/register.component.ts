@@ -11,8 +11,10 @@ import { LoginService } from '../services/login.service';
 })
 export class RegisterComponent implements OnInit {
 
-  readonly TEXT_PLACEHOLDER_USERNAME = 'Input user';
-  readonly TEXT_PLACEHOLDER_PASSWORD = 'Input password';
+  readonly TEXT_USERNAME = 'Input user';
+  readonly TEXT_PASSWORD = 'Input password';
+  readonly TEXT_PLACEHOLDER_USERNAME = 'example: kokosik88';
+  readonly TEXT_PLACEHOLDER_PASSWORD = 'your pass';
 	
   readonly TEXT_REGISTER = 'Register';
 

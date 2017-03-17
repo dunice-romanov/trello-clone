@@ -10,8 +10,8 @@ import { LoginService } from '../services/login.service'
 })
 export class LoginComponent implements OnInit {
 
-  readonly TEXT_PLACEHOLDER_USERNAME = 'Input user';
-  readonly TEXT_PLACEHOLDER_PASSWORD = 'Input password';
+  readonly TEXT_PLACEHOLDER_USERNAME = 'username';
+  readonly TEXT_PLACEHOLDER_PASSWORD = 'password';
   readonly TEXT_BUTTON_LOGIN = 'Login!';
 
   readonly TEXT_ERROR_INVALID_USERNAME_PASSWORD = 'Invalid username or password';

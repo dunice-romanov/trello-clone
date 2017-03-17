@@ -18,7 +18,8 @@ export class PostService {
   readonly HEADER_JWT = 'JWT';
 
   readonly ERROR_BLANK_TITLE = JSON.stringify({"title":["This field may not be blank."]});
-
+  readonly ERROR_DONT_HAVE_PERMISSION = JSON.stringify({"detail":"You do not have permission to perform this action."});
+  
   constructor(private http: Http,
           private loginService: LoginService) { }
 
@@ -80,7 +81,7 @@ export class PostService {
           let fullPost = this.parseFullPost(resp);
           return fullPost;
          })
-      .catch( (error: any) => { return Observable.throw(error); } );
+      .catch( (error: any) => { debugger; return Observable.throw(error); } );
   }
 
   /*

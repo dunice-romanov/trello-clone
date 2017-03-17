@@ -19,6 +19,8 @@ export class CardWindowComponent implements OnInit {
   readonly TEXT_PLACEHOLDER_DESCRIPTION = 'Add description';
   readonly TEXT_ERROR_BLACK_FIELD = 'This field can not be blank'
   readonly TEXT_ERROR_SERVER_PROBLEM = 'Server is anavailable';
+  readonly TEXT_ERROR_PERMISSION = 'You dont have a permission';
+
   postId: number;
 
   private isTitleCollapsed: boolean;
@@ -109,9 +111,13 @@ export class CardWindowComponent implements OnInit {
   private errorHandler(error) {
     switch (error['_body']) {
       case this.postSevice.ERROR_BLANK_TITLE:
-        alert(this.TEXT_ERROR_BLACK_FIELD)
+        alert(this.TEXT_ERROR_BLACK_FIELD);
         break;
-
+      case this.postSevice.ERROR_DONT_HAVE_PERMISSION:
+        alert(this.TEXT_ERROR_PERMISSION);
+        this.title = this.post.title;
+        this.description = this.post.text;
+        break;
       default:
         alert(this.TEXT_ERROR_SERVER_PROBLEM);
         break;
