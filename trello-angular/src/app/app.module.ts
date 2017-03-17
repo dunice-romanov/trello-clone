@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { DragulaModule } from 'ng2-dragula';
 import { AppRoutingModule } from './app-routing/app-routing.module'
 import { LoginService } from './services/login.service'
 
@@ -32,6 +32,7 @@ import { CardWindowComponent } from './card-window/card-window.component';
     CardWindowComponent
   ],
   imports: [
+    DragulaModule,
     BrowserModule,
     FormsModule,
     HttpModule,
