@@ -188,7 +188,8 @@ export class ListsComponent implements OnInit, OnDestroy {
 		let listTo = args[1].dataset.idList;
 		let postAfterDrag: Post = this.lists[listTo].posts[postIndex];
 		this.postService.patchPosition(postAfterDrag.id, (postIndex + 1), this.lists[listTo].id)
-						.subscribe((data)=> { this.updateLists(this.boardId); }) 
+						.subscribe((data)=> { this.updateLists(this.boardId); },
+									(error)=>{debugger;}) 
 	}
 
 	/*

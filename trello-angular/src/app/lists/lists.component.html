@@ -4,20 +4,20 @@
 
 	</div>
 
-	<div class='card-list'>
-		<div class='card style-list' *ngFor="let list of lists;let i=index;" >
-			<h4 class='сard-title'>{{list.title}}</h4>
-			
-			<div class='card-text' [attr.data-id-list]='i' [dragula]='"bag-one"' [dragulaModel]="list.posts">
+	<div class='card-list' >
+		<div [dragula]='"bag-two"' [dragulaModel]="list">
+			<div class='card style-list' *ngFor="let list of lists;let i=index;" >
+				<h4 class='сard-title'>{{list.title}}</h4>
 				
-				<div *ngFor="let post of list.posts; let j=index " class='card-block card-success card-block-low-padding' 
-								(click)="onClickOpenPost(post.id, $event)" [attr.data-id-post]='post.id'>
-					<div class='title'>{{post.title}}</div>
+				<div class='card-text' [attr.data-id-list]='i' [dragula]='"bag-one"' [dragulaModel]="list.posts">	
+					<div *ngFor="let post of list.posts; let j=index " class='card-block card-success card-block-low-padding' 
+									(click)="onClickOpenPost(post.id, $event)" [attr.data-id-post]='post.id'>
+						<div class='title'>{{post.title}}</div>
+					</div>
 				</div>
 
-
-			</div>
-				<div class="collapse-text" *ngIf="!isCollapsedArray[i] && isListOwner(list.owner)" (click)="onClickOpenAddPostCollapse(i);" [attr.aria-expanded]="!isCollapsedArray[i]" aria-controls="collapse">
+				<div class="collapse-text" *ngIf="!isCollapsedArray[i] && isListOwner(list.owner)" (click)="onClickOpenAddPostCollapse(i);" 
+					[attr.aria-expanded]="!isCollapsedArray[i]" aria-controls="collapse">
 						{{TEXT_ADD_NEW_POST_COLLAPSE}}
 				</div>
 
@@ -30,8 +30,8 @@
 				</div> 
 				<!-- Collapse end -->
 
+			</div>
 		</div>
-
 		<div class='card style-list create-list' *ngIf="!isCreateButtonCollapsed" (click)="onClickOpenAddListCollapse()">
 			{{TEXT_CREATE_LIST}}
 		</div>
