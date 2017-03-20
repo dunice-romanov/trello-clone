@@ -13,7 +13,7 @@ class IsWritebleOrReadOnly(permissions.BasePermission):
 	"""
 	def has_permission(self, request, view):
 		list = get_object_or_404(List, 
-								  pk=request.data['board'])
+								  pk=request.data['cardlist'])
 		permission = get_object_or_404(BoardPermission, 
 										board=list.board, 
 										user=request.user)
@@ -32,10 +32,8 @@ class IsWritebleOrReadOnlyRetrieve(permissions.BasePermission):
 		if request.method in permissions.SAFE_METHODS:
 			return True
 
-
-		print(obj.board.board)
 		permission = get_object_or_404(BoardPermission, 
-										board=obj.board.board, 
+										board=obj.cardlist.board, 
 										user=request.user)
 		if permission.access_level == 'read':
 		  return False

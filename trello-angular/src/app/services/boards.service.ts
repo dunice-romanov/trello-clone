@@ -58,6 +58,7 @@ export class BoardsService {
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
     let body = {'title': title};
+    
     return this.http.post(url, body, {headers: headers})
             .map((response: Response) => response.json())
             .catch((error: any) => Observable.throw(error));

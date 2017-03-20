@@ -81,7 +81,7 @@ export class PostService {
           let fullPost = this.parseFullPost(resp);
           return fullPost;
          })
-      .catch( (error: any) => { debugger; return Observable.throw(error); } );
+      .catch( (error: any) => { return Observable.throw(error); } );
   }
 
   /*
@@ -101,8 +101,8 @@ export class PostService {
     let id: number = response['id'];
     let title: string = response['title'];
     let text: string = response['text'];
-
-    let fullPost = new FullPost(id, title, text);
+    let position: number = response['position']
+    let fullPost = new FullPost(id, title, text, position);
     fullPost.commentaries = this.parseAllComments(response['commentary']);
 
     return fullPost;

@@ -75,7 +75,7 @@ export class ListsService{
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
     let body = {
-      'board': listId,
+      'cardlist': listId,
       'title': title
     }
     return this.http.post(url, body, {headers: headers})
@@ -104,7 +104,7 @@ export class ListsService{
     let list = new List(response['title'], response['id'], response['owner']);
 
     for (let post of response['posts']) {
-      let newPost = new Post(post['id'], post['title'], post['text'])
+      let newPost = new Post(post['id'], post['title'], post['text'], post['position'])
 
       list['posts'].push(newPost);
       

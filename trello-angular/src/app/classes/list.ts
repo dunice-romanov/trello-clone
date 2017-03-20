@@ -14,12 +14,15 @@ export class List {
 
 export class Post {
 	id: Number;
+	positionId: Number;
 	title: string;
 	text: string;
-	constructor(id: Number, title: string, text: string) {
+	constructor(id: Number, title: string, 
+				text: string, positionId: Number) {
 		this.title = title;
 		this.id = id;
 		this.text = text;
+		this.positionId = positionId;
 	}
 }
 
@@ -28,8 +31,9 @@ export class FullPost extends Post {
 	commentaries: Commentary[];
 	constructor(id: Number, 
 				title: string, 
-				text: string) {
-		super(id, title, text);
+				text: string,
+				positionId: Number) {
+		super(id, title, text, positionId);
 		this.commentaries = [];
 	}
 }

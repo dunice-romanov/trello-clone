@@ -3,15 +3,16 @@ from django.contrib.auth.models import User
 
 from todos.models import List
 
-# Create your models here.
+
 class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     text = models.TextField(default='', null=True, blank=True)
-    title = models.CharField(max_length=100, default='')
-    board = models.ForeignKey(List, related_name='posts', on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    cardlist = models.ForeignKey(List, related_name='posts', on_delete=models.CASCADE)
+    position = models.IntegerField(default=0)
 
     class Meta:
-        ordering = ('created',)
+        ordering = ('position',)
 
 
 class Commentary(models.Model):

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +15,7 @@ import { CardWindowComponent } from '../card-window/card-window.component'
 	styleUrls: ['./lists.component.css'],
 	providers: [ListsService]
 })
-export class ListsComponent implements OnInit {
+export class ListsComponent implements OnInit, OnDestroy {
 
 	readonly TEXT_ADD_NEW_POST = "Add";
 	readonly TEXT_ADD_NEW_LIST = 'Save';
@@ -64,6 +64,10 @@ export class ListsComponent implements OnInit {
 
 		},
 			(error)=> {this.errorHandler(error);});
+	}
+
+	ngOnDestroy() {
+		this.dragulaService.destroy('bag-one');
 	}
 
 	/*

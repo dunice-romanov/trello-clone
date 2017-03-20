@@ -17,7 +17,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'title', 'board', 'created',)
+        fields = ('id', 'title', 'cardlist', 'created', 'position')
 
 
 class PostObjectSerializer(serializers.ModelSerializer):
@@ -25,4 +25,4 @@ class PostObjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'text', 'title', 'board', 'created', 'commentary',)
+        fields = ('id', 'position', 'text', 'title', 'cardlist', 'created', 'commentary',)
