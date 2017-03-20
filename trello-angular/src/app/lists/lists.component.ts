@@ -6,14 +6,16 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ListsService } from '../services/lists.service';
 import { LoginService } from '../services/login.service';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
+import { PostService } from '../services/post.service';
 
-import { List } from '../classes/list';
+import { List, Post } from '../classes/list';
 import { CardWindowComponent } from '../card-window/card-window.component'
 @Component({
 	selector: 'app-lists',
 	templateUrl: './lists.component.html',
 	styleUrls: ['./lists.component.css'],
-	providers: [ListsService]
+	providers: [ListsService,
+				PostService]
 })
 export class ListsComponent implements OnInit, OnDestroy {
 
@@ -32,6 +34,8 @@ export class ListsComponent implements OnInit, OnDestroy {
 
 	private isCreateButtonCollapsed: boolean;
 
+	private draggingPost: Post;
+
 	private isCollapsedArray: boolean[];
 	private lists: List[];
 	private listInput: string[];
@@ -40,21 +44,30 @@ export class ListsComponent implements OnInit, OnDestroy {
 				private listService: ListsService,
 				private modalService: NgbModal,
 				private loginService: LoginService,
-				private dragulaService: DragulaService) {
+				private dragulaService: DragulaService,
+				private postService: PostService) {
 		
 		dragulaService.setOptions('bag-one', {
-      		removeOnSpill: true
+      		removeOnSpill: false,
     	});
-		dragulaService.drop.subscribe((value) => {
-      		console.log(`drop: ${value[0]}`);
-     		 this.dropModel(value.slice(1));    
+
+		dragulaService.drag.subscribe((value) => {
+			console.log(`drag: ${value[0]}`);
+			this.onDrag(value.slice(1));
 		});
+
+		dragulaService.dropModel.subscribe((value) => {
+      		console.log(`drop: ${value[0]}`);
+			this.onDropModel(value.slice(1));    
+		});
+		
 		this.boardId = 0;
 		this.lists = [];
 		this.inputListTitle = '';
 		this.listInput = [];
 		this.isCollapsedArray = [];
 		this.isCreateButtonCollapsed = false;
+		this.draggingPost = null;
 	}
 
 	ngOnInit() {
@@ -163,10 +176,19 @@ export class ListsComponent implements OnInit, OnDestroy {
 	    return false;
 	}
 
-	private dropModel(args) {
-		
-		debugger;
-		// do something
+	private onDrag(args) {
+		let listId = args[1].dataset.idList;
+		let postId = args[0].dataset.idPost;
+	}
+
+	private onDropModel(args) {
+		let [el, target, source] = args;
+
+		let postIndex = this.lists[target.dataset.idList]['posts'].findIndex((p) => p.id == el.dataset.idPost);
+		let listTo = args[1].dataset.idList;
+		let postAfterDrag: Post = this.lists[listTo].posts[postIndex];
+		this.postService.patchPosition(postAfterDrag.id, (postIndex + 1), this.lists[listTo].id)
+						.subscribe((data)=> { this.updateLists(this.boardId); }) 
 	}
 
 	/*

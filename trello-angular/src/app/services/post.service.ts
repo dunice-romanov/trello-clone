@@ -44,6 +44,14 @@ export class PostService {
          
   }
 
+  patchPosition(postId: Number, newPosition: Number, newList: Number) {
+    let positionObject = {
+      'position': newPosition,
+      'cardlist': newList,
+    }
+    return this.patchPost(postId, positionObject);
+  }
+
   /*
     patches post's title on a server
     returns FullPost object if ok,
