@@ -5,11 +5,11 @@
 	</div>
 
 	<div class='card-list' >
-		<div [dragula]='"bag-two"' [dragulaModel]="list">
+		<div>
 			<div class='card style-list' *ngFor="let list of lists;let i=index;" >
 				<h4 class='сard-title'>{{list.title}}</h4>
 				
-				<div class='card-text' [attr.data-id-list]='i' [dragula]='"bag-one"' [dragulaModel]="list.posts">	
+				<div class='card-text dragula-card-bag' [attr.data-id-list]='i' [dragula]='"bag-one"' [dragulaModel]="list.posts">	
 					<div *ngFor="let post of list.posts; let j=index " class='card-block card-success card-block-low-padding' 
 									(click)="onClickOpenPost(post.id, $event)" [attr.data-id-post]='post.id'>
 						<div class='title'>{{post.title}}</div>

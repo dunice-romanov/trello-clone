@@ -60,6 +60,9 @@ div.style-list {
 	vertical-align: top;
 }
 
+.dragula-card-bag {
+	min-height: 2px;
+}
 
 div.list-title {
 	border: 1px solid black;

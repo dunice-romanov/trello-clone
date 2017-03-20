@@ -1,9 +1,9 @@
 export class List {
 	title: string;
-	id: Number;
+	id: number;
 	posts: Post[];
 	owner: string;
-	constructor(title: string, listId: Number, owner: string) {
+	constructor(title: string, listId: number, owner: string) {
 		this.title = title;
 		this.id = listId;
 		this.owner = owner;
@@ -13,12 +13,12 @@ export class List {
 
 
 export class Post {
-	id: Number;
-	positionId: Number;
+	id: number;
+	positionId: number;
 	title: string;
 	text: string;
-	constructor(id: Number, title: string, 
-				text: string, positionId: Number) {
+	constructor(id: number, title: string, 
+				text: string, positionId: number) {
 		this.title = title;
 		this.id = id;
 		this.text = text;
@@ -29,10 +29,10 @@ export class Post {
 
 export class FullPost extends Post {
 	commentaries: Commentary[];
-	constructor(id: Number, 
+	constructor(id: number, 
 				title: string, 
 				text: string,
-				positionId: Number) {
+				positionId: number) {
 		super(id, title, text, positionId);
 		this.commentaries = [];
 	}

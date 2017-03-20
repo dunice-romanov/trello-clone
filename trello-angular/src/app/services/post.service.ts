@@ -44,7 +44,7 @@ export class PostService {
          
   }
 
-  patchPosition(postId: Number, newPosition: Number, newList: Number) {
+  patchPosition(postId: number, newPosition: number, newList: number) {
     let positionObject = {
       'position': newPosition,
       'cardlist': newList,

@@ -49,6 +49,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 		
 		dragulaService.setOptions('bag-one', {
       		removeOnSpill: false,
+			direction: 'vertical'
     	});
 
 		dragulaService.drag.subscribe((value) => {
