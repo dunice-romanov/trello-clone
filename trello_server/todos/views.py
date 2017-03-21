@@ -21,15 +21,11 @@ class ListObject(generics.ListAPIView):
         return List.objects.filter(board=board_id)
 
 
-# class ListObject(generics.ListAPIView):
-#     serializer_class = ListSerializer;
-#     queryset = List.objects.all()
-
-
 class ListObjectCreate(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated, IsWritebleOrReadOnly)
     queryset = List.objects.all()
     serializer_class = ListSerializer
+
 
 class ListRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = List.objects.all()

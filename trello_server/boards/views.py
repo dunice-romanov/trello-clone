@@ -81,9 +81,22 @@ class BoardPermissionCreate(generics.CreateAPIView):
         serializer.save(user=user, board=board)
 
 
-class BoardUnshare(generics.DestroyAPIView):
+class BoardSharesList(generics.ListAPIView):
     serializer_class = BoardPermissionSerializer
 
-    # def get_queryset(self):
-    #     return BoardPermission.objects.filter(user=self.request.data['username'], board.pk=self.request)
-    #                                     .filter()
+    def get_queryset(self):
+        user = self.request.user
+        board_id = self.request.GET.get('id')
+        queryset = BoardPermission.objects.filter(board=board_id)
+        return queryset
+
+
+class BoardPermissionOne(generics.RetrieveAPIView):
+    serializer_class = BoardPermissionSerializer
+    def get_queryset(self):
+        user = self.request.user
+        return BoardPermission.objects.filter(user=user)
+
+
+class BoardUnshare(generics.DestroyAPIView):
+    serializer_class = BoardPermissionSerializer

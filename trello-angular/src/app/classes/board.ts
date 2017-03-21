@@ -13,3 +13,19 @@ export class Board {
 		this.id = id;
 	}
 }
+
+export class ShareBoard {
+	username: string;
+	accessLevel: string;
+	boardId: number;
+	title: string;
+	constructor(username: string, 
+				accessLevel: string,
+				boardId: number,
+				title: string) {
+		this.accessLevel = accessLevel;
+		this.boardId = boardId;
+		this.username = username;
+		this.title = title;
+	}
+}

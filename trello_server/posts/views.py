@@ -72,8 +72,6 @@ class PostView(generics.RetrieveUpdateDestroyAPIView):
             post.position -= 1
             post.save()
 
-
-
     def change_positions(self, cardlist, position):
         posts = Post.objects.filter(position__gte=position, cardlist=cardlist)
 
@@ -87,7 +85,6 @@ class PostView(generics.RetrieveUpdateDestroyAPIView):
             print('old list != new list')
             self.add_to_another_list(old_cardlist, cardlist, position)
             self.recalc_old_cardlist(old_cardlist, old_position)
-
         
 
     def partial_update(self, request, *args, **kwargs):

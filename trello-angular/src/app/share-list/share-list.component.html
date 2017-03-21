@@ -1,0 +1,7 @@
+<template ngbModalContainer></template>
+<div class='user-list'> 
+  <div class="user-card" *ngFor="let board of shareBoards">
+    <div>{{board.username}} ({{board.accessLevel}})</div>
+  </div>
+  <button class="btn btn-primary" (click)='onClickShareBoard(boardId, $event)'>Share to</button>
+</div>

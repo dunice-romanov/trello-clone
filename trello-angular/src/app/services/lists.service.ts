@@ -101,7 +101,7 @@ export class ListsService{
   */
   private parseList(response: Object): List {
 
-    let list = new List(response['title'], response['id'], response['owner']);
+    let list = new List(response['title'], response['id']);
 
     for (let post of response['posts']) {
       let newPost = new Post(post['id'], post['title'], post['text'], post['position'])

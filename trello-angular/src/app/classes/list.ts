@@ -2,11 +2,9 @@ export class List {
 	title: string;
 	id: number;
 	posts: Post[];
-	owner: string;
-	constructor(title: string, listId: number, owner: string) {
+	constructor(title: string, listId: number) {
 		this.title = title;
 		this.id = listId;
-		this.owner = owner;
 		this.posts = []
 	}
 }

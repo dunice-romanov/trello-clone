@@ -18,6 +18,7 @@ import { RegisterComponent } from './register/register.component'
 import { SharingComponent } from './sharing/sharing.component';
 import { IntroductionComponent } from './introduction/introduction.component';
 import { CardWindowComponent } from './card-window/card-window.component';
+import { ShareListComponent } from './share-list/share-list.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { CardWindowComponent } from './card-window/card-window.component';
     SharingComponent,
     ListsComponent,
     IntroductionComponent,
-    CardWindowComponent
+    CardWindowComponent,
+    ShareListComponent
   ],
   imports: [
     DragulaModule,

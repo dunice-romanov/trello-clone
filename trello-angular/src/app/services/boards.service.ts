@@ -7,7 +7,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { LoginService } from '../services/login.service';
-import { Board } from '../classes/board'
+import { Board, ShareBoard } from '../classes/board'
 
 @Injectable()
 export class BoardsService {
@@ -15,6 +15,7 @@ export class BoardsService {
   readonly URL = "http://127.0.0.1:8000/api-boards/";
   readonly URL_CREATE = "create/"
   readonly URL_ADD_PERMISSION = "add-permission";
+  readonly URL_GET_PERMISSION_USERS = "get-sharing-list/?id=";
   readonly HEADER_AUTHORIZATION = 'Authorization';
   readonly HEADER_JWT = 'JWT';
 
@@ -69,7 +70,7 @@ export class BoardsService {
     if ok - return Response in data,
     else - returns error
 */
-  deleteBoard(id: Number) {
+  deleteBoard(id: number) {
     let url = this.URL + +id;
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
@@ -81,7 +82,7 @@ export class BoardsService {
   /*
     shares board with another user by POST[username, board_id]
   */
-  shareBoard(boardId: Number, username: string) {
+  shareBoard(boardId: number, username: string) {
     let url = this.URL + this.URL_ADD_PERMISSION;
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
@@ -89,6 +90,48 @@ export class BoardsService {
     return this.http.post(url, body, {headers: headers})
                     .map((response: Response) => {return response.json()})
                     .catch((error: any) => {return Observable.throw(error)})
+  }
+
+  getShareList(boardId: number) {
+    let url = this.URL + this.URL_GET_PERMISSION_USERS + boardId;
+    let token: string = this.loginService.getTokenString();
+    let headers: Headers = this.createHeaders(token);
+    return this.http.get(url, {headers: headers})
+                    .map((response: Response) => { 
+                      let resp = response.json(); 
+                      return this.parseShareBoards(resp);
+                     })
+                    .catch((error: any) => {return Observable.throw(error)});
+  }
+
+  getBoardTitle(boardId: number) {
+    let url = this.URL + +boardId;
+    let token: string = this.loginService.getTokenString();
+    let headers: Headers = this.createHeaders(token);
+    return this.http.get(url, {headers: headers})
+                    .map((response: Response) => { 
+                      let resp = response.json(); 
+                      return resp['title'];
+                     })
+                    .catch((error: any) => {return Observable.throw(error)});
+  }
+
+  patchTitle(boardId: number, title: string) {
+    let body = {'title': title};
+    return this.updateBoard(boardId, body);
+  }
+
+  private updateBoard(boardId: number, patchObject: Object) {
+    let url: string = this.URL + +boardId;
+    let token: string = this.loginService.getTokenString();
+    let headers: Headers = this.createHeaders(token);
+
+    return this.http.patch(url, patchObject, {headers: headers})
+      .map((response: Response) => { 
+          let resp = response.json();
+          return resp;
+         })
+      .catch( (error: any) => { return Observable.throw(error); } );
   }
 
   /*
@@ -117,6 +160,24 @@ export class BoardsService {
     headers.append(this.HEADER_AUTHORIZATION, 
             this.HEADER_JWT + ' ' +  JWToken);
     return headers
+  }
+
+  private parseShareBoard (response: Object): ShareBoard {
+    let username: string = response['user'];
+    let accessLevel: string = response['access_level'];
+    let boardId: number = response['board']['id'];
+    let title: string = response['board']['title'];
+    let shareBoard: ShareBoard = new ShareBoard(username, accessLevel, boardId, title);
+    return shareBoard;
+  }
+
+  private parseShareBoards(response: Object[]): ShareBoard[]{
+    let shareBoards: ShareBoard[] = [];
+    for (let resp of response) {
+      let newBoard = this.parseShareBoard(resp);
+      shareBoards.push(newBoard);
+    }
+    return shareBoards;
   }
 
 }

@@ -1,0 +1,15 @@
+.user-card {
+    margin: 2px 1px;
+    color: #444;
+    border-radius: 3px;
+    font-size: 16px;
+}
+
+.user-card:hover {
+    color: #111;
+    background-color: #D6DAFC;
+    cursor: pointer;
+}
+
+.user-list {
+}

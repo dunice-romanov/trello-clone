@@ -11,7 +11,7 @@ import { BoardsService } from '../services/boards.service';
 export class SharingComponent {
 	readonly TEXT_SHARE_OK = "Complete!";
 	readonly TEXT_ERROR_USER_DOESNT_EXISTS = "User doesn't exists";
-	readonly TEXT_ERROR_SERVER_PROBLEM = "Server is anavailable";
+	readonly TEXT_ERROR_SERVER_PROBLEM = "Server is unavailable";
 	private username: string;
 
 
@@ -35,7 +35,7 @@ export class SharingComponent {
 			if ok -> shows alert and closes self
 			else -> handles error
 	*/
-	private shareWith(username: string, boardId: Number){
+	private shareWith(username: string, boardId: number){
 
 		this.boardService.shareBoard(boardId, username)
 						.subscribe(

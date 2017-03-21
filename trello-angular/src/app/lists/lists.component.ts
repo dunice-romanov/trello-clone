@@ -7,7 +7,9 @@ import { ListsService } from '../services/lists.service';
 import { LoginService } from '../services/login.service';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { PostService } from '../services/post.service';
+import { BoardsService } from '../services/boards.service';
 
+import { ShareBoard } from '../classes/board';
 import { List, Post } from '../classes/list';
 import { CardWindowComponent } from '../card-window/card-window.component'
 @Component({
@@ -15,7 +17,8 @@ import { CardWindowComponent } from '../card-window/card-window.component'
 	templateUrl: './lists.component.html',
 	styleUrls: ['./lists.component.css'],
 	providers: [ListsService,
-				PostService]
+				PostService,
+				BoardsService]
 })
 export class ListsComponent implements OnInit, OnDestroy {
 
@@ -25,58 +28,68 @@ export class ListsComponent implements OnInit, OnDestroy {
 	readonly TEXT_ADD_CLOSE = 'X';
 	readonly TEXT_CREATE_LIST = 'Create new list';
 	readonly TEXT_MAX_LENGTH_TITLE = '100 symblos maximum';
-
+	readonly TEXT_TITLE_MODAL_HEADER = 'Rename Board';
+	readonly TEXT_TITLE_MODAL_NAME = 'Name';
+	readonly TEXT_TITLE_MODAL_BUTTON = 'Rename';
 	readonly TEXT_ERROR_MAX_LENGTH = "You wrote more symbols than system can get :("
 	readonly TEXT_ERROR_SERVER_PROBLEM = "Server is unavailable";
-	private boardId: Number;
+	
+	private boardId: number;
 	private sub: any;
 	private inputListTitle;
-
 	private isCreateButtonCollapsed: boolean;
-
+	private boardTitle: string;
+	private newBoardTitle: string;
 	private draggingPost: Post;
-
+	private accessLevel: string;
 	private isCollapsedArray: boolean[];
+	private isCollapsedTitleEdit: boolean;
 	private lists: List[];
 	private listInput: string[];
+	private menuVisibility: boolean;
 
 	constructor(private route: ActivatedRoute, 
 				private listService: ListsService,
 				private modalService: NgbModal,
 				private loginService: LoginService,
+				private boardService: BoardsService,
 				private dragulaService: DragulaService,
 				private postService: PostService) {
 		
 		dragulaService.setOptions('bag-one', {
       		removeOnSpill: false,
-			direction: 'vertical'
     	});
-
-		dragulaService.drag.subscribe((value) => {
-			console.log(`drag: ${value[0]}`);
-			this.onDrag(value.slice(1));
-		});
-
-		dragulaService.dropModel.subscribe((value) => {
-      		console.log(`drop: ${value[0]}`);
-			this.onDropModel(value.slice(1));    
-		});
-		
+		this.menuVisibility = true;
+		this.boardTitle = '';
+		this.accessLevel = '';
 		this.boardId = 0;
 		this.lists = [];
 		this.inputListTitle = '';
 		this.listInput = [];
 		this.isCollapsedArray = [];
 		this.isCreateButtonCollapsed = false;
+		this.isCollapsedTitleEdit = false;
 		this.draggingPost = null;
 	}
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe((params) => {
-	       this.boardId = +params['id'];
-	       this.updateLists(this.boardId);
+			this.boardId = +params['id'];
+			this.boardService.getShareList(this.boardId).subscribe(
+				(data) => { this.accessLevel = this.getAccessLevel(data); this.boardTitle = this.getBoardTitle(data);}
+			);
+			this.listService.getListsList(this.boardId)
+				.subscribe(
+					(data) => {
+						this.lists = data;
+						this.dragulaService.dropModel
+							.subscribe((value) => { this.onDropModel(value.slice(1)) });
+					
+					},
 
-		},
+					(error) => {this.errorHandler(error);}
+				);
+			},
 			(error)=> {this.errorHandler(error);});
 	}
 
@@ -97,6 +110,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 								this.updateLists(this.boardId);
 								this.inputListTitle = '';
 								this.isCreateButtonCollapsed = false;
+								
 							},
 							(error) => {
 								this.inputListTitle = '';
@@ -177,20 +191,34 @@ export class ListsComponent implements OnInit, OnDestroy {
 	    return false;
 	}
 
-	private onDrag(args) {
-		let listId = args[1].dataset.idList;
-		let postId = args[0].dataset.idPost;
+	onClickUpdateTitle() {
+		let title = this.newBoardTitle.trim();
+		if (title == '') {return;}
+		this.boardService.patchTitle(this.boardId, title).subscribe(
+			(data) => { this.updateBoardTitle(this.boardId); this.isCollapsedTitleEdit = false; }
+		);
 	}
 
+	onClickCloseUpdateTitle() {
+		this.isCollapsedTitleEdit = false;
+	}
+
+	private updateBoardTitle(boardId: number) {
+		this.boardService.getBoardTitle(boardId).subscribe((data) => this.boardTitle = data);
+	}
 	private onDropModel(args) {
 		let [el, target, source] = args;
-
-		let postIndex = this.lists[target.dataset.idList]['posts'].findIndex((p) => p.id == el.dataset.idPost);
 		let listTo = args[1].dataset.idList;
+		let postIndex = this.lists[target.dataset.idList]['posts'].findIndex((p) => { return p.id == el.dataset.idPost});
+
+
+
 		let postAfterDrag: Post = this.lists[listTo].posts[postIndex];
+		if (postAfterDrag === undefined) {return;}
 		this.postService.patchPosition(postAfterDrag.id, (postIndex + 1), this.lists[listTo].id)
 						.subscribe((data)=> { this.updateLists(this.boardId); },
-									(error)=>{debugger;}) 
+									(error)=>{ this.errorHandler(error); }) 
+
 	}
 
 	/*
@@ -224,6 +252,24 @@ export class ListsComponent implements OnInit, OnDestroy {
 		return false;
 	}
 
+	private getAccessLevel(shares: ShareBoard[]) {
+		let username: string = this.loginService.getUsername();
+		for (let share of shares) {
+			if (share.username == username) {
+				return share.accessLevel;
+			}
+		}
+	}
+
+	private getBoardTitle(shares: ShareBoard[]) {
+		let username: string = this.loginService.getUsername();
+		for (let share of shares) {
+			if (share.username == username) {
+				return share.title;
+			}
+		}
+	}
+
 	/*
 		Handles errors from listService
 	*/
@@ -235,7 +281,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 			default:
 				alert(this.TEXT_ERROR_SERVER_PROBLEM);
 				break;
-    }
+   		}
 	}
 
 }

@@ -1,9 +1,33 @@
 <template ngbModalContainer></template>
-<div class='header'>
-	<div>
-
+<div class='board-menu' [ngClass]="{invisible: menuVisibility}">
+	<div class='board-menu-header'>
+		<div class='title-close' (click)='menuVisibility=true'>{{TEXT_ADD_CLOSE}}</div>
 	</div>
+	<app-share-list></app-share-list>
+</div>
+<div class='header'>
+	
+	<div class='board-title'>
+		<div class="btn btn-primary title-text" (click)="newBoardTitle=boardTitle; isCollapsedTitleEdit = !isCollapsedTitleEdit">
+			{{boardTitle}}
+		</div>
+		<div class="btn btn-primary title-text" (click)='menuVisibility=!menuVisibility'>open menu</div>
 
+
+		<div class="title-rename" *ngIf="isCollapsedTitleEdit">
+			<div class='title-rename-head'>
+				<span class='title-rename-header'>{{TEXT_TITLE_MODAL_HEADER}}</span>
+				<a class='title-close' (click)='onClickCloseUpdateTitle()'>{{TEXT_ADD_CLOSE}}</a>
+			</div>
+			<div class='title-rename-body'>
+				  <div class="form-group">
+					<label class="form-group-label" for="formGroup">{{TEXT_TITLE_MODAL_NAME}}</label>
+					<input [(ngModel)]='newBoardTitle' type="text" class="form-control" id="formGroup" placeholder="Example input">
+				</div>
+				<button class='btn btn-success' (click)='onClickUpdateTitle()'>{{TEXT_TITLE_MODAL_BUTTON}}</button>
+			</div>
+		</div>
+	</div>
 	<div class='card-list' >
 		<div>
 			<div class='card style-list' *ngFor="let list of lists;let i=index;" >
@@ -16,7 +40,7 @@
 					</div>
 				</div>
 
-				<div class="collapse-text" *ngIf="!isCollapsedArray[i] && isListOwner(list.owner)" (click)="onClickOpenAddPostCollapse(i);" 
+				<div class="collapse-text" *ngIf="!isCollapsedArray[i]" (click)="onClickOpenAddPostCollapse(i);" 
 					[attr.aria-expanded]="!isCollapsedArray[i]" aria-controls="collapse">
 						{{TEXT_ADD_NEW_POST_COLLAPSE}}
 				</div>
@@ -31,15 +55,17 @@
 				<!-- Collapse end -->
 
 			</div>
-		</div>
-		<div class='card style-list create-list' *ngIf="!isCreateButtonCollapsed" (click)="onClickOpenAddListCollapse()">
+			<div class='card style-list create-list' *ngIf="!isCreateButtonCollapsed" (click)="onClickOpenAddListCollapse()">
 			{{TEXT_CREATE_LIST}}
+			</div>
+			<div *ngIf="isCreateButtonCollapsed" class='card style-list create-list'>
+				<input type='text' class='form-control' [(ngModel)]="inputListTitle" placeholder="Enter list title">
+				<button class="btn btn-success" (click)="onClickAddList()">{{TEXT_ADD_NEW_LIST}}</button>
+				<button class="btn btn-danger" (click)="onClickAddListClose()">{{TEXT_ADD_CLOSE}}</button>
+			</div>
 		</div>
 
-		<div *ngIf="isCreateButtonCollapsed" class='card style-list create-list'>
-			<input type='text' class='form-control' [(ngModel)]="inputListTitle" placeholder="Enter list title">
-			<button class="btn btn-success" (click)="onClickAddList()">{{TEXT_ADD_NEW_LIST}}</button>
-			<button class="btn btn-danger" (click)="onClickAddListClose()">{{TEXT_ADD_CLOSE}}</button>
-		</div>
+
 	</div>
+
 </div>

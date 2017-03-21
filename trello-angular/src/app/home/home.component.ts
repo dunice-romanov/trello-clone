@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
   private boardTitle: string;
   private boardList: Board[];
   private isCollapsed: boolean;
+  private accessLevel: string;
 
   constructor(private loginService: LoginService,
               private boardsService: BoardsService,
@@ -38,6 +39,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.username = this.loginService.getUsername();
+    
     this.setBoardList();
   }
 
@@ -68,7 +70,7 @@ export class HomeComponent implements OnInit {
     makes DELETE request on a server with board id,
     returns false for stop propogation
   */
-  onClickDeleteBoard(boardId: Number, event) {
+  onClickDeleteBoard(boardId: number, event) {
     event.stopPropagation();
     this.boardsService.deleteBoard(boardId)
          .subscribe( (data) => {this.setBoardList()},
