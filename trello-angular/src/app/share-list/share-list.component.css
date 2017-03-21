@@ -11,5 +11,6 @@
     cursor: pointer;
 }
 
-.user-list {
+.btn {
+    margin-top: 10px;
 }

@@ -55,5 +55,14 @@ export class ShareListComponent implements OnInit {
                         .subscribe( (data)=>{this.shareBoards = data},
                                     (error) => {debugger} );
   }
+
+  private isOwner() {
+    let username = this.loginService.getUsername();
+    for (let share of this.shareBoards) {
+      if (share.username == username) {return share.accessLevel == 'owner'}
+    }
+    return false;
+  }
+
 }
 

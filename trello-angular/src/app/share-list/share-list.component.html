@@ -3,5 +3,5 @@
   <div class="user-card" *ngFor="let board of shareBoards">
     <div>{{board.username}} ({{board.accessLevel}})</div>
   </div>
-  <button class="btn btn-primary" (click)='onClickShareBoard(boardId, $event)'>Share to</button>
+  <button *ngIf="isOwner()" class="btn btn-primary" (click)='onClickShareBoard(boardId, $event)'>Share to</button>
 </div>

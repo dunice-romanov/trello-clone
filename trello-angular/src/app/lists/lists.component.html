@@ -3,12 +3,15 @@
 	<div class='board-menu-header'>
 		<div class='title-close' (click)='menuVisibility=true'>{{TEXT_ADD_CLOSE}}</div>
 	</div>
-	<app-share-list></app-share-list>
+	<br>
+	<div class='board-menu-body'>
+		<app-share-list></app-share-list>
+	</div>
 </div>
 <div class='header'>
 	
 	<div class='board-title'>
-		<div class="btn btn-primary title-text" (click)="newBoardTitle=boardTitle; isCollapsedTitleEdit = !isCollapsedTitleEdit">
+		<div class="btn btn-danger title-text" (click)="newBoardTitle=boardTitle; isCollapsedTitleEdit = !isCollapsedTitleEdit">
 			{{boardTitle}}
 		</div>
 		<div class="btn btn-primary title-text" (click)='menuVisibility=!menuVisibility'>open menu</div>

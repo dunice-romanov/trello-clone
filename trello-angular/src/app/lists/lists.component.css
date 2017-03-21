@@ -22,10 +22,17 @@
 	min-width: 214px;
 }
 
+.board-menu {
+	padding: 10px;
+}
+
 .board-menu-header {
-	padding: 0 10px;
-	margin-left: 5px;
+	float: right;
 	border-bottom: 1px solid #C4C9CC;
+}
+
+.board-menu-body {
+	float: none;
 }
 
 .board-title .title-text {
@@ -60,7 +67,7 @@
 .title-close {
 	cursor: pointer;
 	display: inline-block;
-	text-align: right;
+	float: right;
 	margin-right: 2px;
 }
 .title-close:hover {
