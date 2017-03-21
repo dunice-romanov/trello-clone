@@ -17,6 +17,7 @@ export class CardWindowComponent implements OnInit {
   readonly TEXT_ADD_COMMENT = 'Add a commentary, honey';
   readonly TEXT_UPDATE_DESCRIPTION = 'Update me, honey';
   readonly TEXT_PLACEHOLDER_DESCRIPTION = 'Add description';
+  readonly TEXT_PLACEHOLDER_COMMENTARY = 'Post a comment';
   readonly TEXT_ERROR_BLACK_FIELD = 'This field can not be blank'
   readonly TEXT_ERROR_SERVER_PROBLEM = 'Server is anavailable';
   readonly TEXT_ERROR_PERMISSION = 'You dont have a permission';
@@ -25,7 +26,7 @@ export class CardWindowComponent implements OnInit {
 
   private isTitleCollapsed: boolean;
   private isTextCollapsed: boolean;
-
+  private commentary: string;
   private post: FullPost;
   private title: string;
   private description: string;
@@ -47,6 +48,7 @@ export class CardWindowComponent implements OnInit {
         },
   			(error) => { this.errorHandler(error); }
   		);
+      this.commentary = '';
   }
 
   /*
@@ -74,6 +76,21 @@ export class CardWindowComponent implements OnInit {
     let newTitle = title;
 
     this.updateTitle(newTitle, oldTitle);
+  }
+
+  onEnterPostComment() {
+    let text = this.commentary.trim();
+    if (text == '') { return; };
+
+    this.postSevice.postCommentary(this.postId, text)
+                  .subscribe( (data) => {
+                      this.postSevice.getFullPost(this.postId)
+                          .subscribe((data) => { 
+                              this.commentary = ''; 
+                              this.post = data }, 
+                            (error)=>{ this.errorHandler(error) })}, 
+                    (error)=>{this.errorHandler(error)});
+    
   }
 
   /*

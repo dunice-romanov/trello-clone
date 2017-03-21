@@ -13,12 +13,13 @@ export class SharingComponent {
 	readonly TEXT_ERROR_USER_DOESNT_EXISTS = "User doesn't exists";
 	readonly TEXT_ERROR_SERVER_PROBLEM = "Server is unavailable";
 	private username: string;
-
+	private isWritable: boolean;
 
 	@Input() boardId;
 	constructor(public activeModal: NgbActiveModal, 
 				private boardService: BoardsService) {
 		this.username = '';
+		this.isWritable = false;
 	}
 
 
@@ -26,7 +27,7 @@ export class SharingComponent {
 		let username = this.username.trim();
 		if (username == '') { return; }
 
-		this.shareWith(this.username, this.boardId);
+		this.shareWith(this.username, this.boardId, this.isWritable);
 		
 	}
 
@@ -35,9 +36,10 @@ export class SharingComponent {
 			if ok -> shows alert and closes self
 			else -> handles error
 	*/
-	private shareWith(username: string, boardId: number){
-
-		this.boardService.shareBoard(boardId, username)
+	private shareWith(username: string, boardId: number, isWritable: boolean){
+		let right: string = 'read';
+		if (isWritable) right = 'write';
+		this.boardService.shareBoard(boardId, username, right)
 						.subscribe(
 							(data) => {
 								alert(this.TEXT_SHARE_OK);

@@ -42,6 +42,9 @@ export class Commentary {
 	text: string;
 	created: Date;
 
+	private months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+					  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 	constructor(username: string, 
 				text: string, 
 				created: Date) {
@@ -49,4 +52,17 @@ export class Commentary {
 		this.text = text;
 		this.created = created;
 	}
+
+	getDate(): string {
+		
+		let day: string = "" + this.created.getDate();
+		let month: string = this.months[this.created.getMonth()];
+		let year: string = "" + (this.created.getFullYear());
+		let minutes_ = this.created.getMinutes();
+		let minutes: string = minutes_ < 10 ? '0' + minutes_ : "" + minutes_; 
+		let hours_ = this.created.getHours();
+		let hours: string = hours_ < 10 ? '0' + hours_ : "" + hours_; 
+		return `${minutes}:${hours} ${day} ${month} ${year}`
+	}
+
 }

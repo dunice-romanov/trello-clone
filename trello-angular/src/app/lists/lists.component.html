@@ -1,7 +1,7 @@
 <template ngbModalContainer></template>
-<div class='board-menu' [ngClass]="{invisible: menuVisibility}">
+<div class='board-menu' *ngIf='menuVisibility'>
 	<div class='board-menu-header'>
-		<div class='title-close' (click)='menuVisibility=true'>{{TEXT_ADD_CLOSE}}</div>
+		<div class='title-close' (click)='menuVisibility=false'>{{TEXT_ADD_CLOSE}}</div>
 	</div>
 	<br>
 	<div class='board-menu-body'>
@@ -15,8 +15,6 @@
 			{{boardTitle}}
 		</div>
 		<div class="btn btn-primary title-text" (click)='menuVisibility=!menuVisibility'>open menu</div>
-
-
 		<div class="title-rename" *ngIf="isCollapsedTitleEdit">
 			<div class='title-rename-head'>
 				<span class='title-rename-header'>{{TEXT_TITLE_MODAL_HEADER}}</span>
@@ -31,6 +29,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<div class='card-list' >
 		<div>
 			<div class='card style-list' *ngFor="let list of lists;let i=index;" >

@@ -2,3 +2,26 @@
     display: inline-block;
     vertical-align: top;
 }
+
+.commentary {
+    font-size: 14px;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.commentary-text {
+    padding: 9px 11px;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.23);
+    display: inline-block;
+}
+
+.commentary-user {
+    color: #4d4d4d;
+    font-weight: bold;
+}
+
+.commentary-date {
+    color: #8c8c8c;
+    font-size: 12px;
+}

@@ -11,15 +11,16 @@
 
 	<div class="modal-body">
 		<textarea (blur)='onBlurUpdateText(description)' class="form-control"[(ngModel)]="description" placeholder={{TEXT_PLACEHOLDER_DESCRIPTION}}></textarea>
-		
-		<!-- Commentaries field -->
-		<!--<div>
-			<div>{{TEXT_ADD_COMMENT}}</div>
-			<div *ngFor="let comma of post.commentaries">
-				<div>{{comma.username}}</div>
-				<div>{{comma.text}}</div>
-				<div>{{comma.created}}</div>
-			</div>-->
+	</div>
+	<div class='modal-body'>
+		<div>
+			<input type='text' class='form-control' [(ngModel)]='commentary' (keyup.enter)='onEnterPostComment()' 
+				placeholder="{{TEXT_PLACEHOLDER_COMMENTARY}}">
+			<div *ngFor="let comma of post.commentaries" class="commentary">
+				<div class="commentary-user">{{comma.username}}</div>
+				<div class="commentary-text">{{comma.text}}</div>
+				<div class="commentary-date">{{comma.getDate()}}</div>
+			</div>
 		</div>
 	</div>
 <div>

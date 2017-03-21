@@ -82,11 +82,11 @@ export class BoardsService {
   /*
     shares board with another user by POST[username, board_id]
   */
-  shareBoard(boardId: number, username: string) {
+  shareBoard(boardId: number, username: string, accessLevel: string) {
     let url = this.URL + this.URL_ADD_PERMISSION;
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
-    let body = {'username': username, 'board_id': boardId};
+    let body = {'username': username, 'board_id': boardId, 'access_level': accessLevel};
     return this.http.post(url, body, {headers: headers})
                     .map((response: Response) => {return response.json()})
                     .catch((error: any) => {return Observable.throw(error)})

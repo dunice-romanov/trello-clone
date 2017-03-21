@@ -6,7 +6,7 @@
 }
 
 .board-title {
-	height: 5%;
+	height: 10%;
 }
 
 .board-title .title-rename {
@@ -96,7 +96,7 @@
 	overflow: auto;
 	overflow-y: hidden;
  	white-space: nowrap;
- 	height: 95%;
+ 	height: 90%;
  	font-size: 14px;
 }
 

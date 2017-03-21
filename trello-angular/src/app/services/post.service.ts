@@ -13,7 +13,8 @@ import { FullPost, Commentary } from '../classes/list'
 export class PostService {
 
   readonly URL_LIST_API = "http://127.0.0.1:8000/api-posts/";
-  readonly URL_CREATE_LIST = 'create/'
+  readonly URL_CREATE_LIST = 'create/';
+  readonly URL_CREATE_COMMENTARY = 'create-commentary/';
   readonly HEADER_AUTHORIZATION = 'Authorization';
   readonly HEADER_JWT = 'JWT';
 
@@ -72,7 +73,6 @@ export class PostService {
     return this.patchPost(postId, textObject);
   }
 
-
   /*
     patches post on a server
     returns FullPost object if ok,
@@ -88,6 +88,22 @@ export class PostService {
           let resp = response.json();
           let fullPost = this.parseFullPost(resp);
           return fullPost;
+         })
+      .catch( (error: any) => { return Observable.throw(error); } );
+  }
+
+  postCommentary(postId: number, text: string) {
+    let url: string = this.URL_LIST_API + this.URL_CREATE_COMMENTARY;
+    let token: string = this.loginService.getTokenString();
+    let headers: Headers = this.createHeaders(token);
+    let body = {
+      'post': postId,
+      'text': text
+    }
+
+    return this.http.post(url, body, {headers: headers})
+      .map((response: Response) => { 
+            return response.json();
          })
       .catch( (error: any) => { return Observable.throw(error); } );
   }

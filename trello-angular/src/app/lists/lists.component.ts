@@ -59,7 +59,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 		dragulaService.setOptions('bag-one', {
       		removeOnSpill: false,
     	});
-		this.menuVisibility = true;
+		this.menuVisibility = false;
 		this.boardTitle = '';
 		this.accessLevel = '';
 		this.boardId = 0;
@@ -210,14 +210,12 @@ export class ListsComponent implements OnInit, OnDestroy {
 		let [el, target, source] = args;
 		let listTo = args[1].dataset.idList;
 		let postIndex = this.lists[target.dataset.idList]['posts'].findIndex((p) => { return p.id == el.dataset.idPost});
-
-
-
+		if (this.lists[target.dataset.idList] == undefined) {return;}
 		let postAfterDrag: Post = this.lists[listTo].posts[postIndex];
 		if (postAfterDrag === undefined) {return;}
 		this.postService.patchPosition(postAfterDrag.id, (postIndex + 1), this.lists[listTo].id)
 						.subscribe((data)=> { this.updateLists(this.boardId); },
-									(error)=>{ this.errorHandler(error); }) 
+									(error)=>{ this.updateLists(this.boardId); this.errorHandler(error); }) 
 
 	}
 
