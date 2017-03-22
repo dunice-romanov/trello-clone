@@ -40,14 +40,13 @@ export class ListsComponent implements OnInit, OnDestroy {
 	private isCreateButtonCollapsed: boolean;
 	private boardTitle: string;
 	private newBoardTitle: string;
-	private draggingPost: Post;
 	private accessLevel: string;
 	private isCollapsedTitleEdit: boolean;
 	private isMenuCollapsed: boolean;
 	private isCollapsedArray: boolean[];
-	
 	private lists: List[];
 	private listInput: string[];
+
 
 	constructor(private route: ActivatedRoute, 
 				private listService: ListsService,
@@ -57,9 +56,6 @@ export class ListsComponent implements OnInit, OnDestroy {
 				private dragulaService: DragulaService,
 				private postService: PostService) {
 		
-		dragulaService.setOptions('bag-one', {
-      		removeOnSpill: false,
-    	});
 		this.isMenuCollapsed = false;
 		this.boardTitle = '';
 		this.accessLevel = '';
@@ -70,15 +66,34 @@ export class ListsComponent implements OnInit, OnDestroy {
 		this.isCollapsedArray = [];
 		this.isCreateButtonCollapsed = false;
 		this.isCollapsedTitleEdit = false;
-		this.draggingPost = null;
+		this.initDragula();
+	}
+
+	initDragula() {
+		var self = this;
+		this.dragulaService.setOptions('bag-one', {
+			moves: function(e, cont, hand) { return self.isCreationFormsAvailable(); }
+		});
+
+		this.dragulaService.setOptions('bag-list', {
+			removeOnSpill: false,
+			moves: function (el, container, handle) {
+				let isDrag = handle.className === 'title-handler' && self.isCreationFormsAvailable();
+				let foo = self.isCreationFormsAvailable();
+				return isDrag;
+			},
+			direction: 'horizontal'
+		});
 	}
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe((params) => {
 			this.boardId = +params['id'];
 			this.boardService.getShareList(this.boardId).subscribe(
-				(data) => { this.accessLevel = this.getAccessLevel(data); this.boardTitle = this.getBoardTitle(data);}
-			);
+				(data) => { this.accessLevel = this.getAccessLevel(data); 
+							this.boardTitle = this.getBoardTitle(data);
+
+						});
 			this.listService.getListsList(this.boardId)
 				.subscribe(
 					(data) => {
@@ -95,7 +110,12 @@ export class ListsComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
+		this.dragulaService.destroy('bag-list');
 		this.dragulaService.destroy('bag-one');
+	}
+
+	onEnterAddList() {
+		this.onClickAddList();
 	}
 
 	/*
@@ -118,6 +138,10 @@ export class ListsComponent implements OnInit, OnDestroy {
 								this.errorHandler(error);
 							} 
 						);
+	}
+
+	onEnterAddPost(inputId: number, listId: number) {
+		this.onClickAddPost(inputId, listId);
 	}
 
 	/*
@@ -192,12 +216,20 @@ export class ListsComponent implements OnInit, OnDestroy {
 	    //return false;
 	}
 
+	onEnterUpdateTitle() {
+		this.onClickUpdateTitle();
+	}
+
 	onClickUpdateTitle() {
 		let title = this.newBoardTitle.trim();
 		if (title == '') {return;}
 		this.boardService.patchTitle(this.boardId, title).subscribe(
 			(data) => { this.updateBoardTitle(this.boardId); this.isCollapsedTitleEdit = false; }
 		);
+	}
+
+	onEscapeCloseUpdateTitle() {
+		this.onClickCloseUpdateTitle();
 	}
 
 	onClickCloseUpdateTitle() {
@@ -208,16 +240,43 @@ export class ListsComponent implements OnInit, OnDestroy {
 		this.boardService.getBoardTitle(boardId).subscribe((data) => this.boardTitle = data);
 	}
 	private onDropModel(args) {
-		let [el, target, source] = args;
+		let type: string = args[0].dataset.type;
+		switch(type) {
+			case 'card':
+				this.changeCardPosition(args);
+				break;
+			case 'list':
+				this.changeListPosition(args);
+				break;
+			default:
+				return;
+		}
+
+	}
+
+	private changeListPosition(args) {
 		let listTo = args[1].dataset.idList;
-		let postIndex = this.lists[target.dataset.idList]['posts'].findIndex((p) => { return p.id == el.dataset.idPost});
-		if (this.lists[target.dataset.idList] == undefined) {return;}
-		let postAfterDrag: Post = this.lists[listTo].posts[postIndex];
-		if (postAfterDrag === undefined) {return;}
-		this.postService.patchPosition(postAfterDrag.id, (postIndex + 1), this.lists[listTo].id)
+		let [el, target, source] = args;
+		let listIndex = this.lists.findIndex((l)=> l.id == el.dataset.idList);
+		if (listIndex == -1) {return;}
+		let listAfterDrag: List = this.lists[listIndex];
+		this.listService.patchPosition(listAfterDrag.id, (listIndex + 1))
 						.subscribe((data)=> { this.updateLists(this.boardId); },
 									(error)=>{ this.updateLists(this.boardId); this.errorHandler(error); }) 
+	}
 
+	private changeCardPosition(args) {	
+		let listTo = args[1].dataset.idList;
+		let [el, target, source] = args;
+		let listIndex = this.lists.findIndex((l)=> l.id == target.dataset.idList);
+		let idPost = +el.dataset.idPost;
+		let list = this.lists[listIndex]['posts'][0];
+		let postIndex = this.lists[listIndex]['posts'].findIndex((p) => {return p.id === idPost});
+		if (listIndex == -1 || postIndex == -1) {return;}
+		let postAfterDrag: Post = this.lists[listIndex].posts[postIndex];
+		this.postService.patchPosition(postAfterDrag.id, (postIndex + 1), this.lists[listIndex].id)
+						.subscribe((data)=> { this.updateLists(this.boardId); },
+									(error)=>{ this.updateLists(this.boardId); this.errorHandler(error); }) 
 	}
 
 	/*
@@ -258,6 +317,11 @@ export class ListsComponent implements OnInit, OnDestroy {
 				return share.accessLevel;
 			}
 		}
+	}
+
+	private isCreationFormsAvailable(){
+		if (this.accessLevel == 'write' || this.accessLevel == 'owner') { return true; }
+		return false;
 	}
 
 	private getBoardTitle(shares: ShareBoard[]) {

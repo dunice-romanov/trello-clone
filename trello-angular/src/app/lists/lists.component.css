@@ -6,7 +6,7 @@
 }
 
 .board-title {
-	height: 10%;
+	min-height: 40px;
 }
 
 .board-title .title-rename {
@@ -46,6 +46,16 @@
 .board-title .title-text,
 .board-menu-open {
 	display: inline-block;
+}
+
+.title-handler {
+	min-height: 8px;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+.title-handler:hover {
+	background-color: #ccf;
 }
 
 .title-rename-head {
@@ -96,7 +106,7 @@
 	overflow: auto;
 	overflow-y: hidden;
  	white-space: nowrap;
- 	height: 90%;
+ 	min-height: 90vh;
  	font-size: 14px;
 }
 
@@ -109,6 +119,7 @@
 	overflow-y: auto;
 	overflow-x: hidden;
 	max-height: 85vh;
+	display: inline-block;
 }
 
 .card-block {
@@ -167,12 +178,19 @@ div.post-list .post {
 	border: 1px solid black;
 }
 
+.card-list-generated {
+	display: inline-block;
+}
+
 .create-list {
 	background: rgba(0,0,0,.12);
 	padding: 7px;
 	border: none;
 	color: #A7D0D6;
+	display: inline-block;
 }
+
+
 .create-list:hover {
 	cursor: pointer;
 	color: #fff;

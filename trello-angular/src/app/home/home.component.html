@@ -9,7 +9,7 @@
 				<div class="card-menu-header">
 					<div class="card-title"><span class='card-title-span'>{{board.title}}</span></div>
 					<div class="card-buttons">
-						<button (click)='onClickShareBoard(board.id, $event)' class='btn btn-info'>{{TEXT_SHARE_BOARD}}</button>
+						<button *ngIf="board.accessLevel == 'owner'" (click)='onClickShareBoard(board.id, $event)' class='btn btn-info'>{{TEXT_SHARE_BOARD}}</button>
 						<button *ngIf="board.accessLevel == 'owner'" (click)="onClickDeleteBoard(board.id, $event)" class='btn btn-danger'>{{TEXT_DELETE_BOARD}}</button>
 					</div>
 				</div>

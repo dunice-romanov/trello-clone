@@ -7,6 +7,7 @@ class List(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100)
     board = models.ForeignKey(Board, on_delete=models.CASCADE)
+    position = models.IntegerField(default=0)
 
     class Meta:
-        ordering = ('id',)
+        ordering = ('position',)

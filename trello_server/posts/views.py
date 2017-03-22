@@ -98,11 +98,8 @@ class CreatePost(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         cardlist_id = self.request.data['cardlist']
-        print(cardlist_id)
-
-        cardlist = Post.objects.filter(cardlist=cardlist_id)
-        higher_position = self.find_higher_position(cardlist)
-        print('higher position: ', higher_position)
+        posts = Post.objects.filter(cardlist=cardlist_id)
+        higher_position = self.find_higher_position(posts)
         new_position = higher_position + 1
         serializer.save(position=new_position)
 

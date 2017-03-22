@@ -86,6 +86,31 @@ export class ListsService{
                //throw error
   }
 
+
+  patchPosition(listId: number, newPosition: number) {
+    let positionObject = {
+      'position': newPosition
+    }
+    return this.patchList(listId, positionObject);
+  }
+
+  /*
+    patches list on a server
+    returns response.json() object if ok,
+    else - returns error
+  */
+  private patchList(listId: number, patchObject: Object) {
+    let url: string = this.URL_LIST_API + +listId;
+    let token: string = this.loginService.getTokenString();
+    let headers: Headers = this.createHeaders(token);
+
+    return this.http.patch(url, patchObject, {headers: headers})
+      .map((response: Response) => { 
+          return response.json();
+         })
+      .catch( (error: any) => { return Observable.throw(error); } );
+  }
+
   /*
     Creates basic headers for requests with token
   */
