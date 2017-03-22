@@ -18,7 +18,8 @@ import { CardWindowComponent } from '../card-window/card-window.component'
 	styleUrls: ['./lists.component.css'],
 	providers: [ListsService,
 				PostService,
-				BoardsService]
+				BoardsService],
+	viewProviders: [DragulaService],
 })
 export class ListsComponent implements OnInit, OnDestroy {
 
@@ -110,8 +111,10 @@ export class ListsComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
+		let a = this.dragulaService;
 		this.dragulaService.destroy('bag-list');
 		this.dragulaService.destroy('bag-one');
+		debugger;
 	}
 
 	onEnterAddList() {
