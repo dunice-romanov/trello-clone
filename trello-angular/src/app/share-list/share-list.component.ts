@@ -41,7 +41,7 @@ export class ShareListComponent implements OnInit {
   onClickShareBoard(boardId: number, event) {
     
     event.stopPropagation();
-    const modalRef = this.modalService.open(SharingComponent);
+    let modalRef = this.modalService.open(SharingComponent);
     modalRef.componentInstance.boardId = boardId; 
     modalRef.result
 	    	.then((result) => { this.getShareList(this.boardId); })

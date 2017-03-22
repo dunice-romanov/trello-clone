@@ -7,8 +7,10 @@
 
 <div class="modal-body">
 	<p>Share to who?</p>
-	<input [(ngModel)]="username">
-	<input type='checkbox' [(ngModel)]="isWritable">
+		<input class="form-control" [(ngModel)]="username">
+		<label for='iswriteble-checkobx'>Allow to write?
+			<input id='iswriteble-checkobx' class="form-check form-check-inline" type='checkbox' [(ngModel)]="isWritable">
+		</label>
 </div>
 
 <div class="modal-footer">

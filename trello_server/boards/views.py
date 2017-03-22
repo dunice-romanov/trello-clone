@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status
 
-from boards.permissions.is_owner import IsOwner, IsOwnerOfBoard
+from boards.permissions.is_owner import IsOwnerOrWriter, IsOwnerOfBoard
 from boards.models import AccessLevel, Board, BoardPermission
 from boards.serializers import UserSerializer, BoardSerializer, BoardPermissionSerializer
 
@@ -35,22 +35,19 @@ class BoardItem(generics.RetrieveUpdateDestroyAPIView):
     Retrieves, Destroys, Updates board by REST request
     """
 
-    permissions_classes = (permissions.IsAuthenticated, IsOwner,)
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrWriter,)
     serializer_class = BoardSerializer
     
     def get_queryset(self):
         user = self.request.user
-        return Board.objects.filter(owner=user)
-    
-    def perform_destroy(self, instance):
-        instance.delete()
+        return Board.objects.all()
 
 
 class BoardList(generics.ListAPIView):
     """
     Returns authenticated user's board list
     """
-    permissions_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = BoardPermissionSerializer
     
     def get_queryset(self):

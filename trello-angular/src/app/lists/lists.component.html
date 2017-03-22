@@ -1,20 +1,23 @@
-<template ngbModalContainer></template>
-<div class='board-menu' *ngIf='menuVisibility'>
+
+
+<div class='board-menu' *ngIf='isMenuCollapsed'>
 	<div class='board-menu-header'>
-		<div class='title-close' (click)='menuVisibility=false'>{{TEXT_ADD_CLOSE}}</div>
+		<div class='title-close' (click)='isMenuCollapsed=false'>{{TEXT_ADD_CLOSE}}</div>
 	</div>
 	<br>
 	<div class='board-menu-body'>
 		<app-share-list></app-share-list>
 	</div>
 </div>
+
+<template ngbModalContainer></template>
 <div class='header'>
-	
+
 	<div class='board-title'>
 		<div class="btn btn-danger title-text" (click)="newBoardTitle=boardTitle; isCollapsedTitleEdit = !isCollapsedTitleEdit">
 			{{boardTitle}}
 		</div>
-		<div class="btn btn-primary title-text" (click)='menuVisibility=!menuVisibility'>open menu</div>
+		<div class="btn btn-primary title-text" (click)='isMenuCollapsed=!isMenuCollapsed'>open menu</div>
 		<div class="title-rename" *ngIf="isCollapsedTitleEdit">
 			<div class='title-rename-head'>
 				<span class='title-rename-header'>{{TEXT_TITLE_MODAL_HEADER}}</span>

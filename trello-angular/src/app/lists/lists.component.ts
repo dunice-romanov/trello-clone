@@ -42,11 +42,12 @@ export class ListsComponent implements OnInit, OnDestroy {
 	private newBoardTitle: string;
 	private draggingPost: Post;
 	private accessLevel: string;
-	private isCollapsedArray: boolean[];
 	private isCollapsedTitleEdit: boolean;
+	private isMenuCollapsed: boolean;
+	private isCollapsedArray: boolean[];
+	
 	private lists: List[];
 	private listInput: string[];
-	private menuVisibility: boolean;
 
 	constructor(private route: ActivatedRoute, 
 				private listService: ListsService,
@@ -59,7 +60,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 		dragulaService.setOptions('bag-one', {
       		removeOnSpill: false,
     	});
-		this.menuVisibility = false;
+		this.isMenuCollapsed = false;
 		this.boardTitle = '';
 		this.accessLevel = '';
 		this.boardId = 0;
@@ -181,14 +182,14 @@ export class ListsComponent implements OnInit, OnDestroy {
 		after - updates lists
 	*/
 	onClickOpenPost(postId: number, event) {
-	    event.stopPropagation();
-	    const modalRef = this.modalService.open(CardWindowComponent);
+	    //event.stopPropagation();
+	    let modalWindow = this.modalService.open(CardWindowComponent);
 
-	    modalRef.componentInstance.postId = postId; 
-	    modalRef.result
+	    modalWindow.componentInstance.postId = postId; 
+	    modalWindow.result
 	    	.then((result) => { this.updateLists(this.boardId); })
 	    	.catch((reason)=> { this.updateLists(this.boardId); });
-	    return false;
+	    //return false;
 	}
 
 	onClickUpdateTitle() {

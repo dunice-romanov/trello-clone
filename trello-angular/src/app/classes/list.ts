@@ -62,7 +62,7 @@ export class Commentary {
 		let minutes: string = minutes_ < 10 ? '0' + minutes_ : "" + minutes_; 
 		let hours_ = this.created.getHours();
 		let hours: string = hours_ < 10 ? '0' + hours_ : "" + hours_; 
-		return `${minutes}:${hours} ${day} ${month} ${year}`
+		return `${hours}:${minutes} ${day} ${month} ${year}`
 	}
 
 }
