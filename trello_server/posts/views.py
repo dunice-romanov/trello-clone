@@ -1,7 +1,8 @@
 from rest_framework import generics, permissions, status
 
+from boards.models import BoardPermission
 from posts.models import Post, Commentary
-from posts.serializers import PostObjectSerializer, CommentarySerializer
+from posts.serializers import PostSerializer, PostObjectSerializer, CommentarySerializer
 from posts.permissions.isWriteble import IsWritebleOrReadOnly, IsWritebleOrReadOnlyRetrieve  
 
 
@@ -21,20 +22,14 @@ class PostView(generics.RetrieveUpdateDestroyAPIView):
             cardlist = Post.objects.filter(cardlist=cardlist_pk,\
                                 position__gte=old_position, \
                                 position__lte=new_position)
-            print('in np > old')
             for card in cardlist:
-                print('in np > old')
                 card.position = card.position - 1
                 card.save()
-
         elif new_position < old_position:
             cardlist = Post.objects.filter(cardlist=cardlist_pk,\
                                 position__lte=old_position, \
                                 position__gte=new_position)
-            print('np:', new_position, '\nop:', old_position)
-            print(cardlist)
             for card in cardlist:
-                print('dsds')
                 card.position = card.position + 1
                 card.save()
     
@@ -46,13 +41,10 @@ class PostView(generics.RetrieveUpdateDestroyAPIView):
                 position = post.position
         return position
 
-
     def add_to_another_list(self, cardlist_from, cardlist_to, new_position):
         max_position = self.get_maximum_position(cardlist_to) + 1
         if (new_position > max_position):
-            print('recalc position', max_position, '____', new_position)
             new_position = max_position
-            print(self.get_object(), '\n list id',self.get_object().cardlist)
             self.request.data['position'] = max_position
         else:
             print('recalc higer positions')
@@ -62,9 +54,7 @@ class PostView(generics.RetrieveUpdateDestroyAPIView):
                 post.position += 1
                 post.save()
 
-
     def recalc_old_cardlist(self, old_cardlist, drop_position):
-        print('recalcing!!')
         posts = Post.objects.filter(cardlist=old_cardlist, position__gt=drop_position)
         print(posts)
         for post in posts:
@@ -79,14 +69,11 @@ class PostView(generics.RetrieveUpdateDestroyAPIView):
         old_position = self.get_object().position
 
         if old_cardlist.pk == cardlist:
-            print('old list == new list')
             self.change_position_in_one_list(position)
         else:
-            print('old list != new list')
             self.add_to_another_list(old_cardlist, cardlist, position)
             self.recalc_old_cardlist(old_cardlist, old_position)
         
-
     def partial_update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         print(self)
@@ -129,3 +116,4 @@ class CommentaryPost(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(username=self.request.user)
+

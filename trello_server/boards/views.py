@@ -88,12 +88,8 @@ class BoardSharesList(generics.ListAPIView):
         return queryset
 
 
-class BoardPermissionOne(generics.RetrieveAPIView):
+class BoardPermissionOne(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BoardPermissionSerializer
     def get_queryset(self):
         user = self.request.user
-        return BoardPermission.objects.filter(user=user)
-
-
-class BoardUnshare(generics.DestroyAPIView):
-    serializer_class = BoardPermissionSerializer
+        return BoardPermission.objects.all()

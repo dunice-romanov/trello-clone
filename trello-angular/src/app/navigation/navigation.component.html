@@ -9,6 +9,13 @@
     </nav>
 
     <nav class="nav" *ngIf='loginService.isAuthenticated()'>
-        <a class="btn btn-primary" (click)="onClickLogout()">{{TEXT_LOGOUT}}</a>
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               {{loginService.getUsername()}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" (click)="onClickLogout()">{{TEXT_LOGOUT}}</a>
+            </div>
+        </div>
     </nav>
 </div>
