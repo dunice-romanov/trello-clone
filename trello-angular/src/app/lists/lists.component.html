@@ -35,15 +35,15 @@
 			</div>
 		</div>
 		<!-- /Collapsed renaming form -->
-
 	</div>
 	
 	<div class='card-list' >
 		<div [dragula]='"bag-list"' [dragulaModel]="lists" class='card-list-generated'>
 			<div class='card style-list' *ngFor="let list of lists;let i=index;" data-type="list" [attr.data-id-list]='list.id'>
-				<div class='title-handler'>
+				<div class='title-handler' (click)="onClickOpenListUpdateTitle(i, list.title, list.id)" *ngIf="!isTitleUpdateCollapsed[i]">
 					{{list.title}}
 				</div>
+				<input *ngIf="isTitleUpdateCollapsed[i]" type='text' [(ngModel)]='list.title' (blur)="onBlurUpdateListTitle(list.id, list.title, i)">
 				
 				<div class='card-text dragula-card-bag' [attr.data-id-list]='list.id' [dragula]='"bag-one"' [dragulaModel]="list.posts" >	
 					<div *ngFor="let post of list.posts; let j=index " class='card-block card-success card-block-low-padding' 

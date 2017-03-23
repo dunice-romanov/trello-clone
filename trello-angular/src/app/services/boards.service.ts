@@ -15,6 +15,7 @@ export class BoardsService {
   readonly URL = "http://127.0.0.1:8000/api-boards/";
   readonly URL_CREATE = "create/"
   readonly URL_ADD_PERMISSION = "add-permission";
+  readonly URL_ACCESS_PERMISSION = "permission/";
   readonly URL_GET_PERMISSION_USERS = "get-sharing-list/?id=";
   readonly HEADER_AUTHORIZATION = 'Authorization';
   readonly HEADER_JWT = 'JWT';
@@ -121,6 +122,15 @@ export class BoardsService {
     return this.updateBoard(boardId, body);
   }
 
+  deleteSubscription(id: number) {
+    let url = this.URL + this.URL_ACCESS_PERMISSION + +id;
+    let token: string = this.loginService.getTokenString();
+    let headers: Headers = this.createHeaders(token);
+    return this.http.delete(url, {headers: headers})
+              .map((response: Response) => {return response})
+              .catch((error: any) => {debugger; return Observable.throw(error)})
+  }
+
   private updateBoard(boardId: number, patchObject: Object) {
     let url: string = this.URL + +boardId;
     let token: string = this.loginService.getTokenString();
@@ -163,11 +173,12 @@ export class BoardsService {
   }
 
   private parseShareBoard (response: Object): ShareBoard {
+    let id: number = response['id'];
     let username: string = response['user'];
     let accessLevel: string = response['access_level'];
     let boardId: number = response['board']['id'];
     let title: string = response['board']['title'];
-    let shareBoard: ShareBoard = new ShareBoard(username, accessLevel, boardId, title);
+    let shareBoard: ShareBoard = new ShareBoard(id, username, accessLevel, boardId, title);
     return shareBoard;
   }
 

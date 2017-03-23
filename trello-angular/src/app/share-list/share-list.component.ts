@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BoardsService } from '../services/boards.service';
 import { ShareBoard } from '../classes/board';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { LoginService } from '../services/login.service';
 import { Response} from '@angular/http';
@@ -26,6 +26,7 @@ export class ShareListComponent implements OnInit {
 
   constructor(private boardService: BoardsService,
               private route: ActivatedRoute,
+              private router: Router,
               private loginService: LoginService,
               private modalService: NgbModal) {
     this.shareBoards = [];
@@ -62,6 +63,19 @@ export class ShareListComponent implements OnInit {
       if (share.username == username) {return share.accessLevel == 'owner'}
     }
     return false;
+  }
+
+  onClickUnsubscribe(shareBoardId: number) {
+    this.deleteFromSubscription(shareBoardId);
+  }
+
+  private deleteFromSubscription(shareBoardId: number) {
+    this.boardService.deleteSubscription(shareBoardId).subscribe(
+        (data) => {
+          if(!this.isOwner()) { this.router.navigate(['home']); return; }
+          this.getShareList(this.boardId);
+        },
+          (error) => {debugger;})
   }
 
 }

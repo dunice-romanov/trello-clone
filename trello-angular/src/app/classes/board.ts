@@ -15,14 +15,17 @@ export class Board {
 }
 
 export class ShareBoard {
+	id: number;
 	username: string;
 	accessLevel: string;
 	boardId: number;
 	title: string;
-	constructor(username: string, 
+	constructor(id: number,
+				username: string, 
 				accessLevel: string,
 				boardId: number,
 				title: string) {
+		this.id = id;
 		this.accessLevel = accessLevel;
 		this.boardId = boardId;
 		this.username = username;

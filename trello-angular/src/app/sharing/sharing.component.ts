@@ -49,7 +49,6 @@ export class SharingComponent {
 						);
 		
 	}
-
 	/*
 		Handles boardService errors
 	*/

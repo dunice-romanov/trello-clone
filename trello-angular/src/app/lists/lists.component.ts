@@ -44,6 +44,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 	private accessLevel: string;
 	private isCollapsedTitleEdit: boolean;
 	private isMenuCollapsed: boolean;
+	private isTitleUpdateCollapsed: boolean[];
 	private isCollapsedArray: boolean[];
 	private lists: List[];
 	private listInput: string[];
@@ -65,6 +66,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 		this.inputListTitle = '';
 		this.listInput = [];
 		this.isCollapsedArray = [];
+		this.isTitleUpdateCollapsed = [];
 		this.isCreateButtonCollapsed = false;
 		this.isCollapsedTitleEdit = false;
 		this.initDragula();
@@ -111,10 +113,8 @@ export class ListsComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-		let a = this.dragulaService;
 		this.dragulaService.destroy('bag-list');
 		this.dragulaService.destroy('bag-one');
-		debugger;
 	}
 
 	onEnterAddList() {
@@ -147,6 +147,20 @@ export class ListsComponent implements OnInit, OnDestroy {
 		this.onClickAddPost(inputId, listId);
 	}
 
+
+	private onClickOpenListUpdateTitle(index: number, oldTitle: string, listId: number) {
+		if (!this.isCreationFormsAvailable()) {return;}
+		this.closeEveryCollapse();
+		this.isTitleUpdateCollapsed[index] = true;
+
+	}
+
+	private updateList(listId: number, title: string) {
+		this.listService.patchTitle(listId, title)
+		.subscribe((data) => {this.updateLists(this.boardId)},
+			(error)=>(this.errorHandler(error)));
+	}
+
 	/*
 		Gets post title from listInput[id], 
 		requests server to create post
@@ -173,6 +187,14 @@ export class ListsComponent implements OnInit, OnDestroy {
 					this.listInput[inputId] = '';
 				}
 			);
+	}
+
+	onBlurUpdateListTitle(listId: number, title: string, index: number) {
+		let newTitle = title.trim();
+		if (newTitle == '') {alert("Field can't be blank"); return;}
+
+		this.updateList(listId, newTitle);
+		this.isTitleUpdateCollapsed[index] = false;
 	}
 
 	/*
@@ -225,7 +247,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 
 	onClickUpdateTitle() {
 		let title = this.newBoardTitle.trim();
-		if (title == '') {return;}
+		if (title == '') { return; }
 		this.boardService.patchTitle(this.boardId, title).subscribe(
 			(data) => { this.updateBoardTitle(this.boardId); this.isCollapsedTitleEdit = false; }
 		);
@@ -242,7 +264,9 @@ export class ListsComponent implements OnInit, OnDestroy {
 	private updateBoardTitle(boardId: number) {
 		this.boardService.getBoardTitle(boardId).subscribe((data) => this.boardTitle = data);
 	}
+
 	private onDropModel(args) {
+		console.log('__on drop model__')
 		let type: string = args[0].dataset.type;
 		switch(type) {
 			case 'card':
@@ -298,10 +322,15 @@ export class ListsComponent implements OnInit, OnDestroy {
 		Sets every boolean isCollapsed... to false
 	*/
 	private closeEveryCollapse() {
-		for (let i = 0; i < this.isCollapsedArray.length; i++) {
-			this.isCollapsedArray[i] = false;
-		}
+		this.closeCollapsedArray(this.isCollapsedArray);
+		this.closeCollapsedArray(this.isTitleUpdateCollapsed);
 		this.isCreateButtonCollapsed = false;
+	}
+
+	private closeCollapsedArray(array: boolean[]) {
+		for (let i = 0; i < array.length; i++) {
+			array[i] = false;
+		}
 	}
 
 	/*

@@ -30,6 +30,6 @@ class BoardPermissionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BoardPermission
-        fields = ('user', 'access_level', 'board')
+        fields = ('id', 'user', 'access_level', 'board')
 
 

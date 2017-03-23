@@ -86,6 +86,12 @@ export class ListsService{
                //throw error
   }
 
+  patchTitle(listId: number, title: string) {
+    let titleObject = {
+      'title': title
+    }
+    return this.patchList(listId, titleObject);
+  }
 
   patchPosition(listId: number, newPosition: number) {
     let positionObject = {

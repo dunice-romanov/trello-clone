@@ -7,7 +7,7 @@ from rest_framework import generics, permissions, status
 from boards.models import Board
 from todos.serializer import ListSerializer
 from todos.models import List
-from todos.permissions.isWriteble import IsWritebleOrReadOnly
+from todos.permissions.isWriteble import IsWritebleOrReadOnly, IsWritebleToUpdate
 from todos.permissions.isReadable import IsReadableOr404
 
 class ListObject(generics.ListAPIView):
@@ -38,7 +38,6 @@ class ListObjectCreate(generics.CreateAPIView):
         board_id = self.request.data['board']
         lists = List.objects.filter(board=board_id)
         higher_position = self.find_higher_position(lists)
-        print(higher_position, '_____________')
         new_position = higher_position + 1
         serializer.save(position=new_position)
 
@@ -48,10 +47,13 @@ class ListRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = List.objects.all()
     serializer_class = ListSerializer
 
+    permission_classes = (permissions.IsAuthenticated, IsWritebleToUpdate,)
+
     def partial_update(self, request, *args, **kwargs):
+        print('gfgffdffdfddgf')
         kwargs['partial'] = True
-        print(self)
         if 'position' in request.data:
+            print('in if')
             position = request.data['position']
             self.change_positions(self.get_object().board_id, int(position))
         return self.update(request, *args, **kwargs)
@@ -78,6 +80,5 @@ class ListRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
                 li.save()
 
     def change_positions(self, board_id, position):
-        print(board_id)
         lists = List.objects.filter(position__gte=position, board=board_id)
         self.change_position_in_one_board(position)
