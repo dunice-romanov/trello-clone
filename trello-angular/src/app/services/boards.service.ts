@@ -127,7 +127,7 @@ export class BoardsService {
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
     return this.http.delete(url, {headers: headers})
-              .map((response: Response) => {return response})
+              .map((response: Response) => { return response; })
               .catch((error: any) => {debugger; return Observable.throw(error)})
   }
 

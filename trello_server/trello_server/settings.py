@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'boards.apps.BoardsConfig',
     'posts.apps.PostsConfig',
     'todos.apps.TodosConfig',
+    'register.apps.RegisterConfig',
 ]
 
 MIDDLEWARE = [

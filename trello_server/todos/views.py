@@ -50,7 +50,6 @@ class ListRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, IsWritebleToUpdate,)
 
     def partial_update(self, request, *args, **kwargs):
-        print('gfgffdffdfddgf')
         kwargs['partial'] = True
         if 'position' in request.data:
             print('in if')

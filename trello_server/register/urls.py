@@ -8,7 +8,8 @@ from rest_framework_jwt.views import verify_jwt_token
 from register import views
 
 urlpatterns = [
-	url(r'^users/$', views.UserList.as_view()),
+    url(r'^$', views.UserObjectUpdate.as_view()),
+    url(r'^users/(?P<pk>[0-9]+)$', views.UserObjectRetrieve.as_view()),
 	url(r'^signup/$', views.UserCreate.as_view()),
     url(r'^signin/', obtain_jwt_token),
     url(r'^refresh/', refresh_jwt_token),

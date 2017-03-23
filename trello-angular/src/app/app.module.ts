@@ -19,6 +19,7 @@ import { SharingComponent } from './sharing/sharing.component';
 import { IntroductionComponent } from './introduction/introduction.component';
 import { CardWindowComponent } from './card-window/card-window.component';
 import { ShareListComponent } from './share-list/share-list.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ShareListComponent } from './share-list/share-list.component';
     ListsComponent,
     IntroductionComponent,
     CardWindowComponent,
-    ShareListComponent
+    ShareListComponent,
+    ProfileComponent
   ],
   imports: [
     DragulaModule,

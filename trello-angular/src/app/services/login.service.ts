@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-import { UserToken } from "../classes/user"
+import { UserToken, UserInfo } from "../classes/user"
 
 @Injectable()
 export class LoginService implements OnInit {
@@ -26,7 +26,9 @@ export class LoginService implements OnInit {
   readonly URL_SIGN_UP = "signup/";
   readonly URL_REFRESH_TOKEN = "api-token-refresh/";
   readonly URL_VERIFY_TOKEN = "api-token-verify/";
-
+  readonly URL_USER_INFO = 'users/';
+  readonly HEADER_AUTHORIZATION = 'Authorization';
+  readonly HEADER_JWT = 'JWT';
   readonly EXCEPTION_INPUT_TOKEN_IS_NULL = "INPUT TOKEN IS NULL";
 
   readonly ERROR_USERNAME_ALREADY_EXISTS = JSON.stringify({"username":["A user with that username already exists."]});
@@ -156,6 +158,30 @@ export class LoginService implements OnInit {
   }
 
   /*
+    Get full user info from server:
+    if not authenticated - returns null,
+    else - returns UserInfo or error (if any errors occures)
+  */
+  getFullUserInfo() {
+    if (!this.isAuthenticated()) {return null;}
+
+    let url: string = this.URL_HEAD;
+    let token: string = this.getTokenString();
+  	let headers: Headers = this.createHeaders(token);
+
+    return this.http.get(url, {headers: headers})
+  	  .map((response: Response) => { 
+			 	  let resp = response.json();
+          let userInfo: UserInfo = this.parseUserInfo(resp);
+          return userInfo;
+
+         })
+			.catch( (error: any) => { return Observable.throw(error); } );
+         			//throw error
+
+  }
+
+  /*
     Refreshes token from localStorage,
     If succsess returns observable
     Else - throws observable's custom exception
@@ -245,4 +271,26 @@ export class LoginService implements OnInit {
     }
     return false;
   }
+
+  private parseUserInfo(response: Object): UserInfo {
+    let id = response['id'];
+    let username = response['username'];
+    let lastName = response['lastName'];
+    let firstName = response['firstName'];
+    let bio = response['bio'];
+    let email = response['email'];
+    let userInfo = new UserInfo(id, username, firstName, 
+                                lastName, bio, email);
+    return userInfo;
+  }
+
+  private createHeaders(JWToken: string) {
+    let headers: Headers = new Headers ({'Content-Type':  'application/json;charset=utf-8'});
+    headers.append(this.HEADER_AUTHORIZATION, 
+            this.HEADER_JWT + ' ' +  JWToken);
+    return headers;
+  }
+
+
+
 }

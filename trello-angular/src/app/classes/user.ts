@@ -8,6 +8,28 @@ export class User {
     }
 }
 
+export class UserInfo {
+	id: number;
+	username: string;
+	firstName: string;
+	lastName: string;
+	bio: string;
+	email: string;
+	constructor(id: number, 
+				username: string, 
+				firstName: string, 
+				lastName: string, 
+				bio: string,
+				email: string) {
+		this.id = id;
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.bio = bio;
+		this.email = email;
+	}
+}
+
 export class UserToken {
 	username: string;
 	token: string;

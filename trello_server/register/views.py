@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-
+from django.contrib.auth.hashers import make_password
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
@@ -7,22 +8,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from register.serializers import UserSerializer
+from register.permissions.user_permissions import UserPermission
+from register.serializers import UserSerializer, UserSerializerFull, UserSerializerForUpdates
 
 from rest_framework_jwt.settings import api_settings
-
-
-
-class UserList(generics.ListAPIView):
-    """
-    Response list of users by get request
-
-    Works only for authorized user
-    """
-    permission_classes = (IsAuthenticated,) 
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
 
 class UserCreate(APIView):
     """
@@ -53,3 +42,29 @@ class UserCreate(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class UserObjectUpdate(generics.RetrieveUpdateAPIView):
+    permission_classes = (IsAuthenticated, UserPermission, )
+
+    serializer_class = UserSerializerForUpdates
+    queryset = User.objects.all()
+
+    def get_object(self):
+        user = self.request.user
+        print(user.username)
+        return get_object_or_404(User, username=user.username)
+
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        if 'password' in request.data:
+            newPass = request.data['password']
+            newPassHashed = make_password(newPass)
+            request.data['password'] = newPassHashed
+        return self.update(request, *args, **kwargs)
+
+class UserObjectRetrieve(generics.RetrieveAPIView):
+    permission_classes = (IsAuthenticated, UserPermission, )
+
+    serializer_class = UserSerializerFull
+
+    def get_queryset(self):
+        return User.objects.all()

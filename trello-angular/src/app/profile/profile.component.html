@@ -1,0 +1,55 @@
+<div>
+
+  <div>
+    <h1>{{userInfo.username}}</h1>
+  </div>
+  <div>
+    <div>First Name</div> 
+    <div>{{userInfo.firsName}}</div>
+  </div>
+  <div>
+    <div>Last Name</div>
+    <div>{{userInfo.lastName}}</div>
+  </div>
+  <div>{{userInfo.bio}}</div>
+
+</div>
+
+
+<form>
+
+  <div class="form-group">
+    <label for="InputFirstName">First name</label>
+    <input type="text" [(ngModel)]="userInfo.firsName" class="form-control" id="InputFirstName" placeholder="Enter first name" >
+  </div>
+
+  <div class="form-group">
+    <label for="InputLastName">Last name</label>
+    <input type="text" [(ngModel)]="userInfo.firsName" class="form-control" id="InputLastName" placeholder="Enter last name" >
+  </div>
+
+  <div class="form-group">
+    <label for="InputEmail">Email address</label>
+    <input type="email" [(ngModel)]="userInfo.email" class="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter email" >
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div>
+
+  <div class="form-group">
+    <label for="exampleTextarea">Your bio</label>
+    <textarea class="form-control" id="exampleTextarea" rows="3" [(ngModel)]="userInfo.bio"></textarea>
+  </div>
+
+  <!--<div class="form-group">
+    <label for="exampleInputFile">File input</label>
+    <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+    <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
+  </div>-->
+
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

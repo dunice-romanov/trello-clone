@@ -27,7 +27,7 @@ class BoardPermissionSerializer(serializers.ModelSerializer):
 
     user = serializers.ReadOnlyField(source='user.username')
     board = BoardSerializer(read_only=True)
-
+    
     class Meta:
         model = BoardPermission
         fields = ('id', 'user', 'access_level', 'board')
