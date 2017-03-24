@@ -1,10 +1,10 @@
 <div>
   
 
-<input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".jpg, .png, .gif">
 
   <h1>Changing profile</h1>
-  <img src='{{userInfo.urlAvatar}}'>
+  <img class="avatar" src='{{userInfo.urlAvatar}}'>
+  <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".jpg, .png, .gif">
   <form>
     <div class="form-group">
       <label for="InputFirstName">First name</label>
