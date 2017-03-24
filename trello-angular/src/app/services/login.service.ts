@@ -148,9 +148,12 @@ export class LoginService implements OnInit {
 
     If any errors happens: throws an error
   */
-  register(username: string, password: string) {
+  register(username: string, password: string, email: string) {
     let url: string = this.URL_HEAD + this.URL_SIGN_UP;
     let body: string = this.createBodyWithUsernamePassword(username, password);
+    let body_ = JSON.parse(body)
+    body_['email'] = email;
+    body = JSON.stringify(body_);
     let headers: Headers = new Headers ({'Content-Type': 
                                 'application/json;charset=utf-8'});
 
@@ -179,6 +182,33 @@ export class LoginService implements OnInit {
 			.catch( (error: any) => { return Observable.throw(error); } );
          			//throw error
 
+  }
+
+
+  changePassword(password: string) {
+    let body = { 'password': password }
+    return this.patchUser(body);
+  }
+
+  patchUserInfo(userInfo: UserInfo) {
+    return this.patchUser(userInfo.getObject());
+  }
+
+  private patchUser(patchBody: Object) {
+    if (!this.isAuthenticated()) {return null;}
+
+    let url: string = this.URL_HEAD;
+    let token: string = this.getTokenString();
+  	let headers: Headers = this.createHeaders(token);
+    return this.http.patch(url, patchBody, {headers: headers})
+  	  .map((response: Response) => { 
+			 	  let resp = response.json();
+          let userInfo: UserInfo = this.parseUserInfo(resp);
+          return userInfo;
+
+         })
+			.catch( (error: any) => { return Observable.throw(error); } );
+         			//throw error
   }
 
   /*
@@ -275,8 +305,8 @@ export class LoginService implements OnInit {
   private parseUserInfo(response: Object): UserInfo {
     let id = response['id'];
     let username = response['username'];
-    let lastName = response['lastName'];
-    let firstName = response['firstName'];
+    let lastName = response['last_name'];
+    let firstName = response['first_name'];
     let bio = response['bio'];
     let email = response['email'];
     let userInfo = new UserInfo(id, username, firstName, 

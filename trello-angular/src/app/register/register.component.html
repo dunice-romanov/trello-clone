@@ -9,7 +9,12 @@
 	    <label for="inputPassword">{{TEXT_PASSWORD}}</label>
 	    <input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-control" id="inputPassword" placeholder={{TEXT_PLACEHOLDER_PASSWORD}}>
 	  </div>
+		
+		<div class="form-group">
+	    <label for="inputPassword">{{TEXT_EMAIL}}</label>
+	    <input type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" class="form-control" id="inputPassword" placeholder={{TEXT_PLACEHOLDER_EMAIL}}>
+	  </div>
 	  
-	  <button type="submit" class="btn btn-success" (click)='onClickRegister(username, password)'>{{TEXT_REGISTER}}</button>
+	  <button type="submit" class="btn btn-success" (click)='onClickRegister(username, password, email)'>{{TEXT_EMAIL}}</button>
 	</form>
 </div>

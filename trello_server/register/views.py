@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -52,6 +53,25 @@ class UserObjectUpdate(generics.RetrieveUpdateAPIView):
         user = self.request.user
         print(user.username)
         return get_object_or_404(User, username=user.username)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = UserSerializerFull(instance)
+        print('retrieve')
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return self.retrieve(self, request, *args, **kwargs)
+
+    def perform_update(self, serializer):
+        print('perform update')
+        serializer.save()
 
     def partial_update(self, request, *args, **kwargs):
         kwargs['partial'] = True

@@ -28,6 +28,19 @@ export class UserInfo {
 		this.bio = bio;
 		this.email = email;
 	}
+
+	getObject() {
+		let obj = {
+			'id': this.id,
+			'username': this.username,
+			'first_name': this.firstName,
+			'last_name': this.lastName,
+			'bio': this.bio,
+			'email': this.email,
+		}
+		return obj;
+	}
+
 }
 
 export class UserToken {

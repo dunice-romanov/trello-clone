@@ -13,9 +13,10 @@ export class RegisterComponent implements OnInit {
 
   readonly TEXT_USERNAME = 'Input user';
   readonly TEXT_PASSWORD = 'Input password';
+	readonly TEXT_EMAIL = 'Input email';
   readonly TEXT_PLACEHOLDER_USERNAME = 'example: kokosik88';
   readonly TEXT_PLACEHOLDER_PASSWORD = 'your pass';
-	
+  readonly TEXT_PLACEHOLDER_EMAIL = 'example: some@mail.com';
   readonly TEXT_REGISTER = 'Register';
 
   readonly TEXT_ERROR_USER_EXISTS = 'User is already exists';
@@ -25,11 +26,13 @@ export class RegisterComponent implements OnInit {
 	
   private username: string;
 	private	password: string;
+  private email: string;
 
   constructor(private loginService: LoginService,
   						private router: Router) { 
   	this.username = '';
   	this.password = '';
+    this.email = '';
   }
 
   ngOnInit() { }
@@ -40,17 +43,16 @@ export class RegisterComponent implements OnInit {
   	else - handles error
   	Finally - clears inputs
   */
-  onClickRegister(username, password) {
+  onClickRegister(username, password, email) {
+    if (!this.checkEmail(this.email)) {alert('wrong email'); return;}
   	let trimmedUsername = this.username.trim();
-  	this.loginService.register(trimmedUsername, password)
+  	this.loginService.register(trimmedUsername, password, email)
   										.subscribe(
   											data => {
   												this.router.navigate(['home']);
   											},
   											error => this.errorHandler(error)
   											);
-
-
   	this.clearInputs();
   }
 
@@ -60,6 +62,7 @@ export class RegisterComponent implements OnInit {
   private clearInputs() {
   	this.username = '';
   	this.password = '';
+    this.email = '';
   }
 
   /*
@@ -86,6 +89,11 @@ export class RegisterComponent implements OnInit {
         alert(this.TEXT_ERROR_SERVER_PROBLEM);
         break;
     }
+  }
+
+  private checkEmail(email: string) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
   }
 
 }
