@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True, default='some bio of mine')
+    avatar = models.ImageField(upload_to="avatar", default="avatar/blank.gif")
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

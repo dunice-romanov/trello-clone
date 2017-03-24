@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { LoginService } from '../services/login.service';
-
+import { ViewChild } from '@angular/core';
 import { UserInfo } from '../classes/user';
 
 @Component({
@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   private passwordValidate: string;
 
   constructor(private loginService: LoginService) { 
-    this.userInfo = new UserInfo(-1, "", "", "", "", "");
+    this.userInfo = new UserInfo(-1, "", "", "", "", "", '');
     this.password = '';
     this.passwordValidate = '';
   }
@@ -33,6 +33,15 @@ export class ProfileComponent implements OnInit {
                      .subscribe(
                       (data) => { this.userInfo = data; }, 
                       (error) => { this.errorHandler(error) });
+  }
+
+
+  fileChange(event) {
+      let fileList: FileList = event.target.files;
+      if(fileList.length > 0) {
+          let file: File = fileList[0];
+          this.loginService.changeAvatar(file).subscribe((data) => {this.getUserInfo()}, (error) => {debugger});
+      }
   }
 
 

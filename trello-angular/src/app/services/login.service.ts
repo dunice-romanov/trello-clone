@@ -21,6 +21,7 @@ export class LoginService implements OnInit {
       - refresh token()
   */
 
+  readonly URL_CLEAR = 'http://localhost:8000';
   readonly URL_HEAD = "http://localhost:8000/api-auth/";
   readonly URL_SIGN_IN = "signin/";
   readonly URL_SIGN_UP = "signup/";
@@ -118,6 +119,7 @@ export class LoginService implements OnInit {
   */
   createToken(username: string, password: string, url: string, 
               body: string, headers: Headers) {
+                
         return this.http.post(url, body, { headers: headers })
                     .map((response: Response) => {
                       let responseObject = response.json();
@@ -190,6 +192,19 @@ export class LoginService implements OnInit {
     return this.patchUser(body);
   }
 
+  changeAvatar(file: any) {
+    let token: string = this.getTokenString();
+    let formData:FormData = new FormData();
+        formData.append('avatar', file, file.name);
+    let headers = new Headers()
+        headers.append(this.HEADER_AUTHORIZATION, this.HEADER_JWT + ' ' +  token);
+        headers.append('Accept', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.patch(this.URL_HEAD, formData, options)
+            .map(res => res.json())
+            .catch(error => Observable.throw(error))
+  }
+
   patchUserInfo(userInfo: UserInfo) {
     return this.patchUser(userInfo.getObject());
   }
@@ -202,12 +217,13 @@ export class LoginService implements OnInit {
   	let headers: Headers = this.createHeaders(token);
     return this.http.patch(url, patchBody, {headers: headers})
   	  .map((response: Response) => { 
+        ;
 			 	  let resp = response.json();
           let userInfo: UserInfo = this.parseUserInfo(resp);
           return userInfo;
 
          })
-			.catch( (error: any) => { return Observable.throw(error); } );
+			.catch( (error: any) => { debugger; return Observable.throw(error); } );
          			//throw error
   }
 
@@ -309,8 +325,10 @@ export class LoginService implements OnInit {
     let firstName = response['first_name'];
     let bio = response['bio'];
     let email = response['email'];
+    let urlAvatar = this.URL_CLEAR + response['avatar']
+
     let userInfo = new UserInfo(id, username, firstName, 
-                                lastName, bio, email);
+                                lastName, bio, email, urlAvatar);
     return userInfo;
   }
 

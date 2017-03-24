@@ -15,18 +15,17 @@ export class UserInfo {
 	lastName: string;
 	bio: string;
 	email: string;
+	urlAvatar: string;
 	constructor(id: number, 
-				username: string, 
-				firstName: string, 
-				lastName: string, 
-				bio: string,
-				email: string) {
+				username: string, firstName: string, lastName: string, 
+				bio: string, email: string, urlAvatar: string) {
 		this.id = id;
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.bio = bio;
 		this.email = email;
+		this.urlAvatar = urlAvatar;
 	}
 
 	getObject() {
