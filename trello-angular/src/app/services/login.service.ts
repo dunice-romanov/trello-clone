@@ -40,6 +40,7 @@ export class LoginService implements OnInit {
   readonly ERROR_BLANK_USERNAME_AND_PASSWORD_FIELDS = JSON.stringify({"password":["This field may not be blank."],"username":["This field may not be blank."]});
   
   readonly KEY = 'token_key';
+  readonly KEY_AVATAR_URL = 'avatar_key';
 
   private isLoggedIn: boolean;
 
@@ -126,6 +127,7 @@ export class LoginService implements OnInit {
                       let token: UserToken = new UserToken(username, responseObject['token'])
                       this.setTokenToLocalStorage(token);
                       this.setIsLoggedIn(true, 'register, map');
+                      this.updateAvatarInLocalStorage();
                       return token;
                     })
                     .catch((error:any) => { 
@@ -140,6 +142,7 @@ export class LoginService implements OnInit {
   */
   logout(){
     localStorage.removeItem(this.KEY);
+    localStorage.removeItem(this.KEY_AVATAR_URL);
     this.setIsLoggedIn(false, 'logout');
     this.router.navigate(['']);
   }
@@ -183,7 +186,6 @@ export class LoginService implements OnInit {
          })
 			.catch( (error: any) => { return Observable.throw(error); } );
          			//throw error
-
   }
 
 
@@ -201,8 +203,26 @@ export class LoginService implements OnInit {
         headers.append('Accept', 'application/json');
     let options = new RequestOptions({ headers: headers });
     return this.http.patch(this.URL_HEAD, formData, options)
-            .map(res => res.json())
+            .map(
+              (res) => {
+                let userInfo = this.parseUserInfo(res.json());
+                this.setAvatarUrl(userInfo.urlAvatar)
+              })
             .catch(error => Observable.throw(error))
+  }
+  
+  /*
+    returns avatar's url, if available
+    else - returns null
+  */
+  getAvatarUrl() {
+    let storage = localStorage.getItem(this.KEY_AVATAR_URL);
+    if (storage) {return storage;}
+    return null;
+  }
+
+  private updateAvatarInLocalStorage() {
+    this.getFullUserInfo().subscribe((data)=>{ this.setAvatarUrl(data.urlAvatar); }, (error)=>{debugger;})
   }
 
   patchUserInfo(userInfo: UserInfo) {
@@ -338,6 +358,12 @@ export class LoginService implements OnInit {
             this.HEADER_JWT + ' ' +  JWToken);
     return headers;
   }
+
+
+  private setAvatarUrl(url: string) {
+    localStorage.setItem(this.KEY_AVATAR_URL, url);
+  }
+
 
 
 
