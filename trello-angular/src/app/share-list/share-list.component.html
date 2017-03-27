@@ -8,8 +8,8 @@
 
 <div class='user-list' *ngIf='!isOwner()'> 
   <div class="user-card" *ngFor="let board of shareBoards">
-    <div>{{board.username}} ({{board.accessLevel}})</div>
-    <a class='btn btn-primary' (click)="onClickUnsubscribe(board.id)" *ngIf='loginService.getUsername() == board.username'>x</a>
+    <div class="user-card-username">{{board.username}} ({{board.accessLevel}})</div>
+    <a class='btn btn-primary btn-sm' (click)="onClickUnsubscribe(board.id)" *ngIf='loginService.getUsername() == board.username'>x</a>
   </div>
 </div>
 

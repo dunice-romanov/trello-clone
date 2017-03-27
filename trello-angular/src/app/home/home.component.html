@@ -1,8 +1,5 @@
 <template ngbModalContainer></template>
-<div class='header'>
-	<div>
-		<h1>Hello, <b>{{username}}</b></h1>
-	</div>
+<div class='container header'>
 	<div>
 		<a class='link-none' *ngFor="let board of boardList"  [routerLink]="['/boards', board.id]">
 			<div class="card">
