@@ -1,25 +1,38 @@
-<div *ngIf="post">
+<div class="modal-window" *ngIf="post">
 	<div class="modal-header">
-		<div class='card-title'>
+		<div class='modal-header-title'>
 			<input type='text' (blur)='onBlurUpdateTitle(title)'  class="form-control" [(ngModel)]="title" >
 		</div>
-
-		<div class='header button-close'>
-			<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+		<div class="modal-header-close">
+			<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+				<span aria-hidden="true">&times;</span>
+			</button>
 		</div>
 	</div>
 
-	<div class="modal-body">
+	<div class="modal-body title-wrapper">
 		<textarea (blur)='onBlurUpdateText(description)' class="form-control"[(ngModel)]="description" placeholder={{TEXT_PLACEHOLDER_DESCRIPTION}}></textarea>
 	</div>
+
+	<div class='modal-body commentary-posting-form'>
+			<div class="description-wrapper">
+				<textarea type='text' class='form-control' [(ngModel)]='commentary'	placeholder="{{TEXT_PLACEHOLDER_COMMENTARY}}"></textarea>
+			</div>
+			<button class="btn btn-success" (click)="onEnterPostComment()">{{TEXT_BUTTON_POST_COMMENT}}</button>
+	</div>
+
 	<div class='modal-body'>
 		<div>
-			<input type='text' class='form-control' [(ngModel)]='commentary' (keyup.enter)='onEnterPostComment()' 
-				placeholder="{{TEXT_PLACEHOLDER_COMMENTARY}}">
-			<div *ngFor="let comma of post.commentaries" class="commentary">
-				<div class="commentary-user">{{comma.username}}</div>
-				<div class="commentary-text">{{comma.text}}</div>
-				<div class="commentary-date">{{comma.getDate()}}</div>
+			<div *ngFor="let comma of post.commentaries" class="commentary clearfix">	
+					<div class="avatar-wrapper">
+						<img class="commentary-avatar" src={{comma.avatarUrl}}>
+					</div>
+					<div class="commentary-info-wrapper">
+						<div class="commentary-user">{{comma.username}}</div>
+						<div class="commentary-text">{{comma.text}}</div>
+						<div class="commentary-date">{{comma.getDate()}}</div>
+					</div>
+				
 			</div>
 		</div>
 	</div>

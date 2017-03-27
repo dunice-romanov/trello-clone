@@ -21,6 +21,7 @@ export class CardWindowComponent implements OnInit {
   readonly TEXT_ERROR_BLACK_FIELD = 'This field can not be blank'
   readonly TEXT_ERROR_SERVER_PROBLEM = 'Server is anavailable';
   readonly TEXT_ERROR_PERMISSION = 'You dont have a permission';
+  readonly TEXT_BUTTON_POST_COMMENT = "Send";
 
   postId: number;
 

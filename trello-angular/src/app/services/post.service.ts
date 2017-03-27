@@ -12,6 +12,7 @@ import { FullPost, Commentary } from '../classes/list'
 @Injectable()
 export class PostService {
 
+  readonly URL_CLEAR = "http://127.0.0.1:8000";
   readonly URL_LIST_API = "http://127.0.0.1:8000/api-posts/";
   readonly URL_CREATE_LIST = 'create/';
   readonly URL_CREATE_COMMENTARY = 'create-commentary/';
@@ -139,8 +140,8 @@ export class PostService {
     let username: string = response['username'];
     let created: Date = new Date(response['created']);
     let text: string = response['text'];
-
-    let comment = new Commentary(username, text, created);
+    let avatarUrl = this.URL_CLEAR + response['avatar_url'];
+    let comment = new Commentary(username, text, created, avatarUrl);
 
     return comment;
   }

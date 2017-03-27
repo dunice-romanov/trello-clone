@@ -8,12 +8,14 @@
         <a class="btn btn-primary" routerLink="register">{{TEXT_REGISTER}}</a>
     </nav>
 
-    <nav class="nav" *ngIf='loginService.isAuthenticated()'>
-        <div class="dropdown">
-            <img class='avatar' src="{{loginService.getAvatarUrl()}}" alt="avatar">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               {{loginService.getUsername()}}
-            </button>
+    <nav class="nav" *ngIf='loginService.isAuthenticated()' >
+        <div class="dropdown ">
+            <div class="btn-profile" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
+                <img class="avatar" src="{{loginService.getAvatarUrl()}}" alt="avatar">
+                <span class="username">
+                {{loginService.getUsername()}}
+                </span>
+            </div>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" routerLink='profile'>{{TEXT_PROFILE}}</a>
                 <a class="dropdown-item" (click)="onClickLogout()">{{TEXT_LOGOUT}}</a>

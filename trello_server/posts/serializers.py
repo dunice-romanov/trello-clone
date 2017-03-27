@@ -7,10 +7,10 @@ from posts.models import Post, Commentary
 class CommentarySerializer(serializers.ModelSerializer):
 
     username = serializers.ReadOnlyField(source='username.username')
-
+    avatar_url = serializers.ReadOnlyField(source='username.profile.avatar.url')
     class Meta:
         model = Commentary
-        fields = ('id', 'text', 'username', 'created', 'post')
+        fields = ('id', 'text', 'username', 'created', 'post', 'avatar_url',)
 
 
 class PostSerializer(serializers.ModelSerializer):

@@ -41,16 +41,19 @@ export class Commentary {
 	username: string;
 	text: string;
 	created: Date;
+	avatarUrl: string;
 
 	private months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
 					  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 	constructor(username: string, 
 				text: string, 
-				created: Date) {
+				created: Date,
+				avatarUrl: string) {
 		this.username = username;
 		this.text = text;
 		this.created = created;
+		this.avatarUrl = avatarUrl;
 	}
 
 	getDate(): string {

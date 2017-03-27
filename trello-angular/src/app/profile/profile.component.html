@@ -1,58 +1,112 @@
-<div>
-  
-
-
-  <h1>Changing profile</h1>
-  <img class="avatar" src='{{userInfo.urlAvatar}}'>
-  <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".jpg, .png, .gif">
-  <form>
-    <div class="form-group">
-      <label for="InputFirstName">First name</label>
-      <input type="text" [(ngModel)]="userInfo.firstName" [ngModelOptions]="{standalone: true}" class="form-control" id="InputFirstName" placeholder="Enter first name" >
+<div class="profile-header">
+  <div class="container">
+    <div class="avatar-wrapper">
+      <img class="avatar" src='{{userInfo.urlAvatar}}'>
     </div>
 
-    <div class="form-group">
-      <label for="InputLastName">Last name</label>
-      <input type="text" [(ngModel)]="userInfo.lastName" [ngModelOptions]="{standalone: true}" class="form-control" id="InputLastName" placeholder="Enter last name" >
-    </div>
-
-    <div class="form-group">
-      <label for="InputEmail">Email address</label>
-      <input type="email" [(ngModel)]="userInfo.email" [ngModelOptions]="{standalone: true}" class="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter email" >
-      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-
-    <div class="form-group">
-      <label for="exampleTextarea">Your bio</label>
-      <textarea class="form-control" id="exampleTextarea" rows="3" [(ngModel)]="userInfo.bio" [ngModelOptions]="{standalone: true}"></textarea>
-    </div>
-
-    <!--<div class="form-group">
-      <label for="exampleInputFile">File input</label>
-      <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
-      <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
-    </div>
-    -->
-    
-    <button type="submit" class="btn btn-primary" (click)='onClickPatchUserInfo()'>Submit</button>
-  </form>
-
-</div>
-
-<div> 
-  <h1>Changing password</h1>
-  <form>
-    <div class="form-group">
-      <label for="InputPassword">New password</label>
-      <input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-control" id="InputPassword" placeholder="Enter new password" >
-    </div>
-
-    <div class="form-group">
-      <label for="InputPasswordValis">Repeat again</label>
-      <input type="password" [(ngModel)]="passwordValidate" [ngModelOptions]="{standalone: true}" class="form-control" id="InputPasswordValis" placeholder="Repeat your password" >
+    <div class="profile-wrapper" *ngIf="!isProfileCollapse">
+      <h1 class="username">{{userInfo.username}}</h1>
+      <button class="btn btn-primary btn-edit" (click)="onClickEditForm()">{{TEXT_OPEN_PROFILE_FORM}}</button>
     </div>
     
-    <button type="submit" class="btn btn-primary" (click)='onClickChangePassword()'>Submit</button>
-  </form>
+    <div class="profile-wrapper" *ngIf="isProfileCollapse">
+      <form>
+        <div class="form-group">
+          <label for="InputFirstName">First name</label>
+          <input type="text" [(ngModel)]="userInfo.firstName" [ngModelOptions]="{standalone: true}" class="form-control" id="InputFirstName" placeholder="Enter first name" >
+        </div>
+
+        <div class="form-group">
+          <label for="InputLastName">Last name</label>
+          <input type="text" [(ngModel)]="userInfo.lastName" [ngModelOptions]="{standalone: true}" class="form-control" id="InputLastName" placeholder="Enter last name" >
+        </div>
+
+        <div class="form-group">
+          <label for="InputEmail">Email address</label>
+          <input type="email" [(ngModel)]="userInfo.email" [ngModelOptions]="{standalone: true}" class="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter email" >
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleTextarea">Your bio</label>
+          <textarea class="form-control" id="exampleTextarea" rows="3" [(ngModel)]="userInfo.bio" [ngModelOptions]="{standalone: true}"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" (click)='onClickPatchUserInfo()'>{{TEXT_SUBMIT_PPROFILE_FORM}}</button>
+        <button type="submit" class="btn btn-secondary" (click)='onClickEditForm()'>{{TEXT_CLOSE_PPROFILE_FORM}}</button>
+      </form>
+    </div>
+
+  </div>
 </div>
+    
+
+<div class="profile-settings">
+  <div class="container"> 
+
+
+    <span class="profile-settings-title">{{TEXT_ACCOUNT_SETTINGS}}</span>
+
+
+
+    <a class="big-link" (click)="onClickOpenPasswordModal()">{{TEXT_CHANGE_PASSWORD}}</a>
+    
+    <div class="window" *ngIf="isPasswordModalCollapse">
+        <div class='window-header'>
+          <span class='title'>{{TEXT_TITLE_MODAL_PASSWORD_HEADER}}</span>
+          <a class='close' (click)="closeModals()">{{TEXT_CLOSE}}</a>
+        </div>
+
+        <div class='window-body'>
+            <div class="form-group">
+              <form>
+                <div class="form-group">
+                  <label for="InputPassword">New password</label>
+                  <input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-control" id="InputPassword" placeholder="Enter new password" >
+                </div>
+
+                <div class="form-group">
+                  <label for="InputPasswordValis">Repeat again</label>
+                  <input type="password" [(ngModel)]="passwordValidate" [ngModelOptions]="{standalone: true}" class="form-control" id="InputPasswordValis" placeholder="Repeat your password" >
+                </div>
+                
+                <button type="submit" class="btn btn-success" (click)='onClickChangePassword()'>Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    <a class="big-link" (click)="onClickOpenAvatarModal()">{{TEXT_CHANGE_AVATAR}}</a>
+
+    <div class="window" *ngIf="isAvatarModalCollapse">
+        <div class='window-header'>
+          <span class='title'>{{TEXT_TITLE_MODAL_AVATAR_HEADER}}</span>
+          <a class='close' (click)="closeModals()">{{TEXT_CLOSE}}</a>
+        </div>
+
+        <div class='window-body'>
+            <div>
+              <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".jpg, .png, .gif">
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 

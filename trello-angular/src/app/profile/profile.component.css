@@ -1,4 +1,132 @@
+.profile-header {
+    background-color: #EDEFF0;
+    padding: 20px 0;
+}
+
+.btn {
+    box-shadow: 0 1px 0 #959DA1;
+    cursor: pointer;
+}
+
+.btn-edit {
+    color: #444;
+    border: 1px solid #E2E4E6;
+    border-bottom-color: #CDD2D4;
+    background: white;
+    width: 118px;
+    height: 34px;
+    font-size: 14px;
+    box-shadow: none;
+    font-weight: bold;
+}
+
+.btn-edit:hover {
+    color: white;
+    background: #298FCA;
+    border-color: #298FCA #298FCA #026AA7;
+}
+
+.profile-wrapper {
+    float: left;
+}
+
+h1.username {
+    font-size: 22px;
+}
+
+.avatar-wrapper {
+    margin-right: 20px;
+    float: left;
+}
+
+.profile-header > .container {
+    width: 714px;
+}
+
+.profile-settings > .container {
+    width: 914px;
+}
+
 img.avatar {
-    height: 200px;
-    width: 200px;
+    height: 85px;
+    width: 85px;
+    background-color: #D6DADC;
+    border-radius: 3px;
+}
+
+.profile-settings-title,
+.big-link {
+    font-size: 16px;
+}
+
+.profile-settings-title
+ {
+    display: block;
+    font-weight: bold;
+    border-bottom: 1px solid #D6DADC;
+    margin-top: 38px;
+    padding: 5px 10px;
+}
+
+.big-link {
+    padding: 11px 14px;
+    display: block;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    text-decoration: underline !important;
+}
+
+.big-link:hover {
+    background-color: #D6DADC;
+}
+
+.container::after {
+    content:"";
+    display:block;
+    clear:both;
+}
+
+.profile-wrapper input,
+.profile-wrapper textarea { 
+    background-color: #E2E4E6;
+}
+
+.profile-wrapper input:hover,
+.profile-wrapper textarea:hover {
+    border-color: #A5ACB0;
+}
+
+.window {
+	color: #8c8c8c;
+    background: #fff;
+	margin-bottom: 5px;
+    position: absolute;
+    font-size: 14px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.15);
+    border-radius: 3px;
+    border: 1px solid #D6DADC;
+    border-bottom-color: #C4C9CC;
+    padding: 5px;
+    z-index: 100;
+}
+
+.window-header {
+    border-bottom: 1px solid #D6DADC;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.close {
+    font-size: 14px;
+}
+
+.window-body {
+    padding: 5px;
+}
+
+.window-body label {
+    font-weight: bold;
+    color: #4d4d4d;
+    padding: 0;
 }
