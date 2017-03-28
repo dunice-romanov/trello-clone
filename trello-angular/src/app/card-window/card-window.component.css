@@ -3,9 +3,22 @@
     vertical-align: top;
 }
 
+.btn-close {
+    border: none;
+    background: inherit;
+    cursor: pointer;
+    color: #999;
+    font-size: 20px;
+} 
+
+.btn-close:hover {
+    color: #111;
+}
+
 .modal-window {
     background-color: #EDEFF0;
     border-radius: 5px;
+    padding: 5px;
 }
 
 .modal-header {
@@ -15,20 +28,6 @@
 
 .modal-header {
     padding: 5px 15px;
-}
-
-.description-wrapper {
-    border-radius: 3px;
-    box-shadow: 0 1px 2px rgba(0,0,0,.23);
-}
-
-.title-wrapper {
-    margin-top: 0;
-    padding-top: 0;
-}
-
-textarea {
-    border: none;
 }
 
 .modal-header-title {
@@ -41,11 +40,60 @@ textarea {
     border: none;
     font-weight: bold;
     font-size: 20px;
+    padding: 5px;
 }
 
 .modal-header-title input:focus {
     background: white;
 }
+
+.textarea-wrapper {
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.23);
+}
+
+.title-wrapper {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.description-link,
+.description-title {
+    color: #8c8c8c !important;
+    font-size: 14px;
+    padding: 1px 3px;
+    
+}
+
+
+.description-link {
+    display: block;
+    cursor: pointer;
+    border-radius: 3px;
+    text-decoration: underline !important;
+}
+
+.description-title {
+
+}
+
+.description-link:hover {
+    background-color: #D6DADC;
+    color: #111;
+}
+
+.description-link.writed {
+    color: black !important;
+    text-decoration: none !important;
+}
+
+textarea.description-text {
+    background-color: #E2E4E6;
+    border-color: rgba(0,0,0,.15);
+    box-shadow: inset 0 1px 6px rgba(0,0,0,.1);
+    margin-bottom: 4px;
+}
+
 
 .commentary-posting-form {
     margin-bottom: 10px;
@@ -55,7 +103,7 @@ textarea {
     border-radius: 3px;
     background: white;
     height: 75px;
-    margin-bottom: 20px;
+    margin-bottom: 7px;
 }
 
 .commentary {
@@ -64,12 +112,32 @@ textarea {
     margin-bottom: 5px;
 }
 
+.commentary-posting-form-title {
+    font-size: 1pc;
+    line-height: 1.25em;
+}
+
+.commentary-avatar-wrapper {
+    display: inline-block;
+    width: 40px;
+    vertical-align: top;
+}
+
+.commentary-posting-form-area {
+    display: inline-block;
+    width: 350px;
+    vertical-align: top;
+
+}
+
 .commentary-text {
     padding: 9px 11px;
     border-radius: 3px;
     box-shadow: 0 1px 2px rgba(0,0,0,.23);
     display: inline-block;
     background-color: white;
+    word-wrap: break-word;
+    max-width: 300px;
 }
 
 .commentary-info-wrapper {
@@ -90,6 +158,10 @@ textarea {
 .avatar-wrapper {
     float: left;    
     margin-right: 10px;
+}
+
+.posting-form {
+    float: left;
 }
 
 .commentary-avatar {

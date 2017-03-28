@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { PostService } from '../services/post.service';
-
+import { LoginService } from '../services/login.service';
 import { FullPost } from '../classes/list';
 
 @Component({
@@ -22,22 +22,30 @@ export class CardWindowComponent implements OnInit {
   readonly TEXT_ERROR_SERVER_PROBLEM = 'Server is anavailable';
   readonly TEXT_ERROR_PERMISSION = 'You dont have a permission';
   readonly TEXT_BUTTON_POST_COMMENT = "Send";
+  readonly TEXT_BLANK_DESCRIPTION = "Edit the descriprion";
+  readonly TEXT_BUTTON_POST_DESCRIPTION = "Save";
+  readonly TEXT_BUTTON_CLOSE = "X";
+  readonly TEXT_DESCRIPTION_TITLE = "Description";
+  readonly TEXT_COMMENTARY_TITLE = "Add Comment";
 
   postId: number;
 
   private isTitleCollapsed: boolean;
   private isTextCollapsed: boolean;
+  private isDescriptionCollapsed: boolean;
   private commentary: string;
   private post: FullPost;
   private title: string;
   private description: string;
 
   constructor(public activeModal: NgbActiveModal,
-              private postSevice: PostService) {
+              private postSevice: PostService,
+              private loginService: LoginService) {
     this.description = '';
     this.title = '';
     this.isTextCollapsed = false;
     this.isTitleCollapsed = false;
+    this.isDescriptionCollapsed = false;
   }
 
   ngOnInit() {
@@ -52,6 +60,11 @@ export class CardWindowComponent implements OnInit {
       this.commentary = '';
   }
 
+  onClickUpdateText(text: string) {
+    this.onBlurUpdateText(text);
+    this.isDescriptionCollapsed = false;
+  }
+
   /*
     Updates post text on blur, handles errors
   */
@@ -64,7 +77,7 @@ export class CardWindowComponent implements OnInit {
 
     this.postSevice.patchText(this.postId, newTitle).subscribe(
       (data) => { this.post = data },
-      (error) => { this.errorHandler(error); }
+      (error) => { debugger; this.errorHandler(error); }
     );
   }
 
@@ -79,6 +92,7 @@ export class CardWindowComponent implements OnInit {
     this.updateTitle(newTitle, oldTitle);
   }
 
+
   onEnterPostComment() {
     let text = this.commentary.trim();
     if (text == '') { return; };
@@ -92,6 +106,12 @@ export class CardWindowComponent implements OnInit {
                             (error)=>{ this.errorHandler(error) })}, 
                     (error)=>{this.errorHandler(error)});
     
+  }
+
+  isDescriptionBlank(){
+    let description = this.description.trim();
+    if (description == '') { return true; }
+    return false;
   }
 
   /*
@@ -129,6 +149,7 @@ export class CardWindowComponent implements OnInit {
   private errorHandler(error) {
     switch (error['_body']) {
       case this.postSevice.ERROR_BLANK_TITLE:
+        debugger;
         alert(this.TEXT_ERROR_BLACK_FIELD);
         break;
       case this.postSevice.ERROR_DONT_HAVE_PERMISSION:

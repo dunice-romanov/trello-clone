@@ -266,7 +266,6 @@ export class ListsComponent implements OnInit, OnDestroy {
 	}
 
 	private onDropModel(args) {
-		console.log('__on drop model__')
 		let type: string = args[0].dataset.type;
 		switch(type) {
 			case 'card':

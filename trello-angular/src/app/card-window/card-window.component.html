@@ -10,15 +10,29 @@
 		</div>
 	</div>
 
-	<div class="modal-body title-wrapper">
-		<textarea (blur)='onBlurUpdateText(description)' class="form-control"[(ngModel)]="description" placeholder={{TEXT_PLACEHOLDER_DESCRIPTION}}></textarea>
+	<div class="modal-body description-wrapper">
+			<span class="description-title">{{TEXT_DESCRIPTION_TITLE}}</span>
+			<div *ngIf="!isDescriptionCollapsed" (click)="isDescriptionCollapsed=true">
+				<a class="description-link" *ngIf="isDescriptionBlank()">{{TEXT_BLANK_DESCRIPTION}}</a>
+				<a class="description-link writed" *ngIf="!isDescriptionBlank()">{{description}}</a>
+			</div>
+			
+			<div *ngIf="isDescriptionCollapsed">
+				<textarea (blur)='onBlurUpdateText(description)' class="form-control description-text" [(ngModel)]="description" placeholder={{TEXT_PLACEHOLDER_DESCRIPTION}}></textarea>
+				<button class="btn btn-success" (click)="onClickUpdateText(description)">{{TEXT_BUTTON_POST_DESCRIPTION}}</button>
+				<button class="btn btn-secondary btn-close" (click)="isDescriptionCollapsed=false">{{TEXT_BUTTON_CLOSE}}</button>
+			</div>
 	</div>
 
 	<div class='modal-body commentary-posting-form'>
-			<div class="description-wrapper">
-				<textarea type='text' class='form-control' [(ngModel)]='commentary'	placeholder="{{TEXT_PLACEHOLDER_COMMENTARY}}"></textarea>
-			</div>
+		<h3 class="commentary-posting-form-title">{{TEXT_COMMENTARY_TITLE}}</h3>
+		<div class="commentary-avatar-wrapper">
+			<img class="commentary-avatar" src="{{loginService.getAvatarUrl()}}">
+		</div>
+		<div class="commentary-posting-form-area">
+			<textarea type='text' class='form-control' [(ngModel)]='commentary'	placeholder="{{TEXT_PLACEHOLDER_COMMENTARY}}"></textarea>
 			<button class="btn btn-success" (click)="onEnterPostComment()">{{TEXT_BUTTON_POST_COMMENT}}</button>
+		</div>
 	</div>
 
 	<div class='modal-body'>
