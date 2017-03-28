@@ -23,6 +23,8 @@ class PostSerializer(serializers.ModelSerializer):
 class PostObjectSerializer(serializers.ModelSerializer):
     commentary = CommentarySerializer(many=True, read_only=True)
 
+    board = serializers.ReadOnlyField(source='cardlist.board.pk')
+
     class Meta:
         model = Post
-        fields = ('id', 'position', 'text', 'title', 'cardlist', 'created', 'commentary',)
+        fields = ('id', 'position', 'text', 'title', 'board', 'cardlist', 'created', 'commentary',)

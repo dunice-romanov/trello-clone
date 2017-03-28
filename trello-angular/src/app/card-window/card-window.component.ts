@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { PostService } from '../services/post.service';
@@ -10,9 +10,9 @@ import { FullPost } from '../classes/list';
   selector: 'app-card-window',
   templateUrl: './card-window.component.html',
   styleUrls: ['./card-window.component.css'],
-  providers: [PostService]
+  providers: [PostService, Location]
 })
-export class CardWindowComponent implements OnInit {
+export class CardWindowComponent implements OnInit, OnDestroy {
 
   readonly TEXT_ADD_COMMENT = 'Add a commentary, honey';
   readonly TEXT_UPDATE_DESCRIPTION = 'Update me, honey';
@@ -27,25 +27,34 @@ export class CardWindowComponent implements OnInit {
   readonly TEXT_BUTTON_CLOSE = "X";
   readonly TEXT_DESCRIPTION_TITLE = "Description";
   readonly TEXT_COMMENTARY_TITLE = "Add Comment";
+  readonly TEXT_SHARE_LINK = "Share";
+  readonly URL_CARD = "card/";
 
   postId: number;
+  isReadonly: boolean;
 
   private isTitleCollapsed: boolean;
   private isTextCollapsed: boolean;
   private isDescriptionCollapsed: boolean;
+  private isShareCollapsed: boolean;
   private commentary: string;
   private post: FullPost;
   private title: string;
   private description: string;
+  private location: Location;
 
   constructor(public activeModal: NgbActiveModal,
               private postSevice: PostService,
-              private loginService: LoginService) {
+              private loginService: LoginService,
+              location: Location) {
+    this.location = location;
     this.description = '';
     this.title = '';
     this.isTextCollapsed = false;
+    this.isReadonly = true;
     this.isTitleCollapsed = false;
     this.isDescriptionCollapsed = false;
+    this.isShareCollapsed = false;
   }
 
   ngOnInit() {
@@ -58,6 +67,9 @@ export class CardWindowComponent implements OnInit {
   			(error) => { this.errorHandler(error); }
   		);
       this.commentary = '';
+  }
+
+  ngOnDestroy() {
   }
 
   onClickUpdateText(text: string) {
@@ -92,6 +104,9 @@ export class CardWindowComponent implements OnInit {
     this.updateTitle(newTitle, oldTitle);
   }
 
+  onFocusSelectText(event) {
+    event.target.select();
+  }
 
   onEnterPostComment() {
     let text = this.commentary.trim();
@@ -141,6 +156,10 @@ export class CardWindowComponent implements OnInit {
   */
   onClickOpenCollapse(event) {
     this.isTitleCollapsed = true;
+  }
+
+  private makeUrl() {
+    return this.URL_CARD + this.post.id;
   }
 
   /*

@@ -127,7 +127,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 	*/
 	onClickAddList() {
 		let title = this.inputListTitle.trim();
-		if (title == '') {return;}
+		if (title == '') { return; }
 		this.listService.createList(this.boardId, title)
 						.subscribe(
 							(data) => {
@@ -235,6 +235,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 	    let modalWindow = this.modalService.open(CardWindowComponent);
 
 	    modalWindow.componentInstance.postId = postId; 
+		modalWindow.componentInstance.isReadonly = !(this.isCreationFormsAvailable());
 	    modalWindow.result
 	    	.then((result) => { this.updateLists(this.boardId); })
 	    	.catch((reason)=> { this.updateLists(this.boardId); });

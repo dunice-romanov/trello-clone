@@ -29,12 +29,13 @@ class IsWritebleOrReadOnlyRetrieve(permissions.BasePermission):
 	"""
 	def has_object_permission(self, request, view, obj):
 
-		if request.method in permissions.SAFE_METHODS:
-			return True
-
 		permission = get_object_or_404(BoardPermission, 
 										board=obj.cardlist.board, 
 										user=request.user)
+
+		if request.method in permissions.SAFE_METHODS and permission.access_level == 'read':
+			return True
+
 		if permission.access_level == 'read':
 		  return False
 		else: 

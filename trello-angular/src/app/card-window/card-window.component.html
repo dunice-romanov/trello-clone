@@ -1,7 +1,7 @@
 <div class="modal-window" *ngIf="post">
 	<div class="modal-header">
 		<div class='modal-header-title'>
-			<input type='text' (blur)='onBlurUpdateTitle(title)'  class="form-control" [(ngModel)]="title" >
+			<input [readonly]="isReadonly" type='text' (blur)='onBlurUpdateTitle(title)'  class="form-control" [(ngModel)]="title" >
 		</div>
 		<div class="modal-header-close">
 			<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
@@ -18,8 +18,8 @@
 			</div>
 			
 			<div *ngIf="isDescriptionCollapsed">
-				<textarea (blur)='onBlurUpdateText(description)' class="form-control description-text" [(ngModel)]="description" placeholder={{TEXT_PLACEHOLDER_DESCRIPTION}}></textarea>
-				<button class="btn btn-success" (click)="onClickUpdateText(description)">{{TEXT_BUTTON_POST_DESCRIPTION}}</button>
+				<textarea [readonly]="isReadonly" (blur)='onBlurUpdateText(description)' class="form-control description-text" [(ngModel)]="description" placeholder={{TEXT_PLACEHOLDER_DESCRIPTION}}></textarea>
+				<button *ngIf="!isReadonly" class="btn btn-success" (click)="onClickUpdateText(description)">{{TEXT_BUTTON_POST_DESCRIPTION}}</button>
 				<button class="btn btn-secondary btn-close" (click)="isDescriptionCollapsed=false">{{TEXT_BUTTON_CLOSE}}</button>
 			</div>
 	</div>
@@ -32,6 +32,20 @@
 		<div class="commentary-posting-form-area">
 			<textarea type='text' class='form-control' [(ngModel)]='commentary'	placeholder="{{TEXT_PLACEHOLDER_COMMENTARY}}"></textarea>
 			<button class="btn btn-success" (click)="onEnterPostComment()">{{TEXT_BUTTON_POST_COMMENT}}</button>
+			<div class="share">
+				<a class="share-link" (click)="isShareCollapsed=!isShareCollapsed">{{TEXT_SHARE_LINK}}</a>
+				<div *ngIf="isShareCollapsed" class="window">
+					<div class="window-header">
+						<span>Your link</span>
+						<a class="close" (click)="isShareCollapsed=false">x</a>
+					</div>
+					<div class="window-body">
+						<input (focus)="onFocusSelectText($event)" (click)="onFocusSelectText($event)" type="text" [readonly]="true" select-on-click value="http://localhost:4200/{{makeUrl()}}" class="form-control">
+					</div>
+
+				</div>
+			</div>
+
 		</div>
 	</div>
 

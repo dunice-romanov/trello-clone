@@ -12,6 +12,7 @@ import { ListsComponent } from '../lists/lists.component';
 import { IntroductionComponent } from '../introduction/introduction.component';
 import { CardWindowComponent } from '../card-window/card-window.component';
 import { ProfileComponent } from '../profile/profile.component';
+import { CardComponent } from '../card/card.component'; 
 
 const routes: Routes = [
     {
@@ -47,6 +48,11 @@ const routes: Routes = [
     {
         path: 'profile',
         component: ProfileComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'card/:id',
+        component: CardComponent,
         canActivate: [AuthGuard]
     }
 ];

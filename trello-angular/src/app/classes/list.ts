@@ -27,12 +27,13 @@ export class Post {
 
 export class FullPost extends Post {
 	commentaries: Commentary[];
-	constructor(id: number, 
-				title: string, 
-				text: string,
-				positionId: number) {
+	boardId: number;
+	constructor(id: number, title: string, 
+				text: string, positionId: number,
+				boardId: number) {
 		super(id, title, text, positionId);
 		this.commentaries = [];
+		this.boardId = boardId;
 	}
 }
 

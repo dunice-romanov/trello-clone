@@ -126,8 +126,9 @@ export class PostService {
     let id: number = response['id'];
     let title: string = response['title'];
     let text: string = response['text'];
-    let position: number = response['position']
-    let fullPost = new FullPost(id, title, text, position);
+    let position: number = response['position'];
+    let boardId: number = response['board'];
+    let fullPost = new FullPost(id, title, text, position, boardId);
     fullPost.commentaries = this.parseAllComments(response['commentary']);
 
     return fullPost;

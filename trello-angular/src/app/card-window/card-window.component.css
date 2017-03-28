@@ -95,6 +95,10 @@ textarea.description-text {
 }
 
 
+.share-link {
+    position: relative;
+}
+
 .commentary-posting-form {
     margin-bottom: 10px;
 }
@@ -175,4 +179,23 @@ textarea.description-text {
   content: "";
   display: table;
   clear: both;
+}
+
+.share {
+    float: right;
+}
+
+.share-link {
+    font-size: 14px;
+    color: #8c8c8c !important;
+    cursor: pointer;
+}
+
+.share-link:hover {
+    color: black !important;
+    text-decoration: underline !important;
+}
+
+.window {
+    width: 180px;
 }

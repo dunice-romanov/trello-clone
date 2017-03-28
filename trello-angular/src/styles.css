@@ -5,3 +5,37 @@ html {
 body {
     height: 100%;
 }
+
+.window {
+	color: #8c8c8c;
+    background: #fff;
+	margin-bottom: 5px;
+    position: absolute;
+    font-size: 14px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.15);
+    border-radius: 3px;
+    border: 1px solid #D6DADC;
+    border-bottom-color: #C4C9CC;
+    padding: 5px;
+    z-index: 100;
+}
+
+.window-header {
+    border-bottom: 1px solid #D6DADC;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.close {
+    font-size: 14px;
+}
+
+.window-body {
+    padding: 5px;
+}
+
+.window-body label {
+    font-weight: bold;
+    color: #4d4d4d;
+    padding: 0;
+}
