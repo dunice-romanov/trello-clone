@@ -115,6 +115,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 	ngOnDestroy() {
 		this.dragulaService.destroy('bag-list');
 		this.dragulaService.destroy('bag-one');
+		console.log('list comp ondestroy');
 	}
 
 	onEnterAddList() {

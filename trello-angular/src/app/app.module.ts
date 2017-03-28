@@ -21,6 +21,7 @@ import { CardWindowComponent } from './card-window/card-window.component';
 import { ShareListComponent } from './share-list/share-list.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CardComponent } from './card/card.component';
+import { BoardlistDropdownComponent } from './boardlist-dropdown/boardlist-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { CardComponent } from './card/card.component';
     CardWindowComponent,
     ShareListComponent,
     ProfileComponent,
-    CardComponent
+    CardComponent,
+    BoardlistDropdownComponent
   ],
   imports: [
     DragulaModule,

@@ -1,0 +1,6 @@
+<div class="btn btn-primary" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
+dropdown
+</div>
+<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a *ngFor="let board of boards" class="dropdown-item" routerLink='boards/{{board.id}}'>{{board.title}}</a>
+</div>

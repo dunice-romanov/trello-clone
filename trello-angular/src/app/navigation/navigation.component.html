@@ -9,6 +9,7 @@
     </nav>
 
     <nav class="nav" *ngIf='loginService.isAuthenticated()' >
+        <app-boardlist-dropdown></app-boardlist-dropdown>
         <div class="dropdown ">
             <div class="btn-profile" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
                 <img class="avatar" src="{{loginService.getAvatarUrl()}}" alt="avatar">

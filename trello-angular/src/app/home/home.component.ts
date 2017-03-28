@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { Response} from '@angular/http';
 import { BoardsService } from '../services/boards.service';
@@ -12,7 +12,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./home.component.css'],
   providers: [BoardsService]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   readonly TEXT_USERNAME = 'Username';
 	readonly TEXT_UPDATE_BOARD = 'Update boards';
@@ -41,6 +41,10 @@ export class HomeComponent implements OnInit {
     this.username = this.loginService.getUsername();
     
     this.setBoardList();
+  }
+
+  ngOnDestroy() {
+    console.log('home ondestroy');
   }
 
   /*
