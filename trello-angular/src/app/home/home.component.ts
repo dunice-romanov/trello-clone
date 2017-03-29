@@ -6,11 +6,12 @@ import { Board } from '../classes/board';
 import { SharingComponent } from '../sharing/sharing.component';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
+import { Subscription } from 'rxjs/Subscription';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
-  providers: [BoardsService]
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
@@ -27,6 +28,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   private boardList: Board[];
   private isCollapsed: boolean;
   private accessLevel: string;
+  private sub: Subscription;
+
+  private ownerBoards: Board[];
+  private sharedBoards: Board[];
 
   constructor(private loginService: LoginService,
               private boardsService: BoardsService,
@@ -38,22 +43,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log('home init called');
     this.username = this.loginService.getUsername();
-    
-    this.setBoardList();
-  }
+    this.sub = this.boardsService.getBoardList().subscribe((val) => {this.fillBoards(val)});
+    this.boardsService.updateBoardsList().subscribe();
+}
 
   ngOnDestroy() {
+    this.sub.unsubscribe();
     console.log('home ondestroy');
   }
-
-  /*
-    Updates this.boardList from server's data
-    If reject - handles error by errorHandler()
-  */
-   onClickGetBoards() {
-    this.setBoardList();
-   }
 
 
   onEnterCreateBoard() {
@@ -65,7 +64,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           (data) => {
             this.isCollapsed = true;
             this.boardTitle = '';
-            this.setBoardList();
               }, 
           (error) => {this.errorHandler(error);});
   }
@@ -77,7 +75,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   onClickDeleteBoard(boardId: number, event) {
     event.stopPropagation();
     this.boardsService.deleteBoard(boardId)
-         .subscribe( (data) => {this.setBoardList()},
+         .subscribe( (data) => {},
                      (error) => {this.errorHandler(error);} );
     return false;
   }
@@ -100,17 +98,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  /*
-    Requests server's boardlist and sets to this.boardList
-    If reject - handle an error by errorHandler()
-  */
-  private setBoardList() {
-    this.boardsService.getUserList().subscribe(
-        (data) => { this.boardList = data },
-        (error) => { 
-          this.errorHandler(error);
-         }
-      );
+  private fillBoards(boards: Board[]) {
+    let username = this.loginService.getUsername();
+    this.ownerBoards = boards.filter((board) => board.boardOwner == username);
+    this.sharedBoards = boards.filter((board) => board.boardOwner != username);
   }
 
   private stopPropagation(event) {

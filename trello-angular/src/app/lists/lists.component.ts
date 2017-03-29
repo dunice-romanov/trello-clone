@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterContentInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -18,10 +18,11 @@ import { CardWindowComponent } from '../card-window/card-window.component'
 	styleUrls: ['./lists.component.css'],
 	providers: [ListsService,
 				PostService,
-				BoardsService],
-	viewProviders: [DragulaService],
+				BoardsService,
+				DragulaService]
+	// viewProviders: [],
 })
-export class ListsComponent implements OnInit, OnDestroy {
+export class ListsComponent implements OnInit, OnDestroy, AfterContentInit {
 
 	readonly TEXT_ADD_NEW_POST = "Add";
 	readonly TEXT_ADD_NEW_LIST = 'Save';
@@ -62,7 +63,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 		this.boardTitle = '';
 		this.accessLevel = '';
 		this.boardId = 0;
-		this.lists = [];
+		// this.lists = [];
 		this.inputListTitle = '';
 		this.listInput = [];
 		this.isCollapsedArray = [];
@@ -101,9 +102,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 				.subscribe(
 					(data) => {
 						this.lists = data;
-						this.dragulaService.dropModel
-							.subscribe((value) => { this.onDropModel(value.slice(1)) });
-					
+
 					},
 
 					(error) => {this.errorHandler(error);}
@@ -112,9 +111,16 @@ export class ListsComponent implements OnInit, OnDestroy {
 			(error)=> {this.errorHandler(error);});
 	}
 
+	ngAfterContentInit() {
+		console.log("__pre-dragula-subscribing__");
+		this.dragulaService.dropModel
+			.subscribe((value) => { this.onDropModel(value.slice(1)) });
+	}
+
 	ngOnDestroy() {
 		this.dragulaService.destroy('bag-list');
 		this.dragulaService.destroy('bag-one');
+		this.dragulaService.dropModel.unsubscribe();
 		console.log('list comp ondestroy');
 	}
 
@@ -269,6 +275,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 
 	private onDropModel(args) {
 		let type: string = args[0].dataset.type;
+		console.log('__on drop model__')
 		switch(type) {
 			case 'card':
 				this.changeCardPosition(args);
@@ -312,6 +319,7 @@ export class ListsComponent implements OnInit, OnDestroy {
 		If error occured - handles
 	*/
 	private updateLists(boardId: Number){
+		console.log('__updating lists goes__');
         this.listService.getListsList(this.boardId)
 	       		.subscribe(
 	       			(data) => {this.lists = data;},
@@ -378,6 +386,11 @@ export class ListsComponent implements OnInit, OnDestroy {
 				alert(this.TEXT_ERROR_SERVER_PROBLEM);
 				break;
    		}
+	}
+
+
+	private onClickDebug() {
+		debugger;
 	}
 
 }

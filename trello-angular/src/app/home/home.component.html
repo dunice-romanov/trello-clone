@@ -1,7 +1,7 @@
 <template ngbModalContainer></template>
 <div class='container header'>
 	<div>
-		<a class='link-none' *ngFor="let board of boardList"  [routerLink]="['/boards', board.id]">
+		<a class='link-none' *ngFor="let board of ownerBoards"  [routerLink]="['/boards', board.id]">
 			<div class="card">
 				<div class="card-menu-header">
 					<div class="card-title"><span class='card-title-span'>{{board.title}}</span></div>
@@ -10,6 +10,19 @@
 						<button *ngIf="board.accessLevel == 'owner'" (click)="onClickDeleteBoard(board.id, $event)" class='btn btn-danger'>{{TEXT_DELETE_BOARD}}</button>
 					</div>
 				</div>
+			</div>
+		</a>
+
+		<a class='link-none' *ngFor="let board of sharedBoards"  [routerLink]="['/boards', board.id]">
+			<div class="card">
+				<div class="card-menu-header">
+					<div class="card-title"><span class='card-title-span'>{{board.title}}</span></div>
+					<div class="card-buttons">
+						<button *ngIf="board.accessLevel == 'owner'" (click)='onClickShareBoard(board.id, $event)' class='btn btn-info'>{{TEXT_SHARE_BOARD}}</button>
+						<button *ngIf="board.accessLevel == 'owner'" (click)="onClickDeleteBoard(board.id, $event)" class='btn btn-danger'>{{TEXT_DELETE_BOARD}}</button>
+					</div>
+				</div>
+				<div class="card-menu-footer"><span>Provided by <b>{{board.boardOwner}}</b> for {{board.accessLevel}}</span></div>
 			</div>
 		</a>
 

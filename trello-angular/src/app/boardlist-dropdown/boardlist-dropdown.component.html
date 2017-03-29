@@ -1,6 +1,32 @@
-<div class="btn btn-primary" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
-dropdown
-</div>
-<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a *ngFor="let board of boards" class="dropdown-item" routerLink='boards/{{board.id}}'>{{board.title}}</a>
+<button class="fancy-button" [disabled]="!(boardsLength > 0)" (click)="isMenuCollapsed=!isMenuCollapsed">
+{{TEXT_BUTTON_GLOBAL}}
+</button>
+
+<div *ngIf="isMenuCollapsed" class="fancy-menu">
+    <div class="fancy-menu-boards" *ngIf="ownersBoards.length > 0"> 
+        <span class="dropdown-item-title">{{TEXT_OWNER_USER}}</span>
+        <div>
+            <a *ngFor="let board of ownersBoards" [routerLink]="['/boards', board.id]" (click)="isMenuCollapsed=false">
+                <div class="item clearfix">
+                    <div class="item-thumbnail"></div>
+                    <div class="item-body">{{board.title}}</div>
+                </div>
+            </a>
+        </div>
+        
+    </div>
+
+    <div class="fancy-menu-boards" *ngIf="sharedBoards.length > 0" >
+        <span class="dropdown-item-title">{{TEXT_OWNER_NOT_USER}}</span>
+        <div>
+            <a *ngFor="let board of sharedBoards" [routerLink]="['/boards', board.id]" (click)="isMenuCollapsed=false">
+                <div class="item clearfix">
+                    <div class="item-thumbnail"></div>
+                    <div class="item-body"><span>{{board.title}} (by {{board.boardOwner}})</span></div>
+                </div>
+            </a>
+        </div>
+       
+    </div>
+
 </div>

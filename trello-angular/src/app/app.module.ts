@@ -6,8 +6,9 @@ import { HttpModule } from '@angular/http';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DragulaModule } from 'ng2-dragula';
-import { AppRoutingModule } from './app-routing/app-routing.module'
-import { LoginService } from './services/login.service'
+import { AppRoutingModule } from './app-routing/app-routing.module';
+import { LoginService } from './services/login.service';
+import { BoardsService } from './services/boards.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -48,7 +49,8 @@ import { BoardlistDropdownComponent } from './boardlist-dropdown/boardlist-dropd
     NgbModule.forRoot(),
   ],
   providers: [LoginService,
-              NgbActiveModal],
+              NgbActiveModal,
+              BoardsService],
   bootstrap: [AppComponent],
   entryComponents: [SharingComponent,
                      CardWindowComponent],

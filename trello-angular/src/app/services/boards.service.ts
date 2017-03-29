@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { Subject } from 'rxjs/Subject';
 
 import { LoginService } from '../services/login.service';
 import { Board, ShareBoard } from '../classes/board'
@@ -26,24 +27,38 @@ export class BoardsService {
 
   readonly ERROR_TITLE_MAX_LENGTH = JSON.stringify({"title":["Ensure this field has no more than 100 characters."]})
   readonly ERROR_USER_DOES_NOT_EXISTS = JSON.stringify({"detail":"Not found."});
+
+  private boards: Board[];
   
+  private boardsSubject = new Subject<Board[]>();
+  public sub = this.boardsSubject.asObservable();
+
   constructor(private http: Http,
-  			  private loginService: LoginService) { }
+  			  private loginService: LoginService) { 
+    this.boards = [];
+    this.updateBoardsList().subscribe((val)=> {this.boards = val;});
+  }
+
+
+  getBoardList() {
+    return this.boardsSubject.asObservable();
+  }
 
   /*
   	Send get request to server(URL) with authorization token from loginService
-  	Returns User[] if ok,
+  	Returns Board[] if ok,
   	Throws error if error
   */
-  getUserList() {
+  updateBoardsList() {
     let token: string = this.loginService.getTokenString();
   	let headers: Headers = this.createHeaders(token);
   	
     return this.http.get(this.URL, {headers: headers})
   	  .map((response: Response) => { 
 			 	  let resp = response.json();
-          return this.parseBoards(resp); 
-
+          this.boards = this.parseBoards(resp); 
+          this.boardsSubject.next(this.boards);
+          return this.boards;
          })
 			.catch( (error: any) => { return Observable.throw(error); } );
          			//throw error
@@ -62,7 +77,11 @@ export class BoardsService {
     let body = {'title': title};
     
     return this.http.post(url, body, {headers: headers})
-            .map((response: Response) => response.json())
+            .map(
+              (response: Response) => {
+                this.updateBoardsList().subscribe();
+                return response.json();
+              })
             .catch((error: any) => Observable.throw(error));
   }
 
@@ -76,7 +95,11 @@ export class BoardsService {
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
     return this.http.delete(url, {headers: headers})
-              .map((response: Response) => {return response})
+              .map(
+                (response: Response) => {
+                  this.updateBoardsList().subscribe();
+                  return response;
+                })
               .catch((error: any) => {debugger; return Observable.throw(error)})
   }
 

@@ -73,3 +73,13 @@ div.card-title.card-menu {
 }
 div.card-buttons {
 }
+
+.card-menu-footer {
+	margin-top: 10px;
+	margin-right: 10px;
+	text-align: right;
+}
+
+.card-menu-footer span {
+	font-size: 12px;
+}

@@ -1,15 +1,19 @@
 <div class="fixed-top row no-gutters justify-content-between" data-toggle="sticky-onscroll">
     <nav class="nav">
-      <a class="nav-link active navbar-brand" routerLink="home">{{TEXT_BRAND}}</a>
+        <app-boardlist-dropdown *ngIf="loginService.isAuthenticated()"></app-boardlist-dropdown>
     </nav>
 
-    <nav class="nav" *ngIf='!loginService.isAuthenticated()'>
+    <nav>
+         <a class="nav-link active navbar-brand" routerLink="home">{{TEXT_BRAND}}</a>
+    </nav>
+
+    <nav *ngIf='!loginService.isAuthenticated()'>
         <a class="btn btn-primary" routerLink="login">{{TEXT_LOGIN}}</a>
         <a class="btn btn-primary" routerLink="register">{{TEXT_REGISTER}}</a>
     </nav>
 
-    <nav class="nav" *ngIf='loginService.isAuthenticated()' >
-        <app-boardlist-dropdown></app-boardlist-dropdown>
+    <nav *ngIf='loginService.isAuthenticated()' >
+        
         <div class="dropdown ">
             <div class="btn-profile" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
                 <img class="avatar" src="{{loginService.getAvatarUrl()}}" alt="avatar">

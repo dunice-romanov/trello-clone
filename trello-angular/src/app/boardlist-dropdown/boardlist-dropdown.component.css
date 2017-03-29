@@ -1,0 +1,104 @@
+.fancy-button {
+    width: 90px;
+    height: 30px;
+    background-color: #438FBB;
+    border: none;
+    border-radius: 3px;
+    font-weight: 700;
+    color: white;
+    font-size: 14px;
+}
+
+.fancy-button:disabled {
+    background-color: lightblue;
+}
+
+.fancy-button:active,
+.fancy-button:focus {
+    border: none;
+    outline: none;
+}
+
+.fancy-button:hover {
+    background-color: #5F9FC5;
+}
+
+.fancy-button:active {
+    background-color: #6EA8CA;
+}
+
+.fancy-menu {
+    margin: 2px 0;
+    padding: 5px;
+    color: black;
+    font-size: 14px;
+    max-height: 500px;
+    border-radius: 0 3px 3px 0;
+    background: #fff;
+    box-shadow: 0 3px 6px rgba(0,0,0,.4);
+    left: 1px;
+    position: absolute;
+}
+
+.fancy-menu-boards {
+    margin: 5px;
+}
+
+.dropdown-item:hover {
+    background-color: none;
+}
+
+.item {
+    margin: 2px;
+    color: black;
+    font-weight: 700;
+    border-radius: 3px;
+    background-color: #E1EFF7;
+}
+
+.item:hover {
+    background-color: #96C0E5;
+}
+
+.item-thumbnail, 
+.item-body {
+    height: 36px;
+}
+
+.item-thumbnail {
+    border-radius: 3px 0 0 3px;
+    width: 36px;
+    background-color: #0079BF;
+    float: left;
+}
+
+.item-body {
+    width: 150px;
+    border-radius: 0 3px 3px 0;
+    float: left;
+    vertical-align: middle;
+    padding: 0 5px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.item-body:hover {
+    background-color: inherit;
+}
+
+.item-body span {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+}
+
+.clearfix::after {
+    content:"";
+    display:block;
+    clear:both;
+}
