@@ -52,6 +52,10 @@ div.card-menu  {
 .card-title-span {
 	font-size: 1pc;
 	font-weight: 700;
+	display: block;
+    max-width: 90px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 }
 
 button.btn {
@@ -61,6 +65,7 @@ button.btn {
 div.card-menu-header {
 	padding: 10px;
 	display: flex;
+	max-height: 55px;
     justify-content: space-between;
 }
 

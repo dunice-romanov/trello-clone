@@ -1,0 +1,99 @@
+.fancy-menu-boards {
+    margin: 5px;
+}
+
+.dropdown-bag {
+    overflow: auto;
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+.dropdown-item:hover {
+    background-color: none;
+}
+
+.item {
+    margin: 2px;
+    color: black;
+    font-weight: 700;
+    border-radius: 3px;
+    background-color: #E1EFF7;
+}
+
+.item:hover {
+    background-color: #96C0E5;
+}
+
+.item-thumbnail, 
+.item-body,
+.item-buttons,
+.item-buttons-btn  {
+    height: 36px;
+}
+
+.item-thumbnail {
+    border-radius: 3px 0 0 3px;
+    width: 36px;
+    background-color: #0079BF;
+    float: left;
+}
+
+.item-body {
+    width: 170px;
+    background-color: #E1EFF7;
+    border-radius: 0 3px 3px 0;
+    float: left;
+    vertical-align: middle;
+    padding: 0 5px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.item:hover .item-body,
+.item:hover .item-buttons
+ {
+    background-color: inherit;
+}
+
+.item-buttons:hover {
+    font-weight: bold;
+    color: black;
+}
+
+.item-buttons {
+    float: left;
+    width: 20px;
+    color: #999;
+    font-size: 18px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.item-buttons-btn { 
+    width: inherit;
+}
+
+.item-body > span {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+}
+
+.board-title {
+    white-space: nowrap;
+}
+
+.clearfix::after {
+    width: 30px;
+    content:"";
+    display:block;
+    clear:both;
+}

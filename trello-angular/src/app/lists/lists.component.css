@@ -41,6 +41,9 @@
 	cursor: pointer;
 	margin-bottom: 5px;
 	margin-left: 5px;
+	max-width: 170px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 }
 
 .board-title .title-text,
@@ -55,7 +58,6 @@
 }
 
 .title-handler:hover {
-	background-color: #ccf;
 }
 
 .title-rename-head {
@@ -132,7 +134,8 @@
 }
 
 .card-block:hover {
-	background-color: #ccf;
+	background-color: #EDEFF0;
+	border-bottom-color: #D6DADC;
 }
 
 

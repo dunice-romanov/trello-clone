@@ -51,7 +51,7 @@
 
     <a class="big-link" (click)="onClickOpenPasswordModal()">{{TEXT_CHANGE_PASSWORD}}</a>
     
-    <div class="window" *ngIf="isPasswordModalCollapse">
+    <div class="window" *ngIf="isPasswordModalCollapse" closeNgIf [(toggle)]="isPasswordModalCollapse">
         <div class='window-header'>
           <span class='title'>{{TEXT_TITLE_MODAL_PASSWORD_HEADER}}</span>
           <a class='close' (click)="closeModals()">{{TEXT_CLOSE}}</a>
@@ -78,7 +78,7 @@
 
     <a class="big-link" (click)="onClickOpenAvatarModal()">{{TEXT_CHANGE_AVATAR}}</a>
 
-    <div class="window" *ngIf="isAvatarModalCollapse">
+    <div class="window" *ngIf="isAvatarModalCollapse" closeNgIf [(toggle)]="isAvatarModalCollapse">
         <div class='window-header'>
           <span class='title'>{{TEXT_TITLE_MODAL_AVATAR_HEADER}}</span>
           <a class='close' (click)="closeModals()">{{TEXT_CLOSE}}</a>

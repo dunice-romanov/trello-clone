@@ -29,8 +29,8 @@
 		<div class="card card-create" (click)="onClickCollapseForm()">
 			<div class="card-menu-header create">
 				<div class="card-title"><span class='card-title-span'>Create new</span></div>
-				<div class="card-input" id="collapseCreateForm" [ngbCollapse]="isCollapsed">
-					<input type="text" class="form-control" (click)="stopPropagation($event)" [(ngModel)]="boardTitle" (keyup.enter)="onEnterCreateBoard()" placeholder="{{TEXT_CREATE_BOARD}}">
+				<div class="card-input" id="collapseCreateForm" (click)="isCollapsed=!isCollapsed">
+					<input autofocus *ngIf="isCollapsed" closeNgIf [(toggle)]="isCollapsed" type="text" class="form-control" (click)="stopPropagation($event)" [(ngModel)]="boardTitle" (keyup.enter)="onEnterCreateBoard()" placeholder="{{TEXT_CREATE_BOARD}}">
 				</div>
 			</div>
 		</div>

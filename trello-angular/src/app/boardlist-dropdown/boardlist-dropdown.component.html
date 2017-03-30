@@ -2,31 +2,28 @@
 {{TEXT_BUTTON_GLOBAL}}
 </button>
 
-<div *ngIf="isMenuCollapsed" class="fancy-menu">
-    <div class="fancy-menu-boards" *ngIf="ownersBoards.length > 0"> 
-        <span class="dropdown-item-title">{{TEXT_OWNER_USER}}</span>
-        <div>
-            <a *ngFor="let board of ownersBoards" [routerLink]="['/boards', board.id]" (click)="isMenuCollapsed=false">
-                <div class="item clearfix">
-                    <div class="item-thumbnail"></div>
-                    <div class="item-body">{{board.title}}</div>
-                </div>
-            </a>
-        </div>
-        
+<div closeNgIf [(toggle)]="isMenuCollapsed" *ngIf="isMenuCollapsed" class="fancy-menu" >
+    
+    <input class="fancy-search form-control" [(ngModel)]="searchInput" 
+        (input)="onChangeSearch()" placeholder="{{TEXT_SEARCH_INPUT_PLACEHOLDER}}">
+    
+    <div *ngIf="searchInput.trim() !== ''">
+        <app-boardlist-dropdown-bag [boards]="searchOwnerBoards" 
+            [title]="TEXT_OWNER_USER" [isShared]="false" 
+            (boardClicked)="isMenuCollapsed = !($event)"></app-boardlist-dropdown-bag>
+        <app-boardlist-dropdown-bag [boards]="searchSharedBoards" 
+            [title]="TEXT_OWNER_NOT_USER" [isShared]="true" 
+            (boardClicked)="isMenuCollapsed = !($event)"></app-boardlist-dropdown-bag>
+        <div class="fancy-nothing-found" *ngIf="searchOwnerBoards.length == 0 && searchSharedBoards.length == 0">{{TEXT_SEARCH_BLANK}}</div>
     </div>
 
-    <div class="fancy-menu-boards" *ngIf="sharedBoards.length > 0" >
-        <span class="dropdown-item-title">{{TEXT_OWNER_NOT_USER}}</span>
-        <div>
-            <a *ngFor="let board of sharedBoards" [routerLink]="['/boards', board.id]" (click)="isMenuCollapsed=false">
-                <div class="item clearfix">
-                    <div class="item-thumbnail"></div>
-                    <div class="item-body"><span>{{board.title}} (by {{board.boardOwner}})</span></div>
-                </div>
-            </a>
-        </div>
-       
+    <div *ngIf="searchInput.trim() === ''">
+        <app-boardlist-dropdown-bag [boards]="ownersBoards" 
+            [title]="TEXT_OWNER_USER" [isShared]="false" 
+            (boardClicked)="isMenuCollapsed = !($event)"></app-boardlist-dropdown-bag>
+        <app-boardlist-dropdown-bag [boards]="sharedBoards" 
+            [title]="TEXT_OWNER_NOT_USER" [isShared]="true" 
+            (boardClicked)="isMenuCollapsed = !($event)"></app-boardlist-dropdown-bag>
     </div>
 
 </div>

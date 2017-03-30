@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   	this.username = '';
     this.boardList = [];
     this.boardTitle = '';
-    this.isCollapsed = true;
+    this.isCollapsed = false;
   }
 
   ngOnInit() {

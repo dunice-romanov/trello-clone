@@ -18,7 +18,6 @@ import { CardWindowComponent } from '../card-window/card-window.component'
 	styleUrls: ['./lists.component.css'],
 	providers: [ListsService,
 				PostService,
-				BoardsService,
 				DragulaService]
 	// viewProviders: [],
 })
@@ -102,7 +101,8 @@ export class ListsComponent implements OnInit, OnDestroy, AfterContentInit {
 				.subscribe(
 					(data) => {
 						this.lists = data;
-
+						this.isCollapsedArray = new Array(this.lists.length);
+						this.fillCollapseArray(this.isCollapsedArray);
 					},
 
 					(error) => {this.errorHandler(error);}
@@ -141,7 +141,7 @@ export class ListsComponent implements OnInit, OnDestroy, AfterContentInit {
 								this.updateLists(this.boardId);
 								this.inputListTitle = '';
 								this.isCreateButtonCollapsed = false;
-								
+								this.isCollapsedArray.push(false);
 							},
 							(error) => {
 								this.inputListTitle = '';
@@ -187,7 +187,7 @@ export class ListsComponent implements OnInit, OnDestroy, AfterContentInit {
 				(data) => {
 					this.updateLists(this.boardId);
 					this.listInput[inputId] = '';
-					this.isCollapsedArray[inputId] = false;
+					//this.isCollapsedArray[inputId] = false;
 				},
 				(error) => {
 					this.errorHandler(error);
@@ -238,15 +238,15 @@ export class ListsComponent implements OnInit, OnDestroy, AfterContentInit {
 		after - updates lists
 	*/
 	onClickOpenPost(postId: number, event) {
-	    //event.stopPropagation();
+		this.closeEveryCollapse();
 	    let modalWindow = this.modalService.open(CardWindowComponent);
-
 	    modalWindow.componentInstance.postId = postId; 
 		modalWindow.componentInstance.isReadonly = !(this.isCreationFormsAvailable());
+		console.log("opens and sets");
 	    modalWindow.result
 	    	.then((result) => { this.updateLists(this.boardId); })
 	    	.catch((reason)=> { this.updateLists(this.boardId); });
-	    //return false;
+	    return false;
 	}
 
 	onEnterUpdateTitle() {
@@ -274,6 +274,7 @@ export class ListsComponent implements OnInit, OnDestroy, AfterContentInit {
 	}
 
 	private onDropModel(args) {
+		this.closeEveryCollapse();
 		let type: string = args[0].dataset.type;
 		console.log('__on drop model__')
 		switch(type) {
@@ -334,6 +335,7 @@ export class ListsComponent implements OnInit, OnDestroy, AfterContentInit {
 		this.closeCollapsedArray(this.isCollapsedArray);
 		this.closeCollapsedArray(this.isTitleUpdateCollapsed);
 		this.isCreateButtonCollapsed = false;
+		this.onClickCloseUpdateTitle();
 	}
 
 	private closeCollapsedArray(array: boolean[]) {
@@ -388,9 +390,10 @@ export class ListsComponent implements OnInit, OnDestroy, AfterContentInit {
    		}
 	}
 
-
-	private onClickDebug() {
-		debugger;
+	private fillCollapseArray(array: boolean[]) {
+		for(let i = 0; i < array.length; i++) {
+			array[i] = false;
+		}
 	}
 
 }

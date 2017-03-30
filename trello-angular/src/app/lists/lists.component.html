@@ -1,5 +1,3 @@
-
-
 <div class='board-menu' *ngIf='isMenuCollapsed'>
 	<div class='board-menu-header'>
 		<div class='title-close' (click)='isMenuCollapsed=false'>{{TEXT_ADD_CLOSE}}</div>
@@ -20,7 +18,7 @@
 		<div class="btn btn-primary title-text" (click)='isMenuCollapsed=!isMenuCollapsed'>open menu</div>
 		
 		<!-- Collapsed renaming form -->
-		<div class="title-rename" *ngIf="isCollapsedTitleEdit && isCreationFormsAvailable()">
+		<div closeNgIf [(toggle)]="isCollapsedTitleEdit" class="title-rename" *ngIf="isCollapsedTitleEdit && isCreationFormsAvailable()">
 			<div class='title-rename-head'>
 				<span class='title-rename-header'>{{TEXT_TITLE_MODAL_HEADER}}</span>
 				<a class='title-close' (click)='onClickCloseUpdateTitle()'>{{TEXT_ADD_CLOSE}}</a>
@@ -28,7 +26,7 @@
 			<div class='title-rename-body'>
 				  <div class="form-group">
 					<label class="form-group-label" for="formGroup">{{TEXT_TITLE_MODAL_NAME}}</label>
-					<input (keyup.enter)="onEnterUpdateTitle()" (keyup.esc)="onEscapeCloseUpdateTitle()"[(ngModel)]='newBoardTitle' type="text" 
+					<input autofocus ="onEnterUpdateTitle()" (keyup.esc)="onEscapeCloseUpdateTitle()"[(ngModel)]='newBoardTitle' type="text" 
 						class="form-control" id="formGroup">
 				</div>
 				<button class='btn btn-success' (click)='onClickUpdateTitle()'>{{TEXT_TITLE_MODAL_BUTTON}}</button>
@@ -43,7 +41,7 @@
 				<div class='title-handler' (click)="onClickOpenListUpdateTitle(i, list.title, list.id)" *ngIf="!isTitleUpdateCollapsed[i]">
 					{{list.title}}
 				</div>
-				<input *ngIf="isTitleUpdateCollapsed[i]" type='text' [(ngModel)]='list.title' (blur)="onBlurUpdateListTitle(list.id, list.title, i)">
+				<input autofocus *ngIf="isTitleUpdateCollapsed[i]" type='text' [(ngModel)]='list.title' (blur)="onBlurUpdateListTitle(list.id, list.title, i)">
 				
 				<div class='card-text dragula-card-bag' [attr.data-id-list]='list.id' [dragula]='"bag-one"' [dragulaModel]="list.posts" >	
 					<div *ngFor="let post of list.posts; let j=index " class='card-block card-success card-block-low-padding' 
@@ -58,8 +56,8 @@
 				</div>
 
 				<!-- Collapse code -->
-				<div [ngbCollapse]="!isCollapsedArray[i]">
-					<textarea class="form-control" placeholder='{{TEXT_MAX_LENGTH_TITLE}}' [(ngModel)]="listInput[i]" 
+				<div *ngIf="isCollapsedArray[i]" closeNgIf [(toggle)]="isCollapsedArray[i]">
+					<textarea autofocus class="form-control" placeholder='{{TEXT_MAX_LENGTH_TITLE}}' [(ngModel)]="listInput[i]" 
 							(keyup.enter)="onEnterAddPost(i, list.id)"></textarea>
 					
 					<button class="btn btn-success" (click)="onClickAddPost(i, list.id)">{{TEXT_ADD_NEW_POST}}</button>
@@ -75,8 +73,8 @@
 			{{TEXT_CREATE_LIST}}
 		</div>
 		<!-- Collapsed form -->
-		<div *ngIf="isCreateButtonCollapsed" class='card style-list create-list'>
-			<input type='text' class='form-control' [(ngModel)]="inputListTitle" placeholder="Enter list title" (keyup.enter)="onEnterAddList()">
+		<div closeNgIf [(toggle)]="isCreateButtonCollapsed" *ngIf="isCreateButtonCollapsed" class='card style-list create-list'>
+			<input autofocus type='text' class='form-control' [(ngModel)]="inputListTitle" placeholder="Enter list title" (keyup.enter)="onEnterAddList()">
 			<button class="btn btn-success" (click)="onClickAddList()">{{TEXT_ADD_NEW_LIST}}</button>
 			<button class="btn btn-danger" (click)="onClickAddListClose()">{{TEXT_ADD_CLOSE}}</button>
 		</div>

@@ -23,6 +23,9 @@ import { ShareListComponent } from './share-list/share-list.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CardComponent } from './card/card.component';
 import { BoardlistDropdownComponent } from './boardlist-dropdown/boardlist-dropdown.component';
+import { CloseNgIfDirective } from './_directives/close-ng-if.directive';
+import { AutofocusDirective } from './_directives/autofocus.directive';
+import { BoardlistDropdownBagComponent } from './boardlist-dropdown-bag/boardlist-dropdown-bag.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import { BoardlistDropdownComponent } from './boardlist-dropdown/boardlist-dropd
     ShareListComponent,
     ProfileComponent,
     CardComponent,
-    BoardlistDropdownComponent
+    BoardlistDropdownComponent,
+    CloseNgIfDirective,
+    AutofocusDirective,
+    BoardlistDropdownBagComponent
   ],
   imports: [
     DragulaModule,

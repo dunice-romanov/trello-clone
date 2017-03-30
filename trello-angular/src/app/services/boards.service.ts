@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers, Response } from '@angular/http';
-
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -34,7 +34,8 @@ export class BoardsService {
   public sub = this.boardsSubject.asObservable();
 
   constructor(private http: Http,
-  			  private loginService: LoginService) { 
+  			  private loginService: LoginService,
+          private router: Router) { 
     this.boards = [];
     this.updateBoardsList().subscribe((val)=> {this.boards = val;});
   }
@@ -94,6 +95,7 @@ export class BoardsService {
     let url = this.URL + +id;
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
+    if (this.isUserInBoard(id)) { this.navigateToHome(); }
     return this.http.delete(url, {headers: headers})
               .map(
                 (response: Response) => {
@@ -145,12 +147,19 @@ export class BoardsService {
     return this.updateBoard(boardId, body);
   }
 
-  deleteSubscription(id: number) {
+  deleteSubscription(id: number, boardId: number, preventNavigation = false) {
     let url = this.URL + this.URL_ACCESS_PERMISSION + +id;
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
+    
+    if (!preventNavigation) {
+      if (this.isUserInBoard(boardId)) { this.navigateToHome(); }
+    }
+
     return this.http.delete(url, {headers: headers})
-              .map((response: Response) => { return response; })
+              .map((response: Response) => { 
+                this.updateBoardsList().subscribe();
+                return response; })
               .catch((error: any) => {debugger; return Observable.throw(error)})
   }
 
@@ -161,6 +170,7 @@ export class BoardsService {
 
     return this.http.patch(url, patchObject, {headers: headers})
       .map((response: Response) => { 
+          this.updateBoardsList().subscribe();
           let resp = response.json();
           return resp;
          })
@@ -212,6 +222,16 @@ export class BoardsService {
       shareBoards.push(newBoard);
     }
     return shareBoards;
+  }
+
+  private isUserInBoard(boardId): boolean {
+    let arr = this.router.url.split('/'); // url to board is ["", "boards", id] 
+    if (arr[2]==""+boardId) { return true; } //2 because id is third
+    return false;
+  }
+
+  private navigateToHome() {
+    this.router.navigate(['home']);
   }
 
 }

@@ -66,11 +66,11 @@ export class ShareListComponent implements OnInit {
   }
 
   onClickUnsubscribe(shareBoardId: number) {
-    this.deleteFromSubscription(shareBoardId);
+    this.deleteFromSubscription(shareBoardId, this.boardId);
   }
 
-  private deleteFromSubscription(shareBoardId: number) {
-    this.boardService.deleteSubscription(shareBoardId).subscribe(
+  private deleteFromSubscription(shareBoardId: number, boardId: number) {
+    this.boardService.deleteSubscription(shareBoardId, boardId, true).subscribe(
         (data) => {
           if(!this.isOwner()) { this.router.navigate(['home']); return; }
           this.getShareList(this.boardId);

@@ -1,0 +1,26 @@
+ <div class="fancy-menu-boards" *ngIf="boards.length > 0" >
+    <span class="dropdown-item-title">{{title}}</span>
+    <div class="dropdown-bag">
+        <a *ngFor="let board of boards" [routerLink]="['/boards', board.id]" (click)="onClickBoard($event)">
+            <div class="item clearfix">
+                
+                <div class="item-thumbnail"></div>
+                
+                <div class="item-body">
+                    <span> 
+                        <span>{{board.title}}</span>
+                        <span *ngIf="isShared"> (by {{board.boardOwner}})</span>
+                     </span>
+                </div>
+                
+                <div class="item-buttons">
+                    <div class="item-buttons-btn" *ngIf="!isShared" 
+                        (click)="onClickDeleteBoard(board, $event);">{{TEXT_DELETE_OWNERS_BOARD}}</div>
+                    <div class="item-buttons-btn" *ngIf="isShared" 
+                        (click)="onClickUnsubscribe(board, $event)">{{TEXT_UNSUBSCRIBE}}</div>
+                </div>
+
+            </div>
+        </a>
+    </div>
+</div>
