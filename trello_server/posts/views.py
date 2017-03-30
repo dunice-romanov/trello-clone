@@ -1,8 +1,10 @@
-from rest_framework import generics, permissions, status
+from django.shortcuts import get_object_or_404
 
+from rest_framework import generics, permissions, status
 from boards.models import BoardPermission
-from posts.models import Post, Commentary
-from posts.serializers import PostSerializer, PostObjectSerializer, CommentarySerializer
+from posts.models import Post, Commentary, Notification
+from django.contrib.auth.models import User
+from posts.serializers import PostSerializer, PostObjectSerializer, CommentarySerializer, NotificationSerializer
 from posts.permissions.isWriteble import IsWritebleOrReadOnly, IsWritebleOrReadOnlyRetrieve  
 
 
@@ -85,6 +87,7 @@ class PostView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class CreatePost(generics.CreateAPIView):
+    
     permission_classes = (IsWritebleOrReadOnly,)
     serializer_class = PostObjectSerializer
     queryset = Post.objects.all()
@@ -114,3 +117,15 @@ class CommentaryPost(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(username=self.request.user)
 
+class NotificationView(generics.CreateAPIView):
+    
+    serializer_class = NotificationSerializer
+
+    def perform_create(self, serializer):
+        username = self.request.data['username']
+        commentary_id = self.request.data['commentary_id']
+        user = get_object_or_404(User, username=username)
+        commentary = get_object_or_404(Commentary, pk=commentary_id)
+        print(user.username)
+        print(commentary.text)
+        serializer.save(username=user, commentary=commentary)

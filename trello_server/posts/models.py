@@ -23,3 +23,12 @@ class Commentary(models.Model):
 
     class Meta:
         ordering = ('created',)
+
+
+class Notification(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    username = models.OneToOneField('auth.User', on_delete=models.CASCADE)
+    commentary = models.OneToOneField(Commentary, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('created',)

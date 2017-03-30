@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-from posts.models import Post, Commentary
+from posts.models import Post, Commentary, Notification
 
 class CommentarySerializer(serializers.ModelSerializer):
 
@@ -28,3 +28,16 @@ class PostObjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ('id', 'position', 'text', 'title', 'board', 'cardlist', 'created', 'commentary',)
+
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    commentary = CommentarySerializer(read_only=True)
+    
+    username = serializers.ReadOnlyField(source='username.username')
+    # username = CharField(trim_whitespace=True, allow_blank=False)
+
+    class Meta:
+        model = Notification
+        fields = ('username', 'commentary', 'created',)
+    
