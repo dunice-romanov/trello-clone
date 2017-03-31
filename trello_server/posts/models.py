@@ -27,8 +27,8 @@ class Commentary(models.Model):
 
 class Notification(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    username = models.OneToOneField('auth.User', on_delete=models.CASCADE)
-    commentary = models.OneToOneField(Commentary, on_delete=models.CASCADE)
+    username = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    commentary = models.ForeignKey(Commentary, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('created',)

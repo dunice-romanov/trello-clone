@@ -1,0 +1,65 @@
+.notify-menu {
+    padding: 10px;
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    right: 0px;
+    color: black;
+    font-size: 14px;
+    background: #fff;
+    border-radius: 3px;
+    border: 1px solid #D6DADC;
+    border-bottom-color: #C4C9CC;
+    box-shadow: 0 1px 6px rgba(0,0,0,.15);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.notify-menu-title {
+    border-bottom: 1px solid slategrey;
+}
+
+.title-text {
+    float: left;
+}
+
+.close {
+    float: right;
+}
+
+.notification {
+    margin-bottom: 10px;
+}
+
+
+.notify-avatar,
+.notify-avatar img{
+    height: 30px;
+    width: 30px;
+}
+
+.notify-avatar {
+    float: left;
+    background-color: red;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
+.commentary-body {
+    float: left;
+    width: 80%;
+}
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.delete-button {
+    
+}
+
+.btn-notify {
+    background-color: red;
+}

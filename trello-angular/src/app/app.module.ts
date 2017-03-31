@@ -9,6 +9,7 @@ import { DragulaModule } from 'ng2-dragula';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { LoginService } from './services/login.service';
 import { BoardsService } from './services/boards.service';
+import { NotificationsService } from './services/notifications.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -26,6 +27,7 @@ import { BoardlistDropdownComponent } from './boardlist-dropdown/boardlist-dropd
 import { CloseNgIfDirective } from './_directives/close-ng-if.directive';
 import { AutofocusDirective } from './_directives/autofocus.directive';
 import { BoardlistDropdownBagComponent } from './boardlist-dropdown-bag/boardlist-dropdown-bag.component';
+import { NotificationBarComponent } from './notification-bar/notification-bar.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { BoardlistDropdownBagComponent } from './boardlist-dropdown-bag/boardlis
     BoardlistDropdownComponent,
     CloseNgIfDirective,
     AutofocusDirective,
-    BoardlistDropdownBagComponent
+    BoardlistDropdownBagComponent,
+    NotificationBarComponent
   ],
   imports: [
     DragulaModule,
@@ -56,7 +59,8 @@ import { BoardlistDropdownBagComponent } from './boardlist-dropdown-bag/boardlis
   ],
   providers: [LoginService,
               NgbActiveModal,
-              BoardsService],
+              BoardsService,
+              NotificationsService],
   bootstrap: [AppComponent],
   entryComponents: [SharingComponent,
                      CardWindowComponent],

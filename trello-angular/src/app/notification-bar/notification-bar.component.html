@@ -1,0 +1,32 @@
+<button class="btn btn-primary btn-sm" [ngClass]="{'btn-notify' : isAlert}"  (click)="onClickButtonMenu()">ring-ding</button>
+
+<div class="notify-menu" *ngIf="isMenuCollapsed" closeNgIf [(toggle)]="isMenuCollapsed">
+  <div class="notify-menu-title clearfix">
+
+    <div class="title-text">{{TEXT_NOTIFICATION_MENU_TITLE}}</div>
+    <div class="close" (click)="isMenuCollapsed=false">{{TEXT_CLOSE}}</div>
+
+  </div>
+
+  <div  *ngFor="let notify of notifications" class= "notification">
+
+    <div class="notification-title">
+      {{notify.commentary.username}} {{TEXT_MENTIONED_YOU}}
+      <button class="delete-button"(click)="onClickDeleteNotification(notify.id, $event)">x</button>
+    </div>
+
+    <div class="notification-body clearfix">
+      <div class="notify-avatar">
+        <img src="{{notify.commentary.avatarUrl}}">
+      </div>
+
+      <div class="commentary-body">
+        <div class="commentary-text">{{notify.commentary.text}}</div>
+        <div class="commentary-date">{{notify.commentary.getDate()}}</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  </div>

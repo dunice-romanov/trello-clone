@@ -115,17 +115,54 @@ class CommentaryPost(generics.CreateAPIView):
         return Board.objects.filter(owner=user)    
 
     def perform_create(self, serializer):
-        serializer.save(username=self.request.user)
+        commentary = serializer.save(username=self.request.user)
+        print(commentary)
+        if 'usernames' in self.request.data:
+            usernames = self.parseUsernames(self.request.data['usernames'])
+            self.create_notifications(usernames, commentary)
 
-class NotificationView(generics.CreateAPIView):
+    def parseUsernames(self, usernames):
+        result_ = usernames.split(',')
+        result_ = self.trimUsernames(result_)
+        return self.makeUnique(result_)
+
+    def makeUnique(self, usernames):
+        result = list(set(usernames))
+        return result
+
+    def trimUsernames(self, usernames):
+        result = []
+        for username in usernames:
+            result.append(username.strip())
+        return result
+
+
+    def create_notification(self, username, commentary):
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return;
+        notification = Notification.objects.create(username=user, \
+                                                   commentary=commentary)
+
+    def create_notifications(self, usernames, commentary):
+        for username in usernames:
+            self.create_notification(username, commentary)
+
+
+class NotificationList(generics.ListAPIView):
+
+    serializer_class = NotificationSerializer
+
+    def get_queryset(self):
+        print('in list')
+        return Notification.objects.filter(username=self.request.user)
+
+
+class NotificationObject(generics.DestroyAPIView):
     
     serializer_class = NotificationSerializer
 
-    def perform_create(self, serializer):
-        username = self.request.data['username']
-        commentary_id = self.request.data['commentary_id']
-        user = get_object_or_404(User, username=username)
-        commentary = get_object_or_404(Commentary, pk=commentary_id)
-        print(user.username)
-        print(commentary.text)
-        serializer.save(username=user, commentary=commentary)
+    def get_queryset(self):
+        return Notification.objects.filter(username=self.request.user)
+

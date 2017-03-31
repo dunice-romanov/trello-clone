@@ -70,3 +70,14 @@ export class Commentary {
 	}
 
 }
+
+export class Notification {
+	id: number;
+	commentary: Commentary;
+
+	constructor(id: number, commentary: Commentary) {
+		this.id = id;
+		this.commentary = commentary;
+	}
+
+}

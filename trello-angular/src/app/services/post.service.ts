@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
+import { Subject }    from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { LoginService } from '../services/login.service';
-import { FullPost, Commentary } from '../classes/list'
+import { FullPost, Commentary, Notification } from '../classes/list'
 
 @Injectable()
 export class PostService {
@@ -21,6 +22,8 @@ export class PostService {
 
   readonly ERROR_BLANK_TITLE = JSON.stringify({"title":["This field may not be blank."]});
   readonly ERROR_DONT_HAVE_PERMISSION = JSON.stringify({"detail":"You do not have permission to perform this action."});
+
+
   
   constructor(private http: Http,
           private loginService: LoginService) { }
@@ -94,6 +97,9 @@ export class PostService {
   }
 
   postCommentary(postId: number, text: string) {
+
+    let usernames = this.parseCommentaryForRefrences(text);
+    this.parseCommentaryForRefrences(text);
     let url: string = this.URL_LIST_API + this.URL_CREATE_COMMENTARY;
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
@@ -101,6 +107,15 @@ export class PostService {
       'post': postId,
       'text': text
     }
+
+    if (usernames.length > 0) {
+      console.log('length > 0');
+      let users = this.parseArrayToSpecialString(usernames);
+      body['usernames'] = users;
+      //console.log(JSON.stringify(usernames))
+    }
+
+    else { console.log('length =< 0')}
 
     return this.http.post(url, body, {headers: headers})
       .map((response: Response) => { 
@@ -159,6 +174,34 @@ export class PostService {
     }
 
     return comments;
+  }
+
+  private parseCommentaryForRefrences(text: string) {
+    let regExp = /(?:^|\s)(@\w{2,})/g;
+    let users: string[] = [];
+    let exp = undefined;
+    console.log('in parse text');
+    while(exp !== null) {
+      exp = regExp.exec(text);
+      if (exp !== null) {
+        let newVar = exp[1];
+        users.push(newVar.slice(1));    //because 0 char is the special symbol '@'
+      }
+    }
+    return users;
+  } 
+
+  /*
+    format of this string is:
+      ['a', 'b', 'c'] => "a,b,c,"
+  */
+  private parseArrayToSpecialString(usernames: string[]) {
+    let result: string = "";
+    for (let user of usernames) {
+      result += user + ',';
+    }
+    console.log(result);
+    return result;
   }
 
 }

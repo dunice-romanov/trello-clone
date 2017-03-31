@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { LoginService } from '../services/login.service'
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-navigation',
@@ -19,6 +19,7 @@ export class NavigationComponent implements OnInit {
 	constructor(private loginService: LoginService) { }
 
 	ngOnInit() {
+		//this.postService.updateNotifications().subscribe();
 	}
 	
 	/*

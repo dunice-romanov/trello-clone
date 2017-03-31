@@ -33,11 +33,9 @@ class PostObjectSerializer(serializers.ModelSerializer):
 
 class NotificationSerializer(serializers.ModelSerializer):
     commentary = CommentarySerializer(read_only=True)
-    
     username = serializers.ReadOnlyField(source='username.username')
-    # username = CharField(trim_whitespace=True, allow_blank=False)
 
     class Meta:
         model = Notification
-        fields = ('username', 'commentary', 'created',)
+        fields = ('id', 'username', 'commentary', 'created',)
     
