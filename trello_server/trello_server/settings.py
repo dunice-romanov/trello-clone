@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'posts.apps.PostsConfig',
     'todos.apps.TodosConfig',
     'register.apps.RegisterConfig',
+    'notification_provider',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -154,3 +156,10 @@ JWT_AUTH = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "trello_server.routing.channel_routing",
+    },
+}

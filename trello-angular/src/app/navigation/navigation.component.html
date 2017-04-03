@@ -3,21 +3,21 @@
         <app-boardlist-dropdown *ngIf="loginService.isAuthenticated()"></app-boardlist-dropdown>
     </nav>
 
-    <nav>
+    <nav class="nav">
          <a class="nav-link active navbar-brand" routerLink="home">{{TEXT_BRAND}}</a>
     </nav>
 
-    <nav *ngIf='!loginService.isAuthenticated()'>
+    <nav class="nav" *ngIf='!loginService.isAuthenticated()'>
         <a class="btn btn-primary" routerLink="login">{{TEXT_LOGIN}}</a>
         <a class="btn btn-primary" routerLink="register">{{TEXT_REGISTER}}</a>
     </nav>
 
-    <nav *ngIf='loginService.isAuthenticated()' >
+    <nav class="nav" *ngIf='loginService.isAuthenticated()' >
         
-        <div>
+        <div class="nav-item notification-wrapper">
             <app-notification-bar></app-notification-bar>
         </div>
-        <div class="dropdown ">
+        <div class="nav-item dropdown">
             <div class="btn-profile" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
                 <img class="avatar" src="{{loginService.getAvatarUrl()}}" alt="avatar">
                 <span class="username">

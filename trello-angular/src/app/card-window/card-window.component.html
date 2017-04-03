@@ -42,16 +42,14 @@
 					<div class="window-body">
 						<input (focus)="onFocusSelectText($event)" (click)="onFocusSelectText($event)" type="text" [readonly]="true" select-on-click value="http://localhost:4200/{{makeUrl()}}" class="form-control">
 					</div>
-
 				</div>
 			</div>
-
 		</div>
 	</div>
 
 	<div class='modal-body'>
 		<div>
-			<div *ngFor="let comma of post.commentaries" class="commentary clearfix">	
+			<div *ngFor="let comma of post.commentaries | reverse" class="commentary clearfix">	
 					<div class="avatar-wrapper">
 						<img class="commentary-avatar" src={{comma.avatarUrl}}>
 					</div>

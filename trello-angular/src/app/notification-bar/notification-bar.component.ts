@@ -14,6 +14,7 @@ export class NotificationBarComponent implements OnInit, OnDestroy, OnChanges {
   readonly TEXT_NOTIFICATION_MENU_TITLE = "Notifications";
   readonly TEXT_CLOSE = 'X';
   readonly TEXT_MENTIONED_YOU = "mentioned you";
+  readonly TEXT_NOTIFICATION_BUTTON = "New messages: ";
 
   private notifications: Notification[]; 
   private notifySub: Subscription;

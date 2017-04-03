@@ -28,6 +28,8 @@ import { CloseNgIfDirective } from './_directives/close-ng-if.directive';
 import { AutofocusDirective } from './_directives/autofocus.directive';
 import { BoardlistDropdownBagComponent } from './boardlist-dropdown-bag/boardlist-dropdown-bag.component';
 import { NotificationBarComponent } from './notification-bar/notification-bar.component';
+import { ReversePipe } from './_pipes/reverse.pipe';
+import { UsernamePickerDirective } from './_directives/username-picker.directive';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { NotificationBarComponent } from './notification-bar/notification-bar.co
     CloseNgIfDirective,
     AutofocusDirective,
     BoardlistDropdownBagComponent,
-    NotificationBarComponent
+    NotificationBarComponent,
+    ReversePipe,
+    UsernamePickerDirective
   ],
   imports: [
     DragulaModule,

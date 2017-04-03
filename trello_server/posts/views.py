@@ -118,24 +118,23 @@ class CommentaryPost(generics.CreateAPIView):
         commentary = serializer.save(username=self.request.user)
         print(commentary)
         if 'usernames' in self.request.data:
-            usernames = self.parseUsernames(self.request.data['usernames'])
+            usernames = self.parse_usernames(self.request.data['usernames'])
             self.create_notifications(usernames, commentary)
 
-    def parseUsernames(self, usernames):
+    def parse_usernames(self, usernames):
         result_ = usernames.split(',')
-        result_ = self.trimUsernames(result_)
-        return self.makeUnique(result_)
+        result_ = self.trim_usernames(result_)
+        return self.make_unique(result_)
 
-    def makeUnique(self, usernames):
+    def make_unique(self, usernames):
         result = list(set(usernames))
         return result
 
-    def trimUsernames(self, usernames):
+    def trim_usernames(self, usernames):
         result = []
         for username in usernames:
             result.append(username.strip())
         return result
-
 
     def create_notification(self, username, commentary):
         try:
