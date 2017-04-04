@@ -43,15 +43,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('home init called');
     this.username = this.loginService.getUsername();
-    this.sub = this.boardsService.getBoardList().subscribe((val) => {this.fillBoards(val)});
+    this.sub = this.boardsService.getBoardList().subscribe((val) => { this.fillBoards(val) });
     this.boardsService.updateBoardsList().subscribe();
 }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-    console.log('home ondestroy');
   }
 
 

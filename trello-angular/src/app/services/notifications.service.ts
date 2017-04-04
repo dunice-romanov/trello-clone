@@ -9,6 +9,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { LoginService } from '../services/login.service';
+import { WebSocketService } from '../services/web-socket.service';
 import { Commentary, Notification } from '../classes/list'
 
 @Injectable()
@@ -20,13 +21,18 @@ export class NotificationsService implements OnInit {
   readonly URL_NOTIFICATIONS = "http://127.0.0.1:8000/api-posts/notifications/"
   readonly HEADER_AUTHORIZATION = 'Authorization';
   readonly HEADER_JWT = 'JWT';
+  public messages: Subject<string>;
 
   constructor(private loginService: LoginService,
-              private http: Http) {
-
-    console.log('notify service started');
-    this.updateNotifications().subscribe();
-  }
+              private http: Http,
+             private socketService: WebSocketService) {
+      console.log('notify service started');
+      
+      if (this.loginService.isAuthenticated()) {
+        this.updateNotifications().subscribe( (data) => data);
+        this.runSocket();
+      }
+    }
 
   
   ngOnInit() {
@@ -43,6 +49,7 @@ export class NotificationsService implements OnInit {
                         let resp = response.json();
                         let notifications = this.parseNotifications(resp);
                         this.notifications.next(notifications);
+                        console.log(this.socketService);
                         return notifications;
                     })
                     .catch((error: any) => { return Observable.throw(error) });
@@ -89,5 +96,16 @@ export class NotificationsService implements OnInit {
 
     return notifications;
   }
+
+  private runSocket() {
+    this.socketService.connect()
+                  .map((response: MessageEvent) => {
+                      let data = response.data;
+                      return data;
+      }).subscribe((data) => {
+        if (data == 'new_notify') this.updateNotifications().subscribe();
+      });
+  }
+
 
 }

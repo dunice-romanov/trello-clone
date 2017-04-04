@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 
+import { NotificationsService } from '../services/notifications.service';
 import { LoginService } from '../services/login.service'
+
 
 @Component({
   selector: 'app-login',
@@ -22,7 +24,8 @@ export class LoginComponent implements OnInit {
   private password: string;
 
   constructor(private loginService: LoginService, 
-              private router: Router) { 
+              private router: Router,
+              private notifyService: NotificationsService) { 
     this.username = "";
     this.password = "";
   }
@@ -42,6 +45,7 @@ export class LoginComponent implements OnInit {
                       .subscribe(
                         data => {
                           this.router.navigate(['home']);
+                          this.notifyService.updateNotifications().subscribe((data)=>data);
                         },
                         error => {
                           this.errorHandler(error);

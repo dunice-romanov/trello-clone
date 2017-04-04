@@ -159,7 +159,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
         "ROUTING": "trello_server.routing.channel_routing",
     },
 }

@@ -1,11 +1,13 @@
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 
 from rest_framework import generics, permissions, status
 from boards.models import BoardPermission
-from posts.models import Post, Commentary, Notification
-from django.contrib.auth.models import User
-from posts.serializers import PostSerializer, PostObjectSerializer, CommentarySerializer, NotificationSerializer
-from posts.permissions.isWriteble import IsWritebleOrReadOnly, IsWritebleOrReadOnlyRetrieve  
+from channels import Group
+
+from .models import Post, Commentary, Notification
+from .serializers import PostSerializer, PostObjectSerializer, CommentarySerializer, NotificationSerializer
+from .permissions.isWriteble import IsWritebleOrReadOnly, IsWritebleOrReadOnlyRetrieve  
 
 
 class PostView(generics.RetrieveUpdateDestroyAPIView):
@@ -143,10 +145,18 @@ class CommentaryPost(generics.CreateAPIView):
             return;
         notification = Notification.objects.create(username=user, \
                                                    commentary=commentary)
+        self.send_notification(user.username)
 
     def create_notifications(self, usernames, commentary):
         for username in usernames:
             self.create_notification(username, commentary)
+    
+    def send_notification(self, username):
+        result = {}
+        result['text'] = 'new_notify' 
+        Group('user').send(result)
+        print('____ result sended to ', username)
+
 
 
 class NotificationList(generics.ListAPIView):

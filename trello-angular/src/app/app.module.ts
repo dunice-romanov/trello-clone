@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+//services
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DragulaModule } from 'ng2-dragula';
@@ -10,7 +11,9 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { LoginService } from './services/login.service';
 import { BoardsService } from './services/boards.service';
 import { NotificationsService } from './services/notifications.service';
+import { WebSocketService } from './services/web-socket.service';
 
+//components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ListsComponent } from './lists/lists.component';
@@ -24,12 +27,16 @@ import { ShareListComponent } from './share-list/share-list.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CardComponent } from './card/card.component';
 import { BoardlistDropdownComponent } from './boardlist-dropdown/boardlist-dropdown.component';
-import { CloseNgIfDirective } from './_directives/close-ng-if.directive';
-import { AutofocusDirective } from './_directives/autofocus.directive';
 import { BoardlistDropdownBagComponent } from './boardlist-dropdown-bag/boardlist-dropdown-bag.component';
 import { NotificationBarComponent } from './notification-bar/notification-bar.component';
-import { ReversePipe } from './_pipes/reverse.pipe';
+
+//directives
+import { CloseNgIfDirective } from './_directives/close-ng-if.directive';
+import { AutofocusDirective } from './_directives/autofocus.directive';
 import { UsernamePickerDirective } from './_directives/username-picker.directive';
+
+//pipes
+import { ReversePipe } from './_pipes/reverse.pipe';
 
 @NgModule({
   declarations: [
@@ -64,7 +71,8 @@ import { UsernamePickerDirective } from './_directives/username-picker.directive
   providers: [LoginService,
               NgbActiveModal,
               BoardsService,
-              NotificationsService],
+              NotificationsService,
+              WebSocketService],
   bootstrap: [AppComponent],
   entryComponents: [SharingComponent,
                      CardWindowComponent],

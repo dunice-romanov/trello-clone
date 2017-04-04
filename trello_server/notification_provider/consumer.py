@@ -1,17 +1,27 @@
-from django.http import HttpResponse
-from channels.handler import AsgiHandler
+import logging
 
-def http_consumer(message):
-    # Make standard HTTP response - access ASGI path attribute directly
-    response = HttpResponse("Hello world! You asked for %s" % message.content['path'])
-    # Encode that response into message format (ASGI)
-    for chunk in AsgiHandler.encode_response(response):
-        message.reply_channel.send(chunk)
+from channels import Group
+from channels.auth import channel_session_user_from_http
+
+from .jwt_decorators import (
+    jwt_request_parameter, jwt_message_text_field
+)
+
+logger = logging.getLogger(__name__)
 
 
-def ws_message(message):
-    # ASGI WebSocket packet-received and send-packet message types
-    # both have a "text" key for their textual data.
-    message.reply_channel.send({
-        "text": message.content['text'],
-    })
+# Connected to websocket.connect
+# @channel_session_user_from_http
+@jwt_request_parameter
+def websocket_connect(message):
+    print('ws connect')
+    message.reply_channel.send({"accept": True})
+    user = message.user.username
+    print(type(message.user), message.user)
+    Group('user').add(message.reply_channel)
+
+# Connected to websocket.disconnect
+def websocket_disconnect(message):
+    print('fdfd')
+    Group('user').discard(message.reply_channel)
+    print('ws disconnect')

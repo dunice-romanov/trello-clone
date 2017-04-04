@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy, OnChanges } from '@angular/core';
-import { NotificationsService } from '../services/notifications.service';
-import { Notification } from '../classes/list';
 
 import { Subscription } from 'rxjs/Subscription';
+
+import { Notification } from '../classes/list';
+
+import { NotificationsService } from '../services/notifications.service';
 
 @Component({
   selector: 'app-notification-bar',
@@ -21,7 +23,7 @@ export class NotificationBarComponent implements OnInit, OnDestroy, OnChanges {
   private isMenuCollapsed: boolean = false;
   private isAlert = false;
 
-  constructor( private notifyService: NotificationsService ) {
+  constructor(private notifyService: NotificationsService) {
 
     this.notifications = [];
 
