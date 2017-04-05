@@ -8,6 +8,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { UserToken, UserInfo } from "../classes/user";
+import { WebSocketService } from '../services/web-socket.service';
 
 @Injectable()
 export class LoginService implements OnInit {
@@ -44,7 +45,8 @@ export class LoginService implements OnInit {
 
   private isLoggedIn: boolean;
 
-  constructor(private http: Http, private router: Router) {
+  constructor(private http: Http, private router: Router,
+              private socketService: WebSocketService) {
     this.setIsLoggedIn(this.isTokenSetInLocalStorage(), 
                                          'constructor');
   }
@@ -144,6 +146,7 @@ export class LoginService implements OnInit {
     localStorage.removeItem(this.KEY);
     localStorage.removeItem(this.KEY_AVATAR_URL);
     this.setIsLoggedIn(false, 'logout');
+    this.socketService.close();
     this.router.navigate(['']);
   }
 

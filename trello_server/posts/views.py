@@ -145,17 +145,10 @@ class CommentaryPost(generics.CreateAPIView):
             return;
         notification = Notification.objects.create(username=user, \
                                                    commentary=commentary)
-        self.send_notification(user.username)
 
     def create_notifications(self, usernames, commentary):
         for username in usernames:
             self.create_notification(username, commentary)
-    
-    def send_notification(self, username):
-        result = {}
-        result['text'] = 'new_notify' 
-        Group('user').send(result)
-        print('____ result sended to ', username)
 
 
 

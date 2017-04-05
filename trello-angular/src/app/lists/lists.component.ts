@@ -100,6 +100,7 @@ export class ListsComponent implements OnInit, OnDestroy, AfterContentInit {
 			this.listService.getListsList(this.boardId)
 				.subscribe(
 					(data) => {
+						console.log('__get lists__');
 						this.lists = data;
 						this.isCollapsedArray = new Array(this.lists.length);
 						this.fillCollapseArray(this.isCollapsedArray);

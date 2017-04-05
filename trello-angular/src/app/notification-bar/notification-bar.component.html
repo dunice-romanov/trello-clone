@@ -1,5 +1,4 @@
 <button class="btn btn-primary btn-sm" [ngClass]="{'btn-notify' : isAlert}"  (click)="onClickButtonMenu()">{{notifications.length}}</button>
-
 <div class="notify-menu" *ngIf="isMenuCollapsed" closeNgIf [(toggle)]="isMenuCollapsed">
   <div class="notify-menu-title clearfix">
 

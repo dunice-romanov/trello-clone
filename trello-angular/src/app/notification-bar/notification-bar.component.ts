@@ -6,6 +6,8 @@ import { Notification } from '../classes/list';
 
 import { NotificationsService } from '../services/notifications.service';
 
+import { WebSocketService } from '../services/web-socket.service';
+
 @Component({
   selector: 'app-notification-bar',
   templateUrl: './notification-bar.component.html',
@@ -22,8 +24,10 @@ export class NotificationBarComponent implements OnInit, OnDestroy, OnChanges {
   private notifySub: Subscription;
   private isMenuCollapsed: boolean = false;
   private isAlert = false;
+  
 
-  constructor(private notifyService: NotificationsService) {
+  constructor(private notifyService: NotificationsService,
+              private webSocketService: WebSocketService) {
 
     this.notifications = [];
 
@@ -61,6 +65,15 @@ export class NotificationBarComponent implements OnInit, OnDestroy, OnChanges {
     this.notifyService.deleteNotifications(id).subscribe();
 
     return false;
+  }
+
+  socket() {
+    this.webSocketService.close();
+  }
+
+  connect() {
+    
+    this.notifyService.runSocket();
   }
 
 

@@ -59,7 +59,6 @@ def jwt_request_parameter(func):
     """
     @wraps(func)
     def inner(message, *args, **kwargs):
-        print('inner')
         # Taken from channels.session.http_session
         try:
             if "method" not in message.content:

@@ -3,7 +3,7 @@ import { Router} from '@angular/router';
 
 
 import { LoginService } from '../services/login.service';
-
+import { NotificationsService } from "../services/notifications.service";
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -29,7 +29,8 @@ export class RegisterComponent implements OnInit {
   private email: string;
 
   constructor(private loginService: LoginService,
-  						private router: Router) { 
+  						private router: Router,
+              private notifyService: NotificationsService) { 
   	this.username = '';
   	this.password = '';
     this.email = '';
@@ -50,6 +51,8 @@ export class RegisterComponent implements OnInit {
   										.subscribe(
   											data => {
   												this.router.navigate(['home']);
+                          this.notifyService.updateNotifications().subscribe((data)=>data);
+                          this.notifyService.runSocket();
   											},
   											error => this.errorHandler(error)
   											);

@@ -2,15 +2,16 @@ import { Injectable, OnInit } from '@angular/core';
 
 import { Http, RequestOptions, Headers, Response } from '@angular/http';
 
+import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject }    from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-import { LoginService } from '../services/login.service';
 import { WebSocketService } from '../services/web-socket.service';
 import { Commentary, Notification } from '../classes/list'
+import { LoginService } from '../services/login.service';
 
 @Injectable()
 export class NotificationsService implements OnInit {
@@ -21,6 +22,7 @@ export class NotificationsService implements OnInit {
   readonly URL_NOTIFICATIONS = "http://127.0.0.1:8000/api-posts/notifications/"
   readonly HEADER_AUTHORIZATION = 'Authorization';
   readonly HEADER_JWT = 'JWT';
+  private webSocketSub: Subscription; 
   public messages: Subject<string>;
 
   constructor(private loginService: LoginService,
@@ -49,7 +51,6 @@ export class NotificationsService implements OnInit {
                         let resp = response.json();
                         let notifications = this.parseNotifications(resp);
                         this.notifications.next(notifications);
-                        console.log(this.socketService);
                         return notifications;
                     })
                     .catch((error: any) => { return Observable.throw(error) });
@@ -97,15 +98,24 @@ export class NotificationsService implements OnInit {
     return notifications;
   }
 
-  private runSocket() {
-    this.socketService.connect()
+  public runSocket() {
+    
+    if (this.webSocketSub) {
+      console.log('in reconnection');
+      this.webSocketSub.unsubscribe();
+    
+    }
+    
+    let url = "ws://127.0.0.1:8000/?token=" + this.loginService.getTokenString();
+
+    console.log('in creation if');
+    this.webSocketSub = this.socketService.connect(url)
                   .map((response: MessageEvent) => {
                       let data = response.data;
                       return data;
       }).subscribe((data) => {
         if (data == 'new_notify') this.updateNotifications().subscribe();
       });
-  }
-
+    }
 
 }

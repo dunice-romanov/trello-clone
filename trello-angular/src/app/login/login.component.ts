@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
                         data => {
                           this.router.navigate(['home']);
                           this.notifyService.updateNotifications().subscribe((data)=>data);
+                          this.notifyService.runSocket();
                         },
                         error => {
                           this.errorHandler(error);

@@ -7,21 +7,24 @@ import { LoginService } from "../services/login.service";
 @Injectable()
 export class WebSocketService {
 
-  readonly URL_WEBSOCKET = "ws://127.0.0.1:8000/?token=";
   private socket: Subject<MessageEvent>;
+  private isConnected: boolean = false;
 
-  constructor(private loginService: LoginService) { }
+  constructor() { }
   
-  public connect(): Subject<MessageEvent> {
+  public connect(url): Subject<MessageEvent> {
     console.log('in connect');
-    if(!this.socket) {
-      let url = this.URL_WEBSOCKET + this.loginService.getTokenString(); 
+    if(!this.socket || !this.isConnected) {
       this.socket = this.create(url);
+      this.isConnected = true;
     }
 
     return this.socket;
   }
 
+  close() {
+    this.socket.complete();
+  }
 
   private create(url): Subject<MessageEvent> {
     let ws = new WebSocket(url);
@@ -31,7 +34,6 @@ export class WebSocketService {
             ws.onmessage = obs.next.bind(obs);
             ws.onerror = obs.error.bind(obs);
             ws.onclose = obs.complete.bind(obs);
-
             return ws.close.bind(ws);
         }
     );
@@ -45,8 +47,12 @@ export class WebSocketService {
         error: () => {
           debugger;
               setTimeout( () => {
-                  this.connect();
+                  this.connect(url);
               }, 1000 );
+        },
+        complete: () => {
+          ws.close();
+          this.isConnected = false;
         }
     };
 
