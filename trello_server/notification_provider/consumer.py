@@ -28,11 +28,13 @@ def send_update_notification(sender, instance, **kwargs):
     username = instance.username.username
     Group(username).send(message)
 
+
 @receiver(post_save, sender=BoardPermission)
 def send_update_board_subscribe(sender, instance, **kwargs):
     message = create_message(UPDATE_BOARDS)
     username = instance.user.username
     Group(username).send(message)
+
 
 @receiver(post_delete, sender=BoardPermission)
 def send_board_unsubscribe(sender, instance, **kwargs):

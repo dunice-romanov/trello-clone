@@ -29,13 +29,13 @@ export class BoardsService {
   readonly ERROR_USER_DOES_NOT_EXISTS = JSON.stringify({"detail":"Not found."});
 
   private boards: Board[];
-  
+
   private boardsSubject = new Subject<Board[]>();
   public sub = this.boardsSubject.asObservable();
 
   constructor(private http: Http,
   			  private loginService: LoginService,
-          private router: Router) { 
+          private router: Router) {
     this.boards = [];
     this.updateBoardsList().subscribe((val)=> {this.boards = val;});
   }
@@ -53,19 +53,18 @@ export class BoardsService {
   updateBoardsList() {
     let token: string = this.loginService.getTokenString();
   	let headers: Headers = this.createHeaders(token);
-  	
+
     return this.http.get(this.URL, {headers: headers})
-  	  .map((response: Response) => { 
+  	  .map((response: Response) => {
 			 	  let resp = response.json();
-          this.boards = this.parseBoards(resp); 
+          this.boards = this.parseBoards(resp);
           this.boardsSubject.next(this.boards);
-          console.log('__sended updated boards to subs__')
-          console.log(this.boards);
+          if (this.isUserInsideVanishedBoard(this.boards)) {this.navigateToHome()}
           return this.boards;
          })
 			.catch( (error: any) => { return Observable.throw(error); } );
          			//throw error
-  			 
+
   }
 
 /*
@@ -78,7 +77,7 @@ export class BoardsService {
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
     let body = {'title': title};
-    
+
     return this.http.post(url, body, {headers: headers})
             .map(
               (response: Response) => {
@@ -97,7 +96,7 @@ export class BoardsService {
     let url = this.URL + +id;
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
-    
+
     return this.http.delete(url, {headers: headers})
               .map(
                 (response: Response) => {
@@ -126,8 +125,8 @@ export class BoardsService {
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
     return this.http.get(url, {headers: headers})
-                    .map((response: Response) => { 
-                      let resp = response.json(); 
+                    .map((response: Response) => {
+                      let resp = response.json();
                       return this.parseShareBoards(resp);
                      })
                     .catch((error: any) => {return Observable.throw(error)});
@@ -138,8 +137,8 @@ export class BoardsService {
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
     return this.http.get(url, {headers: headers})
-                    .map((response: Response) => { 
-                      let resp = response.json(); 
+                    .map((response: Response) => {
+                      let resp = response.json();
                       return resp['title'];
                      })
                     .catch((error: any) => {return Observable.throw(error)});
@@ -154,14 +153,14 @@ export class BoardsService {
     let url = this.URL + this.URL_ACCESS_PERMISSION + +id;
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
-    
+
 
 
     return this.http.delete(url, {headers: headers})
-              .map((response: Response) => { 
+              .map((response: Response) => {
                   if (!preventNavigation) {
-                    if (this.isUserInBoard(boardId)) { 
-                      this.navigateToHome(); 
+                    if (this.isUserInBoard(boardId)) {
+                      this.navigateToHome();
                     }
                   }
                 this.updateBoardsList().subscribe();
@@ -175,7 +174,7 @@ export class BoardsService {
     let headers: Headers = this.createHeaders(token);
 
     return this.http.patch(url, patchObject, {headers: headers})
-      .map((response: Response) => { 
+      .map((response: Response) => {
           this.updateBoardsList().subscribe();
           let resp = response.json();
           return resp;
@@ -206,7 +205,7 @@ export class BoardsService {
 
   private createHeaders(JWToken: string) {
     let headers: Headers = new Headers ({'Content-Type':  'application/json;charset=utf-8'});
-    headers.append(this.HEADER_AUTHORIZATION, 
+    headers.append(this.HEADER_AUTHORIZATION,
             this.HEADER_JWT + ' ' +  JWToken);
     return headers
   }
@@ -231,13 +230,39 @@ export class BoardsService {
   }
 
   private isUserInBoard(boardId): boolean {
-    let arr = this.router.url.split('/'); // url to board is ["", "boards", id] 
+    let arr = this.router.url.split('/'); // url to board is ["", "boards", id]
     if (arr[2]==""+boardId) { return true; } //2 because id is third
     return false;
   }
 
   private navigateToHome() {
     this.router.navigate(['home']);
+  }
+
+  private isUserInLists(): boolean {
+    if (this.router.url.split('/')[1] == 'boards') { return true; }
+    return false;
+  }
+
+  private getUserActualBoard(): number {
+    if (!this.isUserInLists()) { return }
+    let arr = this.router.url.split('/'); // url to board is ["", "boards", id]
+    return +arr[2];
+  }
+
+  private isUserHaveBoard(boardId: number, userBoards: Board[]): boolean {
+    for (let board of userBoards) {
+      if (this.isUserInBoard(board.id)) return true;
+    }
+    return false;
+  }
+
+  private isUserInsideVanishedBoard(boards: Board[]) {
+    if (!this.isUserInLists()) { return false }
+    let boardId: number = this.getUserActualBoard();
+
+    if (!this.isUserHaveBoard(boardId, boards)) { return true }
+    return false;
   }
 
 }
