@@ -33,10 +33,10 @@ import { NotificationBarComponent } from './notification-bar/notification-bar.co
 //directives
 import { CloseNgIfDirective } from './_directives/close-ng-if.directive';
 import { AutofocusDirective } from './_directives/autofocus.directive';
-import { UsernamePickerDirective } from './_directives/username-picker.directive';
 
 //pipes
 import { ReversePipe } from './_pipes/reverse.pipe';
+import { UsernameDecoratorPipe } from './_pipes/username-decorator.pipe';
 
 @NgModule({
   declarations: [
@@ -58,7 +58,7 @@ import { ReversePipe } from './_pipes/reverse.pipe';
     BoardlistDropdownBagComponent,
     NotificationBarComponent,
     ReversePipe,
-    UsernamePickerDirective
+    UsernameDecoratorPipe,
   ],
   imports: [
     DragulaModule,

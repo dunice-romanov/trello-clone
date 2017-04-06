@@ -143,13 +143,11 @@ class CommentaryPost(generics.CreateAPIView):
             user = User.objects.get(username=username)
         except User.DoesNotExist:
             return;
-        notification = Notification.objects.create(username=user, \
-                                                   commentary=commentary)
+        Notification.objects.create(username=user, commentary=commentary)
 
     def create_notifications(self, usernames, commentary):
         for username in usernames:
             self.create_notification(username, commentary)
-
 
 
 class NotificationList(generics.ListAPIView):

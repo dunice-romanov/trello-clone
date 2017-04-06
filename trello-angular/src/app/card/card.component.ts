@@ -1,7 +1,6 @@
 import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { LoginService } from '../services/login.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CardWindowComponent } from '../card-window/card-window.component'
 import { PostService } from '../services/post.service';
 

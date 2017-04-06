@@ -59,6 +59,8 @@ export class BoardsService {
 			 	  let resp = response.json();
           this.boards = this.parseBoards(resp); 
           this.boardsSubject.next(this.boards);
+          console.log('__sended updated boards to subs__')
+          console.log(this.boards);
           return this.boards;
          })
 			.catch( (error: any) => { return Observable.throw(error); } );
@@ -95,10 +97,11 @@ export class BoardsService {
     let url = this.URL + +id;
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
-    if (this.isUserInBoard(id)) { this.navigateToHome(); }
+    
     return this.http.delete(url, {headers: headers})
               .map(
                 (response: Response) => {
+                  if (this.isUserInBoard(id)) { this.navigateToHome(); }
                   this.updateBoardsList().subscribe();
                   return response;
                 })
@@ -152,15 +155,18 @@ export class BoardsService {
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
     
-    if (!preventNavigation) {
-      if (this.isUserInBoard(boardId)) { this.navigateToHome(); }
-    }
+
 
     return this.http.delete(url, {headers: headers})
               .map((response: Response) => { 
+                  if (!preventNavigation) {
+                    if (this.isUserInBoard(boardId)) { 
+                      this.navigateToHome(); 
+                    }
+                  }
                 this.updateBoardsList().subscribe();
                 return response; })
-              .catch((error: any) => {debugger; return Observable.throw(error)})
+              .catch((error: any) => { return Observable.throw(error) });
   }
 
   private updateBoard(boardId: number, patchObject: Object) {

@@ -12,6 +12,7 @@ import 'rxjs/add/observable/throw';
 import { WebSocketService } from '../services/web-socket.service';
 import { Commentary, Notification } from '../classes/list'
 import { LoginService } from '../services/login.service';
+import { BoardsService } from '../services/boards.service';
 
 @Injectable()
 export class NotificationsService implements OnInit {
@@ -22,21 +23,20 @@ export class NotificationsService implements OnInit {
   readonly URL_NOTIFICATIONS = "http://127.0.0.1:8000/api-posts/notifications/"
   readonly HEADER_AUTHORIZATION = 'Authorization';
   readonly HEADER_JWT = 'JWT';
-  private webSocketSub: Subscription; 
+  private webSocketSub: Subscription;
   public messages: Subject<string>;
 
   constructor(private loginService: LoginService,
               private http: Http,
-             private socketService: WebSocketService) {
-      console.log('notify service started');
-      
+              private socketService: WebSocketService,
+              private boardsService: BoardsService) {
       if (this.loginService.isAuthenticated()) {
         this.updateNotifications().subscribe( (data) => data);
         this.runSocket();
       }
     }
 
-  
+
   ngOnInit() {
   }
 
@@ -45,7 +45,6 @@ export class NotificationsService implements OnInit {
     let url: string = this.URL_NOTIFICATIONS;
     let token: string = this.loginService.getTokenString();
     let headers: Headers = this.createHeaders(token);
-    console.log('lets update notifications');
     return this.http.get(url, {headers: headers})
                     .map((response: Response)=> {
                         let resp = response.json();
@@ -72,7 +71,7 @@ export class NotificationsService implements OnInit {
 
   private createHeaders(JWToken: string) {
     let headers: Headers = new Headers ({'Content-Type':  'application/json;charset=utf-8'});
-    headers.append(this.HEADER_AUTHORIZATION, 
+    headers.append(this.HEADER_AUTHORIZATION,
             this.HEADER_JWT + ' ' +  JWToken);
     return headers;
   }
@@ -99,13 +98,13 @@ export class NotificationsService implements OnInit {
   }
 
   public runSocket() {
-    
+
     if (this.webSocketSub) {
       console.log('in reconnection');
       this.webSocketSub.unsubscribe();
-    
+
     }
-    
+
     let url = "ws://127.0.0.1:8000/?token=" + this.loginService.getTokenString();
 
     console.log('in creation if');
@@ -114,7 +113,14 @@ export class NotificationsService implements OnInit {
                       let data = response.data;
                       return data;
       }).subscribe((data) => {
-        if (data == 'new_notify') this.updateNotifications().subscribe();
+        switch (data) {
+          case 'new_notify':
+            this.updateNotifications().subscribe();
+            break;
+          case 'board_update':
+            this.boardsService.updateBoardsList().subscribe();
+            break;
+        }
       });
     }
 

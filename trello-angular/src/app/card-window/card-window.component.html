@@ -55,7 +55,7 @@
 					</div>
 					<div class="commentary-info-wrapper">
 						<div class="commentary-user">{{comma.username}}</div>
-						<div class="commentary-text">{{comma.text}}</div>
+						<div class="commentary-text"><span [outerHTML]="comma.text | usernameDecorator"></span></div>
 						<div class="commentary-date">{{comma.getDate()}}</div>
 					</div>
 				

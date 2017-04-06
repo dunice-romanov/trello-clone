@@ -6,9 +6,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status
 
-from boards.permissions.is_owner import IsOwnerOrWriter, IsOwnerOfBoard, IsAllowToDeleteBoardPermission
-from boards.models import AccessLevel, Board, BoardPermission
-from boards.serializers import UserSerializer, BoardSerializer, BoardPermissionSerializer
+from posts.models import Commentary, Notification
+
+from .permissions.is_owner import IsOwnerOrWriter, IsOwnerOfBoard, IsAllowToDeleteBoardPermission
+from .models import AccessLevel, Board, BoardPermission
+from .serializers import UserSerializer, BoardSerializer, BoardPermissionSerializer
+
 
 
 class BoardCreate(generics.CreateAPIView):
@@ -75,7 +78,18 @@ class BoardPermissionCreate(generics.CreateAPIView):
     def perform_create(self, serializer):
         user = get_object_or_404(User, username=self.request.data['username'])
         board = get_object_or_404(Board, pk=self.request.data['board_id'])
-        serializer.save(user=user, board=board)
+        instance = serializer.save(user=user, board=board)
+        self.create_notification(user, instance)
+
+    def create_commentary(self, board_permission_instance):
+        user = self.request.user
+        board = board_permission_instance.board
+        text = 'new shared board: ' + board.title
+        return Commentary.objects.create(text=text, username=user)
+
+    def create_notification(self, user, board_permission_instance):
+        commentary = self.create_commentary(board_permission_instance)
+        Notification.objects.create(username=user, commentary=commentary)
 
 
 class BoardSharesList(generics.ListAPIView):
@@ -91,6 +105,22 @@ class BoardSharesList(generics.ListAPIView):
 class BoardPermissionOne(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, IsAllowToDeleteBoardPermission,)
     serializer_class = BoardPermissionSerializer
+
     def get_queryset(self):
         user = self.request.user
         return BoardPermission.objects.all()
+
+    def perform_destroy(self, instance):
+        user = instance.user
+        if user != self.request.user:
+            self.create_notification(user, instance)
+        instance.delete()
+
+    def create_commentary(self, board_permission_instance):
+        user = self.request.user
+        text = 'you was unscubscribed from ' + board_permission_instance.board.title
+        return Commentary.objects.create(text=text, username=user)
+
+    def create_notification(self, user, board_permission_instance):
+        commentary = self.create_commentary(board_permission_instance)
+        Notification.objects.create(username=user, commentary=commentary)
